@@ -46,6 +46,13 @@
         android:layout_below="@+id/loginBtn"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="63dp" />
+        android:layout_marginTop="@dimen/activity_vertical_margin"/>
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/facebookLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/newAccBtn"
+        android:layout_marginTop="@dimen/activity_vertical_margin"/>
 
 </RelativeLayout>
