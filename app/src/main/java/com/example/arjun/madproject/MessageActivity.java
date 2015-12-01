@@ -27,9 +27,11 @@ import com.parse.ParseUser;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-public class MessageActivity extends AppCompatActivity {
+public class MessageActivity extends AppCompatActivity implements MessageAdapter.IData{
 
     final static String SNAME = "sname";
     final static String FULLNAME = "fullname";
@@ -53,15 +55,11 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
-
         if(!getIntent().getExtras().get(MainActivity.FULLNAME).toString().equals("")){
             s_fname = getIntent().getExtras().get(MainActivity.FULLNAME).toString();
-//            r_fname = getIntent().getExtras().get(MainActivity.RNAME).toString();
-//            EMAIL = getIntent().getExtras().get(MainActivity.SEMAIL).toString();
         }
         else {
             s_fname = getIntent().getExtras().get(ComposeActivity.CFNAME).toString();
-            // s_lname = " ";
         }
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
@@ -69,10 +67,6 @@ public class MessageActivity extends AppCompatActivity {
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(final List<ParseObject> objects, com.parse.ParseException e) {
                 msglist.addAll(objects);
-//                Log.d("demo", "msg size 1" + finallist.size());
-//                if (msglist.size() == 0) {
-//                    Log.d("demo", "size is" + msglist.size());
-//                }
                 final ParseUser currentUser = ParseUser.getCurrentUser();
 
                 for (int i = 0; i < msglist.size(); i++) {
@@ -86,6 +80,13 @@ public class MessageActivity extends AppCompatActivity {
                         Log.d("demo", "list msgs" + msg.getObjectId());
                     }
                 }
+
+                Collections.sort(finallist, new Comparator<ParseObject>() {
+                    @Override
+                    public int compare(ParseObject emp1, ParseObject emp2) {
+                        return emp1.getCreatedAt().compareTo(emp2.getCreatedAt()); // ascending..for descending..switch places of 1 and 2
+                    }
+                });
 
                 ListView lv = (ListView) findViewById(R.id.messagelistView);
                 adapter = new MessageAdapter(MessageActivity.this, R.layout.messageitemlayout, finallist);
@@ -106,31 +107,6 @@ public class MessageActivity extends AppCompatActivity {
                 intent.putExtra(MESSAGE, finallist.get(position).get("msg").toString());
                 intent.putExtra(OBJID, finallist.get(position).getObjectId().toString());
 
-                ParseFile img = (ParseFile)finallist.get(position).get("imagefile");
-                if(img == null) {
-                    Log.d("demo","no image");
-                    startActivity(intent);
-                }
-                else {
-                    img.getDataInBackground(new GetDataCallback() {
-                        public void done(byte[] data, com.parse.ParseException e) {
-                            if (e == null) {
-                                bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                                ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
-                                byte[] byteArray = bStream.toByteArray();
-                                intent.putExtra(IMG, byteArray);
-                                Log.d("demo","byte array"+byteArray);
-                                startActivity(intent);
-                            } else {
-                                // something went wrong
-                                Log.d("demo", "imag error" + e.getMessage());
-                            }
-                        }
-                    });
-                }
-
-
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
                 Log.d("demo", "inmsg inbox");
                 query.getInBackground(finallist.get(position).getObjectId().toString(), new GetCallback<ParseObject>() {
@@ -144,27 +120,55 @@ public class MessageActivity extends AppCompatActivity {
                                 obj.put("read", seen);
                                 obj.saveInBackground();
                             }
-                                //Toast.makeText(MessageActivity.this, "saved", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-                startActivity(intent);
+
+                ParseFile img = (ParseFile)finallist.get(position).get("imagefile");
+                if(img == null) {
+                    Log.d("demo", "no image");
+                    startActivity(intent);
+                }
+                else {
+                    img.getDataInBackground(new GetDataCallback() {
+                        public void done(byte[] data, com.parse.ParseException e) {
+                            if (e == null) {
+                                bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                                ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
+                                byte[] byteArray = bStream.toByteArray();
+                                intent.putExtra(IMG, byteArray);
+                                Log.d("demo", "byte array" + byteArray);
+                                startActivity(intent);
+                            } else {
+                                // something went wrong
+                                Log.d("demo", "imag error" + e.getMessage());
+                            }
+                        }
+                    });
+                }
             }
         });
 
-       // if (finallist.size() == 0) {
-            Log.d("demo", "msg size 2" + finallist.size());
-            Button composebtn = (Button) findViewById(R.id.composeBtn);
-//            composebtn.setVisibility(View.VISIBLE);
-            composebtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                    Intent intent = new Intent(MessageActivity.this, ComposeActivity2.class);
-                    intent.putExtra(FULLNAME, getIntent().getExtras().get(MainActivity.FULLNAME).toString());
-                    startActivity(intent);
-                }
-            });
-       // }
+        Log.d("demo", "msg size 2" + finallist.size());
+        Button composebtn = (Button) findViewById(R.id.composeBtn);
+        composebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MessageActivity.this, ComposeActivity2.class);
+                intent.putExtra(FULLNAME, getIntent().getExtras().get(MainActivity.FULLNAME).toString());
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void setListView(ArrayList<ParseObject> items) {
+        ListView lv = (ListView) findViewById(R.id.messagelistView);
+        adapter = new MessageAdapter(this, R.layout.messageitemlayout, items);
+        lv.setAdapter(adapter);
+        adapter.setNotifyOnChange(true);
     }
 }

@@ -31,7 +31,7 @@ public class MessageAdapter extends ArrayAdapter<ParseObject>{
     int mResource;
     List<ParseObject> mData;
     List<ParseObject> plist = new ArrayList<>();
-    //IData galleryactivity;
+    IData msgactivity;
     ArrayList<ParseObject> list = new ArrayList<>();
     int flag = -1;
     Bitmap bitmap;
@@ -42,7 +42,7 @@ public class MessageAdapter extends ArrayAdapter<ParseObject>{
         this.mData = objects;
         this.mContext = context;
         this.mResource = resource;
-        // galleryactivity = (IData) context;
+        msgactivity = (IData) context;
     }
 
     @Override // this is for every row in the list view
@@ -78,7 +78,6 @@ public class MessageAdapter extends ArrayAdapter<ParseObject>{
                         bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
                         photo.setImageBitmap(bitmap);
                     } else {
-                        // something went wrong
                         Log.d("demo", "imag error" + e.getMessage());
                     }
                 }
@@ -88,24 +87,10 @@ public class MessageAdapter extends ArrayAdapter<ParseObject>{
         if(!(name.get("sender").toString().equals(currentUser.getUsername().toString()+" "+currentUser.get("Lastname").toString())) &&
                 name.get("read").toString().equals("notseen")){
             convertView.setBackgroundColor(Color.GREEN);
-            //iv.setVisibility(View.VISIBLE);
         }
         else {
             convertView.setBackgroundColor(Color.WHITE);
         }
-
-//        if(name.get("sender").toString().equals(currentUser.getUsername().toString()+" "+currentUser.get("Lastname").toString())
-//                && MainActivity.semail.toString().equals(currentUser.getEmail().toString())) {
-//            //iv.setVisibility(View.INVISIBLE);
-//
-//            Log.d("demo","match");
-//
-//        }
-//        else if(name.get("read").toString().equals("notseen")){
-//
-//            Log.d("demo","no match");
-//            convertView.setBackgroundColor(Color.GREEN);
-//        }
 
         if(name.get("sender").toString().equals(currentUser.getUsername().toString()+" "+currentUser.get("Lastname").toString())
                 ) {
@@ -122,8 +107,14 @@ public class MessageAdapter extends ArrayAdapter<ParseObject>{
                 Log.d("demo", "click pos"+position);
                 name.deleteInBackground();
                 Toast.makeText(mContext, "Message Deleted Successfully", Toast.LENGTH_SHORT).show();
+                mData.remove(position);
+                msgactivity.setListView((ArrayList<ParseObject>) mData);
             }
         });
         return convertView;
+    }
+
+    static public interface IData{
+        public void setListView(ArrayList<ParseObject> items);
     }
 }

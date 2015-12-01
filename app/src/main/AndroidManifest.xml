@@ -11,8 +11,8 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <permission android:protectionLevel="signature"
-        android:name="com.example.arjun.madproject" />
-    <uses-permission android:name="com.example.arjun.madproject" />
+        android:name="com.example.arjun.madproject.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.example.arjun.madproject.permission.C2D_MESSAGE" />
 
     <application
         android:name=".StarterApplication"
@@ -20,12 +20,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <meta-data
+       <!-- <meta-data
             android:name="com.parse.APPLICATION_ID"
             android:value="@string/parse_app_id" />
         <meta-data
             android:name="com.parse.CLIENT_KEY"
-            android:value="@string/parse_client_key" />
+            android:value="@string/parse_client_key" /> -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />

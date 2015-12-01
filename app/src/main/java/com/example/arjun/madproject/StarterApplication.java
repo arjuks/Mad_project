@@ -20,6 +20,7 @@ public class StarterApplication extends Application {
 
     Parse.initialize(this, "JUsZihp54u72sZjSaKTjAnKVs7OW7AJXyqgzOD0i", "Lya1kgKy9GROgieeiy8iUGQH7wTbo8XSauPurdgq");
     ParseInstallation.getCurrentInstallation().saveInBackground();
+
     ParseFacebookUtils.initialize(getApplicationContext());
     FacebookSdk.sdkInitialize(getApplicationContext());
 
