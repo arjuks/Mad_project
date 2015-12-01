@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/lastName"
+        android:id="@+id/lastNameDisplay"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/FirstName"
         android:layout_toEndOf="@+id/FirstName"

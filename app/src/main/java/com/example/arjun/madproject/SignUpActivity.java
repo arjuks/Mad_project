@@ -13,9 +13,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.parse.ParseFile;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -23,20 +26,19 @@ public class SignUpActivity extends AppCompatActivity {
     private static final int SELECT_PICTURE = 1;
     Uri uri;
     Bitmap bitmap;
+    Bitmap picture;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == SELECT_PICTURE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-
             uri = data.getData();
-
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                 ImageView image = (ImageView) findViewById(R.id.profilePhotoEdit);
-                //imagepath = getPath(uri);
                 image.setImageBitmap(bitmap);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -51,12 +53,13 @@ public class SignUpActivity extends AppCompatActivity {
         Button canc = (Button) findViewById(R.id.CancelBtn);
         Button signup = (Button) findViewById(R.id.signUpBtn);
         final EditText firstname = (EditText) findViewById(R.id.firstNamesignUp);
-        final EditText lastname = (EditText) findViewById(R.id.lastName);
+        final EditText lastname = (EditText) findViewById(R.id.lastNameDisplay);
         final EditText gender = (EditText) findViewById(R.id.gender);
         final EditText password = (EditText) findViewById(R.id.passwordSignupField);
         final EditText confirmp = (EditText) findViewById(R.id.confirmPassword);
         final EditText email = (EditText) findViewById(R.id.email);
         ImageView img = (ImageView) findViewById(R.id.profilePhotoEdit);
+        Button save = (Button) findViewById(R.id.saveBtn);
 
         canc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,34 +82,53 @@ public class SignUpActivity extends AppCompatActivity {
                 else if (!password.getText().toString().equals(confirmp.getText().toString())){
                     Toast.makeText(SignUpActivity.this, "Password and confirm Password do not match", Toast.LENGTH_SHORT).show();
                 }
+                else if(bitmap == null) {
+                    Toast.makeText(SignUpActivity.this, "Please upload a photo", Toast.LENGTH_SHORT).show();
+                }
                 else {
                     Log.d("demo", "inside else");
-                    ParseUser user = new ParseUser();
-                    user.setUsername(firstname.getText().toString());
-                    user.put("Lastname", lastname.getText().toString());
-                    user.setPassword(password.getText().toString());
-                    user.put("Gender", gender.getText().toString());
-                    user.setEmail(email.getText().toString());
-                    user.put("Photo",uri.toString());
 
-// other fields can be set just like with ParseObject
+                    picture = bitmap;
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] d = stream.toByteArray();
+                    final ParseFile file = new ParseFile("image.jpg", d);
+                    file.saveInBackground();
 
-                    user.signUpInBackground(new SignUpCallback() {
+                    file.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(com.parse.ParseException e) {
-                            Log.d("demo","inside done");
-                            if (e == null) {
-                                // Hooray! Let them use the app now.
-                                Log.d("demo","sign up successful");
-                                Toast.makeText(SignUpActivity.this, "Signed Up Successfully", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                                startActivity(intent);
-                            } else {
-                                Toast.makeText(SignUpActivity.this,e.getMessage(), Toast.LENGTH_SHORT).show();
-                                Log.d("demo","error"+ e);
-                                Log.d("demo","sign up not successful");
-                                // Sign up didn't succeed. Look at the ParseException
-                                // to figure out what went wrong
+                            if (null == e) {
+                                Log.d("demo", "inside savecallback");
+
+                                ParseUser user = new ParseUser();
+                                user.setUsername(firstname.getText().toString());
+                                user.put("Lastname", lastname.getText().toString());
+                                user.setPassword(password.getText().toString());
+                                user.put("Gender", gender.getText().toString());
+                                user.setEmail(email.getText().toString());
+                                user.put("imagefile", file);
+// other fields can be set just like with ParseObject
+
+                                user.signUpInBackground(new SignUpCallback() {
+                                    @Override
+                                    public void done(com.parse.ParseException e) {
+                                        Log.d("demo", "inside done");
+                                        if (e == null) {
+                                            // Hooray! Let them use the app now.
+                                            Log.d("demo", "sign up successful");
+                                            Toast.makeText(SignUpActivity.this, "Signed Up Successfully", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                        } else {
+                                            Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            Log.d("demo", "error" + e);
+                                            Log.d("demo", "sign up not successful");
+                                            // Sign up didn't succeed. Look at the ParseException
+                                            // to figure out what went wrong
+                                        }
+                                    }
+                                });
                             }
                         }
                     });
@@ -125,5 +147,7 @@ public class SignUpActivity extends AppCompatActivity {
                         "Select Picture"), SELECT_PICTURE);
             }
         });
+
+
     }
 }
