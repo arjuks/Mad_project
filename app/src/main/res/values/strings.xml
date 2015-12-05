@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">MadProject</string>
-    <string name="parse_app_id">YOUR_APPLICATION_ID</string>
-    <string name="parse_client_key">YOUR_CLIENT_KEY</string>
+    <string name="parse_app_id">VQkjcPKUPzUNBjZOFP3OP9MolVCHPDzWODGzbYDS</string>
+    <string name="parse_client_key">MqNE7TiiOFlvt5prd93FOVh5jX1nqJg86HlAI58Z</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -16,4 +16,33 @@
     <string name="logout">Logout</string>
     <string name="title_activity_edit">EditActivity</string>
     <string name="save">Save</string>
+    <string name="title_activity_user_list">UserListActivity</string>
+    <string name="title_activity_profile_display">ProfileDisplayActivity</string>
+    <string name="firstname">First Name:</string>
+    <string name="lastname">Last Name:</string>
+    <string name="gender">Gender:</string>
+    <string name="email">Email:</string>
+    <string name="photoLabel">Profile Photo:</string>
+    <string name="facebook_app_id">432457393625253</string>
+    <string name="compose">Compose:</string>
+    <string name="sendBtn">Send</string>
+    <string name="composemessage">Compose a message</string>
+    <string name="title_activity_message">MessageActivity</string>
+    <string name="inbox">Go to Inbox</string>
+    <string name="inboxMsg">Inbox</string>
+    <string name="title_activity_compose">ComposeActivity</string>
+    <string name="composeBtn">Compose message</string>
+    <string name="senderLabel">Sender:</string>
+    <string name="title_activity_message_display">MessageDisplayActivity</string>
+    <string name="senderLabelDisplay">Sender:</string>
+    <string name="timePost">Time Posted:</string>
+    <string name="MsgContDisplay">Message:</string>
+    <string name="ReplyBtn">Reply</string>
+    <string name="title_activity_compose2">ComposeActivity2</string>
+    <string name="composeMsg">Compose a message</string>
+    <string name="imageLabel">Image:</string>
+    <string name="genderLabel">Gender:</string>
+    <string name="emailLabel">Email:</string>
+    <string name="password_hint">Password</string>
+    <string name="name_hint">First Name</string>
 </resources>

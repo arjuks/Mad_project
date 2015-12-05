@@ -2,6 +2,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
+    <item android:id="@+id/inboxMsg"
+        app:showAsAction="never"
+        android:title="@string/inboxMsg">
+    </item>
+
     <item android:id="@+id/editprofile"
         app:showAsAction="never"
         android:title="@string/editprofile">
