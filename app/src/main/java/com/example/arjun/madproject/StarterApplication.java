@@ -18,7 +18,7 @@ public class StarterApplication extends Application {
 
     Parse.enableLocalDatastore(this);
 
-    Parse.initialize(this, "JUsZihp54u72sZjSaKTjAnKVs7OW7AJXyqgzOD0i", "Lya1kgKy9GROgieeiy8iUGQH7wTbo8XSauPurdgq");
+    Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_key));
     ParseInstallation.getCurrentInstallation().saveInBackground();
 
     ParseFacebookUtils.initialize(getApplicationContext());

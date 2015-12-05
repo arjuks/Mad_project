@@ -25,7 +25,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     private static final int SELECT_PICTURE = 1;
     Uri uri;
-    Bitmap bitmap;
     Bitmap picture;
 
     @Override
@@ -35,9 +34,9 @@ public class SignUpActivity extends AppCompatActivity {
         if (requestCode == SELECT_PICTURE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             uri = data.getData();
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                picture = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                 ImageView image = (ImageView) findViewById(R.id.profilePhotoEdit);
-                image.setImageBitmap(bitmap);
+                image.setImageBitmap(picture);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -82,34 +81,33 @@ public class SignUpActivity extends AppCompatActivity {
                 else if (!password.getText().toString().equals(confirmp.getText().toString())){
                     Toast.makeText(SignUpActivity.this, "Password and confirm Password do not match", Toast.LENGTH_SHORT).show();
                 }
-                else if(bitmap == null) {
+                else if(picture == null) {
                     Toast.makeText(SignUpActivity.this, "Please upload a photo", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Log.d("demo", "inside else");
+                    ParseUser.logOut();
 
-                    picture = bitmap;
+                    final ParseUser user = new ParseUser();
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] d = stream.toByteArray();
                     final ParseFile file = new ParseFile("image.jpg", d);
-                    file.saveInBackground();
+
+                    picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+
+                    user.setUsername(email.getText().toString());
+                    user.put("Lastname", lastname.getText().toString());
+
+                    user.setPassword(password.getText().toString());
+                    user.put("Gender", gender.getText().toString());
+
+                    user.setEmail(email.getText().toString());
+                    user.put("imagefile", file);
 
                     file.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(com.parse.ParseException e) {
                             if (null == e) {
                                 Log.d("demo", "inside savecallback");
-
-                                ParseUser user = new ParseUser();
-                                user.setUsername(firstname.getText().toString());
-                                user.put("Lastname", lastname.getText().toString());
-                                user.setPassword(password.getText().toString());
-                                user.put("Gender", gender.getText().toString());
-                                user.setEmail(email.getText().toString());
-                                user.put("imagefile", file);
-// other fields can be set just like with ParseObject
-
                                 user.signUpInBackground(new SignUpCallback() {
                                     @Override
                                     public void done(com.parse.ParseException e) {
@@ -124,8 +122,6 @@ public class SignUpActivity extends AppCompatActivity {
                                             Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                                             Log.d("demo", "error" + e);
                                             Log.d("demo", "sign up not successful");
-                                            // Sign up didn't succeed. Look at the ParseException
-                                            // to figure out what went wrong
                                         }
                                     }
                                 });
@@ -147,7 +143,5 @@ public class SignUpActivity extends AppCompatActivity {
                         "Select Picture"), SELECT_PICTURE);
             }
         });
-
-
     }
 }
