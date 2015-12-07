@@ -21,8 +21,8 @@ public class StarterApplication extends Application {
     Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_key));
     ParseInstallation.getCurrentInstallation().saveInBackground();
 
-    ParseFacebookUtils.initialize(getApplicationContext());
-    FacebookSdk.sdkInitialize(getApplicationContext());
+    ParseFacebookUtils.initialize(this);
+    FacebookSdk.sdkInitialize(this);
 
   }
 }

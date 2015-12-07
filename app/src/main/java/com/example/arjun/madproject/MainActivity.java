@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.facebook.FacebookSdk;
 import com.parse.FindCallback;
 import com.parse.ParseAnalytics;
 import com.parse.ParseObject;

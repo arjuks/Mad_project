@@ -4,15 +4,17 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
+
+import java.util.Collection;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -20,9 +22,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        Log.d("demo", "in login act");
         Button newAcc = (Button) findViewById(R.id.newAccBtn);
         Button login = (Button) findViewById(R.id.loginBtn);
+        Button facebookLogin = (Button) findViewById(R.id.facebookLogin);
         final EditText firstname = (EditText) findViewById(R.id.firstname);
         final EditText password = (EditText) findViewById(R.id.passwordField);
 
@@ -59,6 +62,32 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void loginFacebook(View v) {
+        ParseFacebookUtils.logInWithReadPermissionsInBackground(this, null, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException err) {
+                Log.d("demo", "in login with read permissions");
+                if (user == null) {
+                    Log.d("demo", "Uh oh. The user cancelled the Facebook login.");
+                } else if (user.isNew()) {
+                    Log.d("demo", "User signed up and logged in through Facebook!");
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(LoginActivity.this, "Logged in!", Toast.LENGTH_LONG).show();
+                    Log.d("demo", "User logged in through Facebook!");
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 }

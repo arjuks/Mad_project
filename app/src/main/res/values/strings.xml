@@ -3,6 +3,9 @@
     <string name="parse_app_id">VQkjcPKUPzUNBjZOFP3OP9MolVCHPDzWODGzbYDS</string>
     <string name="parse_client_key">MqNE7TiiOFlvt5prd93FOVh5jX1nqJg86HlAI58Z</string>
 
+    <string name="facebookAppId">1221561451188092</string>
+    <string name="title_activity_facebook">FacebookActivity</string>
+
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">LoginActivity</string>
@@ -23,7 +26,7 @@
     <string name="gender">Gender:</string>
     <string name="email">Email:</string>
     <string name="photoLabel">Profile Photo:</string>
-    <string name="facebook_app_id">432457393625253</string>
+    <string name="facebook_app_id">1221561451188092</string>
     <string name="compose">Compose:</string>
     <string name="sendBtn">Send</string>
     <string name="composemessage">Compose a message</string>
@@ -45,4 +48,5 @@
     <string name="emailLabel">Email:</string>
     <string name="password_hint">Password</string>
     <string name="name_hint">First Name</string>
+    <string name="facebook_login_label">Login Using Facebook</string>
 </resources>
