@@ -43,4 +43,17 @@
     <string name="imageLabel">Image:</string>
     <string name="genderLabel">Gender:</string>
     <string name="emailLabel">Email:</string>
+    <string name="pushnoti">PushNote</string>
+    <string name="privacysetting">PrivacySettings</string>
+    <string name="title_activity_privacy">PrivacyActivity</string>
+    <string name="profileLabel">Profile Listing set as :</string>
+    <string name="profileTrueBtn">True</string>
+    <string name="profielFalseBtn">False</string>
+    <string name="pushNoteLabel">Push Notifications set as :</string>
+    <string name="pushNoteBtn">True</string>
+    <string name="pushFalseBtn">False</string>
+    <string name="albumSecurity">Album Security set as :</string>
+    <string name="albumTrueBtn">True</string>
+    <string name="albumFalseBtn">False</string>
+
 </resources>
