@@ -17,7 +17,7 @@ public class PrivacyActivity extends AppCompatActivity {
 
     String boolval = "";
     String boolvalpush = "";
-    String boolvalalbum = "";
+    String boolvalmsg = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,7 @@ public class PrivacyActivity extends AppCompatActivity {
 
         final TextView profiletextview = (TextView) findViewById(R.id.profiletextView);
         final TextView pushtextview = (TextView) findViewById(R.id.pushNotetextView);
-        final TextView albumtextview = (TextView) findViewById(R.id.albumtextView);
+        final TextView messagetextview = (TextView) findViewById(R.id.messagetextView);
 
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
@@ -55,14 +55,14 @@ public class PrivacyActivity extends AppCompatActivity {
                         pushtextview.setBackgroundColor(Color.RED);
                     }
 
-                    if (obj.get("albumsecurity").toString().equals("true")) {
-                        boolvalalbum = "true";
-                        albumtextview.setText("TRUE");
-                        albumtextview.setBackgroundColor(Color.GREEN);
+                    if (obj.get("messageprivacy").toString().equals("true")) {
+                        boolvalmsg = "true";
+                        messagetextview.setText("TRUE");
+                        messagetextview.setBackgroundColor(Color.GREEN);
                     } else {
-                        boolvalalbum = "false";
-                        albumtextview.setText("FALSE");
-                        albumtextview.setBackgroundColor(Color.RED);
+                        boolvalmsg = "false";
+                        messagetextview.setText("FALSE");
+                        messagetextview.setBackgroundColor(Color.RED);
                     }
                 }
             }
@@ -157,7 +157,7 @@ public class PrivacyActivity extends AppCompatActivity {
             }
         });
 
-        RadioGroup rgalbum = (RadioGroup) findViewById(R.id.radioGroupAlbum);
+        RadioGroup rgalbum = (RadioGroup) findViewById(R.id.radioGroupMessages);
         rgalbum.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -172,10 +172,10 @@ public class PrivacyActivity extends AppCompatActivity {
                         @Override
                         public void done(ParseObject obj, com.parse.ParseException e) {
                             if (e == null) {
-                                obj.put("albumsecurity", "true");
-                                boolvalalbum = "true";
-                                albumtextview.setText("TRUE");
-                                albumtextview.setBackgroundColor(Color.GREEN);
+                                obj.put("messageprivacy", "true");
+                                boolvalmsg = "true";
+                                messagetextview.setText("TRUE");
+                                messagetextview.setBackgroundColor(Color.GREEN);
                                 Log.d("demo", "push - true");
                                 obj.saveInBackground();
 
@@ -188,10 +188,10 @@ public class PrivacyActivity extends AppCompatActivity {
                         @Override
                         public void done(ParseObject obj, com.parse.ParseException e) {
                             if (e == null) {
-                                obj.put("albumsecurity", "false");
-                                boolvalalbum = "false";
-                                albumtextview.setText("FALSE");
-                                albumtextview.setBackgroundColor(Color.RED);
+                                obj.put("messageprivacy", "false");
+                                boolvalmsg = "false";
+                                messagetextview.setText("FALSE");
+                                messagetextview.setBackgroundColor(Color.RED);
                                 Log.d("demo", "push - false");
                                 obj.saveInBackground();
                             }

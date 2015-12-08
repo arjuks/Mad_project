@@ -55,5 +55,6 @@
     <string name="albumSecurity">Album Security set as :</string>
     <string name="albumTrueBtn">True</string>
     <string name="albumFalseBtn">False</string>
+    <string name="messageprivacy">Receive Messages set as :</string>
 
 </resources>

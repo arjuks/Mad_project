@@ -46,10 +46,19 @@ public class UserListActivity extends AppCompatActivity {
             public void done(List<ParseUser> objects, com.parse.ParseException e) {
                 if (e == null) {
                     Log.d("score", "Retrieved " + objects.size() + " objects");
+                    ArrayList<ParseUser> ulist = new ArrayList<ParseUser>();
+                    ulist.addAll(objects);
+
+                    for(int i = 0; i < ulist.size(); i++) {
+                        if(ulist.get(i).get("profilelisting").toString().equals("false")) {
+                            ulist.remove(i);
+                        }
+                        Log.d("demo","ulist"+ulist.get(i).getEmail().toString());
+                    }
 
                     list.addAll(objects);
                     ListView lv = (ListView) findViewById(R.id.listView2);
-                    adapter = new AppAdapter(UserListActivity.this, R.layout.itemlayout, list);
+                    adapter = new AppAdapter(UserListActivity.this, R.layout.itemlayout, ulist);
                     lv.setAdapter(adapter);
                     adapter.setNotifyOnChange(true);
 

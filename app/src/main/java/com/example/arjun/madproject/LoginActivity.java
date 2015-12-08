@@ -11,7 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
 import com.parse.LogInCallback;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
@@ -48,6 +51,22 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                     });
+
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+                    query.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(ParseObject obj, com.parse.ParseException e) {
+                            if (e == null) {
+                                obj.put("profilelisting", "true");
+                                obj.put("pushnote","true");
+                                obj.put("messageprivacy","true");
+                                obj.saveInBackground();
+                               // Toast.makeText(LoginActivity.this, "Profile listing is set as true", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                    });
+
                 }
             }
         });

@@ -105,16 +105,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/albumSecurity"
-        android:id="@+id/albumsecurity"
+        android:text="@string/messageprivacy"
+        android:id="@+id/messageprivacy"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/radioGroupAlbum" />
+        android:layout_above="@+id/radioGroupMessages" />
 
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/radioGroupAlbum"
+        android:id="@+id/radioGroupMessages"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
@@ -136,9 +136,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/albumtextView"
-        android:layout_above="@+id/radioGroupAlbum"
-        android:layout_toRightOf="@+id/albumsecurity"
-        android:layout_toEndOf="@+id/albumsecurity" />
+        android:id="@+id/messagetextView"
+        android:layout_above="@+id/radioGroupMessages"
+        android:layout_toRightOf="@+id/messageprivacy"
+        android:layout_toEndOf="@+id/messageprivacy" />
 
 </RelativeLayout>

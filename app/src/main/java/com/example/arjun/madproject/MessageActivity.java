@@ -94,6 +94,7 @@ public class MessageActivity extends AppCompatActivity implements MessageAdapter
                 adapter.setNotifyOnChange(true);
             }
         });
+
         ListView lv = (ListView) findViewById(R.id.messagelistView);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
