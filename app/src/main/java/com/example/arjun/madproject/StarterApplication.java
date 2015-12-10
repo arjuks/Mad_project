@@ -7,6 +7,7 @@ import com.facebook.FacebookSdk;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseFacebookUtils;
+//import com.parse.ParseTwitterUtils;
 import com.parse.ParseInstallation;
 
 
@@ -22,6 +23,7 @@ public class StarterApplication extends Application {
     ParseInstallation.getCurrentInstallation().saveInBackground();
 
     ParseFacebookUtils.initialize(this);
+//    ParseTwitterUtils.initialize(this);
     FacebookSdk.sdkInitialize(this);
 
   }

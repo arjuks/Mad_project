@@ -23,7 +23,7 @@ import java.io.IOException;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private static final int SELECT_PICTURE = 1;
+    public static final int SELECT_PICTURE = 1;
     Uri uri;
     Bitmap picture;
 

@@ -55,11 +55,11 @@ public class MessageActivity extends AppCompatActivity implements MessageAdapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
-        if(!getIntent().getExtras().get(MainActivity.FULLNAME).toString().equals("")){
-            s_fname = getIntent().getExtras().get(MainActivity.FULLNAME).toString();
+        if(getIntent().getExtras().get(MainActivity.FULLNAME).toString().isEmpty()){
+            s_fname = getIntent().getExtras().get(ComposeActivity.CFNAME).toString();
         }
         else {
-            s_fname = getIntent().getExtras().get(ComposeActivity.CFNAME).toString();
+            s_fname = getIntent().getExtras().get(MainActivity.FULLNAME).toString();
         }
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");

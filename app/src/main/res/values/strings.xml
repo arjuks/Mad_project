@@ -49,4 +49,12 @@
     <string name="password_hint">Password</string>
     <string name="name_hint">First Name</string>
     <string name="facebook_login_label">Login Using Facebook</string>
+    <string name="twitter_login_label">Login Using Twitter</string>
+    <string name="title_activity_album">Album</string>
+    <string name="new_album_button">New Album</string>
+    <string name="title_activity_new_album">New Album</string>
+    <string name="addPictureButton">Add Picture</string>
+    <string name="completeAlbumButton">Complete Album</string>
+    <string name="album_label">Enter Album Name</string>
+    <string name="private_cb_label">Private</string>
 </resources>

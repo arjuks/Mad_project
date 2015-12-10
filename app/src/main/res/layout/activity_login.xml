@@ -54,7 +54,16 @@
         android:onClick="loginFacebook"
         android:text="@string/facebook_login_label"
         android:background="@color/com_facebook_button_background_color"
-        android:textColor="#ffffff"
-        android:layout_marginTop="@dimen/activity_vertical_margin"/>
+        android:textColor="#ffffff"/>
+
+    <Button
+        android:id="@+id/twitterLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/facebookLogin"
+        android:onClick="loginTwitter"
+        android:text="@string/twitter_login_label"
+        android:background="@color/com_facebook_blue"
+        android:textColor="#ffffff"/>
 
 </RelativeLayout>
