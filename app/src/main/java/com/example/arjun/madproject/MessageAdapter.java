@@ -30,10 +30,8 @@ public class MessageAdapter extends ArrayAdapter<ParseObject>{
     Context mContext;
     int mResource;
     List<ParseObject> mData;
-    List<ParseObject> plist = new ArrayList<>();
     IData msgactivity;
     ArrayList<ParseObject> list = new ArrayList<>();
-    int flag = -1;
     Bitmap bitmap;
 
     public MessageAdapter(Context context, int resource, List<ParseObject> objects) {
@@ -110,6 +108,6 @@ public class MessageAdapter extends ArrayAdapter<ParseObject>{
     }
 
     static public interface IData{
-        public void setListView(ArrayList<ParseObject> items);
+        void setListView(ArrayList<ParseObject> items);
     }
 }

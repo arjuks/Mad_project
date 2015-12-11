@@ -6,19 +6,12 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.test.SingleLaunchActivityTestCase;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.ParseACL;
@@ -26,17 +19,12 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.parse.ProgressCallback;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
-import java.util.SimpleTimeZone;
-import java.math.*;
 
 public class NewAlbumActivity extends AppCompatActivity {
     static final int ADD_PICTURE_CODE = 2;
@@ -75,6 +63,8 @@ public class NewAlbumActivity extends AppCompatActivity {
         }
     }
 
+
+
     public void addPictureToAlbum(View view) {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -85,7 +75,7 @@ public class NewAlbumActivity extends AppCompatActivity {
 
     public void createAlbum(View view) {
         EditText editText = (EditText) findViewById(R.id.albumName);
-        CheckBox checkBox = (CheckBox) findViewById(R.id.privacyCheckBox);
+        CheckBox privacyCheckBox = (CheckBox) findViewById(R.id.privacyCheckBox);
         String albumName = editText.getText().toString();
         if(albumName.isEmpty()) {
             Toast.makeText(NewAlbumActivity.this, "Please Specify an Album Name", Toast.LENGTH_LONG).show();
@@ -93,12 +83,12 @@ public class NewAlbumActivity extends AppCompatActivity {
             Toast.makeText(NewAlbumActivity.this, "Please Add Some Pictures", Toast.LENGTH_LONG).show();
         } else {
             ParseACL acl = new ParseACL();
-            if(checkBox.isChecked()) {
-                acl.setPublicReadAccess(true);
-            } else {
+            acl.setWriteAccess(ParseUser.getCurrentUser(), true);
+            if(privacyCheckBox.isChecked()) {
                 acl.setPublicReadAccess(false);
                 acl.setReadAccess(ParseUser.getCurrentUser(), true);
-                acl.setWriteAccess(ParseUser.getCurrentUser(), true);
+            } else {
+                acl.setPublicReadAccess(true);
             }
 
             try {
@@ -115,10 +105,7 @@ public class NewAlbumActivity extends AppCompatActivity {
         final List<ParseObject> parsePictures = new ArrayList<>();
         final ArrayList<String> pictureIds = new ArrayList<>();
 
-
-
         for(int i = 0; i<pictures.size(); i++) {
-            final int index = i;
             final ParseObject picture = new ParseObject("Picture");
 
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -158,7 +145,7 @@ public class NewAlbumActivity extends AppCompatActivity {
                                 ParseObject.saveAllInBackground(parsePictures);
                                 Toast.makeText(NewAlbumActivity.this, "Album saved successfully!",
                                     Toast.LENGTH_LONG).show();
-
+                                setResult(RESULT_OK);
                                 finish();
                             } else {
                                 Toast.makeText(NewAlbumActivity.this, "Whoops! Something wen wrong" +
@@ -175,20 +162,6 @@ public class NewAlbumActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-//        ParseObject.saveAllInBackground(new SaveCallback() {
-//            @Override
-//            public void done(ParseException e) {
-//                Log.d("demo", "file saving done");
-////                picture.saveInBackground(new SaveCallback() {
-////                    @Override
-////                    public void done(ParseException e) {
-////                        Log.d("demo", "pictur saving done");
-////                    }
-////                });
-//            }
-//        });
     }
 
     public void setupData() {
@@ -196,113 +169,4 @@ public class NewAlbumActivity extends AppCompatActivity {
         gridView.setAdapter(adapter);
         adapter.setNotifyOnChange(true);
     }
-
-    public void saveAllFiles() {
-
-    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//        final ParseObject picture = new ParseObject("Picture");
-//
-//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//        byte[] d = stream.toByteArray();
-//        final ParseFile file = new ParseFile("image.jpg", d);
-//        somePicture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-//        picture.put("file", file);
-//
-//
-//        picture.put("albumName", albumName);
-//        parsePictures.add(picture);
-//
-//        file.saveInBackground(new SaveCallback() {
-//            @Override
-//            public void done(ParseException e) {
-//                if (e == null) {
-//                    Log.d("demo", "after file saved");
-//                    picture.saveInBackground(new SaveCallback() {
-//                        @Override
-//                        public void done(ParseException e) {
-//                            if (e == null) {
-//                                Toast.makeText(NewAlbumActivity.this, "Pictures saved successfully!",
-//                                    Toast.LENGTH_LONG).show();
-//                                for (ParseObject pic : parsePictures) {
-//                                    pictureIds.add(pic.getObjectId());
-//                                }
-//                                album.put("name", albumName);
-//                                album.setACL(acl);
-//                                album.put("pictureIdList", pictureIds);
-//                                album.put("userId", ParseUser.getCurrentUser().getObjectId());
-//                                album.put("username", ParseUser.getCurrentUser().getUsername());
-//                                album.saveInBackground(new SaveCallback() {
-//                                    @Override
-//                                    public void done(ParseException e) {
-//                                        if (e == null) {
-//                                            for (ParseObject pic : parsePictures) {
-//                                                pic.put("albumId", album.getObjectId());
-//                                            }
-//                                            ParseObject.saveAllInBackground(parsePictures);
-//                                            Toast.makeText(NewAlbumActivity.this, "Album saved successfully!",
-//                                                Toast.LENGTH_LONG).show();
-//
-//                                            finish();
-//                                        } else {
-//                                            Toast.makeText(NewAlbumActivity.this, "Whoops! Something wen wrong" +
-//                                                "\nAlbum not saved", Toast.LENGTH_LONG).show();
-//                                            e.printStackTrace();
-//                                        }
-//
-//                                    }
-//                                });
-//                            } else {
-//                                Toast.makeText(NewAlbumActivity.this, "Whoops! Something went wrong!" +
-//                                    "\nPictures not saved", Toast.LENGTH_LONG).show();
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    });
-//                }
-//            }
-//        });
-
-
-//        for(int i = 0; i<pictures.size(); i++) {
-//            ParseObject picture = new ParseObject("Picture");
-//            long randomNumber = (long) (Math.random() * 9999999);
-//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//            byte[] d = stream.toByteArray();
-//            ParseFile file = new ParseFile("album.jpg", d);
-//
-//            picture.put("file", file);
-//            picture.put("albumName", albumName);
-//            parsePictures.add(picture);
-//        }

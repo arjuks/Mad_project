@@ -115,6 +115,10 @@
             android:name=".NewAlbumActivity"
             android:label="@string/title_activity_new_album" >
         </activity>
+        <activity
+            android:name=".AlbumDisplayActivity"
+            android:label="@string/title_activity_album_display" >
+        </activity>
     </application>
 
 </manifest>

@@ -57,4 +57,8 @@
     <string name="completeAlbumButton">Complete Album</string>
     <string name="album_label">Enter Album Name</string>
     <string name="private_cb_label">Private</string>
+    <string name="title_activity_album_display">Album Display</string>
+    <string name="add_photo_label">Add Photo</string>
+    <string name="delete_album_label">Delete Album</string>
+    <string name="update_label">Update</string>
 </resources>

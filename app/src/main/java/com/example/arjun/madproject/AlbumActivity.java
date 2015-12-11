@@ -19,11 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AlbumActivity extends AppCompatActivity {
+    public static final String ALBUM_ID = "album_id";
     List<ParseObject> albums;
     ListView listView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("demo", "in on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
         listView = (ListView) findViewById(R.id.albumListView);
@@ -32,7 +35,9 @@ public class AlbumActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Intent intent = new Intent(AlbumActivity.this, AlbumDisplayActivity.class);
+                intent.putExtra(ALBUM_ID, albums.get(position).getObjectId());
+                startActivity(intent);
             }
         });
 
@@ -48,7 +53,15 @@ public class AlbumActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        getAlbumData();
+        Log.d("demo", "in on activity result");
+        Log.d("demo", "result code: " + resultCode);
+        Log.d("demo", "result ok code: " + RESULT_OK);
+        Log.d("demo", "result canceled" + RESULT_CANCELED);
+        Log.d("demo", "result first user" + RESULT_FIRST_USER);
+        if(resultCode == RESULT_OK) {
+            Log.d("demo", "result code is ok!");
+            getAlbumData();
+        }
     }
 
     @Override
@@ -67,7 +80,8 @@ public class AlbumActivity extends AppCompatActivity {
     }
 
     public void startNewAlbum(View view) {
-        startActivity(new Intent(AlbumActivity.this, NewAlbumActivity.class));
+        startActivityForResult(new Intent(AlbumActivity.this, NewAlbumActivity.class), 201);
+        Log.d("demo", "in start new album");
     }
 
     public void setupData() {
@@ -78,6 +92,7 @@ public class AlbumActivity extends AppCompatActivity {
     }
 
     public void getAlbumData() {
+        Log.d("demo", "in get album data");
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Album");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
