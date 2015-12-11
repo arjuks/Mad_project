@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.parse.FindCallback;
@@ -26,22 +27,15 @@ public class AlbumActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
         listView = (ListView) findViewById(R.id.albumListView);
+        getAlbumData();
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Album");
-        query.findInBackground(new FindCallback<ParseObject>() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                Log.d("demo", "in doen of album activity on create");
-                if(e ==  null) {
-                    Log.d("demo", "e == null");
-                    albums = list;
-                    setupData();
-                } else {
-                    e.printStackTrace();
-                }
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
             }
         });
+
     }
 
     @Override
@@ -49,6 +43,12 @@ public class AlbumActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_album, menu);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        getAlbumData();
     }
 
     @Override
@@ -75,5 +75,23 @@ public class AlbumActivity extends AppCompatActivity {
         AlbumAdapter adapter = new AlbumAdapter(AlbumActivity.this, R.layout.album_item_layout, albums);
         listView.setAdapter(adapter);
         adapter.setNotifyOnChange(true);
+    }
+
+    public void getAlbumData() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Album");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                Log.d("demo", "in doen of album activity on create");
+                if(e ==  null) {
+                    Log.d("demo", "e == null");
+                    albums = list;
+                    setupData();
+                } else {
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
 }

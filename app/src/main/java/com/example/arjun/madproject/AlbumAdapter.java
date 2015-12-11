@@ -14,8 +14,10 @@ import android.widget.TextView;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.squareup.picasso.Picasso;
 
 
 import java.util.List;
@@ -49,11 +51,13 @@ public class AlbumAdapter extends ArrayAdapter<ParseObject> {
 
         TextView albumOwner = (TextView) convertView.findViewById(R.id.albumOwner);
         TextView albumDateModified = (TextView) convertView.findViewById(R.id.albumDateModified);
-        final ImageView coverImage = (ImageView) convertView.findViewById(R.id.albumCoverPhoto);
+        TextView albumName = (TextView) convertView.findViewById(R.id.albumName);
+        final ParseImageView coverImage = (ParseImageView) convertView.findViewById(R.id.albumCoverPhoto);
 
         albumOwner.setText(album.get("username").toString());
         Log.d("demo", "album: " + album.toString());
         albumDateModified.setText(album.getUpdatedAt().toString());
+        albumName.setText(album.get("name").toString());
 
         List<String> pictureIdList = album.getList("pictureIdList");
 
@@ -66,18 +70,10 @@ public class AlbumAdapter extends ArrayAdapter<ParseObject> {
                     Log.d("demo", "e == null");
                     Log.d("demo", "parse object id: " + parseObject.getObjectId());
                     ParseFile img = parseObject.getParseFile("file");
-                    try {
-                        Log.d("demo", "start of try in done album adapter");
-                        byte[] bitmapData = img.getData();
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapData, 0, bitmapData.length);
+                    Log.d("demo", "parse file: " + img);
 
-                        coverImage.setImageBitmap(bitmap);
-                        Log.d("demo", "after set image bitmap");
-                    } catch (ParseException e1) {
-                        Log.d("demo", "parse exception e1");
-                        Log.d("demo", e1.toString());
-                        e1.printStackTrace();
-                    }
+                    coverImage.setParseFile(img);
+                    coverImage.loadInBackground();
                 } else {
                     e.printStackTrace();
                 }
