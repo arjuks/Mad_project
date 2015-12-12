@@ -114,6 +114,10 @@
             android:name=".Facebooklogin"
             android:label="@string/title_activity_facebooklogin" >
         </activity>
+        <activity
+            android:name=".Twitterlogin"
+            android:label="@string/title_activity_twitterlogin" >
+        </activity>
     </application>
 
 </manifest>

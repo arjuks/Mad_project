@@ -53,24 +53,4 @@
         android:layout_below="@+id/FbphotoimageView"
         android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/emailFb"
-        android:id="@+id/emailFb"
-        android:visibility="gone"
-        android:layout_above="@+id/genderFbVal"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:visibility="gone"
-        android:id="@+id/emailFbVal"
-        android:layout_above="@+id/genderFbVal"
-        android:layout_centerHorizontal="true" />
 </RelativeLayout>

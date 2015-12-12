@@ -7,6 +7,13 @@
     tools:context="com.example.arjun.madproject.EditActivity"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/editpagetitle"
+        android:id="@+id/editpagetitle" />
+
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -31,11 +38,20 @@
         android:id="@+id/genderEdit"
         android:hint="Gender" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/changephotoedit"
+        android:id="@+id/changephotoedit" />
+
     <ImageView
         android:layout_width="fill_parent"
-        android:layout_height="140dp"
+        android:layout_height="150dp"
         android:src="@drawable/avatar_blank"
         android:id="@+id/profilePhotoEdit"
+        android:layout_marginTop="10dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"

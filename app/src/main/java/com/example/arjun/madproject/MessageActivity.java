@@ -21,6 +21,7 @@ import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseFile;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -164,6 +165,50 @@ public class MessageActivity extends AppCompatActivity implements MessageAdapter
             }
         });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_message, menu);
+        return true;
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.homepage) {
+            Log.d("demo", "homepage clicked");
+            Intent intent = new Intent(MessageActivity.this, MainActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.logout) {
+            Log.d("demo", "logout clicked");
+
+            String objId2 = ParseInstallation.getCurrentInstallation().getObjectId();
+            ParseQuery<ParseInstallation> query2 = ParseInstallation.getQuery();
+            Log.d("demo", "cuser"+ParseUser.getCurrentUser());
+            query2.getInBackground(objId2, new GetCallback<ParseInstallation>() {
+                @Override
+                public void done(ParseInstallation obj, com.parse.ParseException e) {
+                    if (e == null) {
+                        obj.put("user", "loggedOut");
+                        obj.saveInBackground();
+                    }
+                }
+            });
+            ParseUser.logOut();
+            finish();
+            Intent intent = new Intent(MessageActivity.this, LoginActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public void setListView(ArrayList<ParseObject> items) {

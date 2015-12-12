@@ -19,6 +19,7 @@ import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseInstallation;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -45,25 +46,32 @@ public class UserListActivity extends AppCompatActivity {
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> objects, com.parse.ParseException e) {
                 if (e == null) {
-                    Log.d("score", "Retrieved " + objects.size() + " objects");
                     final ArrayList<ParseUser> ulist = new ArrayList<ParseUser>();
                     ulist.addAll(objects);
                     Log.d("demo", "userlist-size before"+ ulist.size());
 
-                    for(int i = 0; i < ulist.size(); i++) {
+                    int i = 0;
+                    for(i = 0; i < ulist.size(); i++) {
+                        Log.d("demo", "userlist-values"+" "+i+" "+ ulist.get(i).getUsername().toString());
                         if (ulist.get(i).get("profilelisting").equals("false")) {
+                            Log.d("demo","match found- false"+" "+i);
                             ulist.remove(i);
-                            Log.d("demo","userlist"+i+" "+ ulist.get(i).getEmail().toString());
+                            Log.d("demo", "false removed" + " " + i);
+                        }
+                        else {
+                            Log.d("demo","match not found");
+                            continue;
                         }
                     }
+                    Log.d("demo","final value of i"+" "+i);
 
-                    for(int i = 0; i < ulist.size(); i++) {
-                        if(ulist.get(i).get("profilelisting").equals("false") &&
-                            ulist.get(i).getEmail().equals(ParseUser.getCurrentUser().getEmail())) {
-                            ulist.remove(i);
-                        }
-                    }
-                    Log.d("demo", "userlist-size after"+ ulist.size());
+//                    for(int i = 0; i < ulist.size(); i++) {
+//                        if(ulist.get(i).get("profilelisting").equals("false") &&
+//                            ulist.get(i).getEmail().equals(ParseUser.getCurrentUser().getEmail())) {
+//                            ulist.remove(i);
+//                        }
+//                    }
+//                    Log.d("demo", "userlist-size after"+ ulist.size());
 
                     ListView lv = (ListView) findViewById(R.id.listView2);
                     adapter = new AppAdapter(UserListActivity.this, R.layout.itemlayout, ulist);
@@ -111,4 +119,48 @@ public class UserListActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_message, menu);
+        return true;
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.homepage) {
+            Log.d("demo", "homepage clicked");
+            Intent intent = new Intent(UserListActivity.this, MainActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.logout) {
+            Log.d("demo", "logout clicked");
+
+            String objId2 = ParseInstallation.getCurrentInstallation().getObjectId();
+            ParseQuery<ParseInstallation> query2 = ParseInstallation.getQuery();
+            Log.d("demo", "cuser"+ParseUser.getCurrentUser());
+            query2.getInBackground(objId2, new GetCallback<ParseInstallation>() {
+                @Override
+                public void done(ParseInstallation obj, com.parse.ParseException e) {
+                    if (e == null) {
+                        obj.put("user", "loggedOut");
+                        obj.saveInBackground();
+                    }
+                }
+            });
+            ParseUser.logOut();
+            finish();
+            Intent intent = new Intent(UserListActivity.this, LoginActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

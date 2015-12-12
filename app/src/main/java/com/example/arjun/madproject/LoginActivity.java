@@ -165,9 +165,8 @@ public class LoginActivity extends Activity {
 
                             String name = ParseTwitterUtils.getTwitter().getScreenName().toString();
 
-                            Intent intent = new Intent(LoginActivity.this, Facebooklogin.class);
+                            Intent intent = new Intent(LoginActivity.this, Twitterlogin.class);
                             intent.putExtra(NAME , name);
-                            intent.putExtra(SOCIALNET , "twitter");
                             startActivity(intent);
                         } else {
                             Log.d("MyApp", "User logged in through Twitter!");
@@ -231,10 +230,7 @@ public class LoginActivity extends Activity {
         parseUser.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                String name = "facebook";
                 Intent intent = new Intent(LoginActivity.this, Facebooklogin.class);
-                intent.putExtra(SOCIALNET , "facebook");
-                intent.putExtra(NAME , name);
                 startActivity(intent);
             }
         });

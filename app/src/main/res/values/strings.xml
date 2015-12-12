@@ -66,5 +66,16 @@
     <string name="usernamelabel">User Name :</string>
     <string name="twitterlogin">Login Via Twitter</string>
     <string name="emailFb">Email :</string>
+    <string name="title_activity_twitterlogin">Twitterlogin</string>
+    <string name="emailtwit">Email :</string>
+    <string name="gendertwit">Gender :</string>
+    <string name="twitphoto">Profile Photo :</string>
+    <string name="twitsubmit">Submit</string>
+    <string name="editprofileBtn">Edit your profile</string>
+    <string name="viewuserlistBtn">view user list</string>
+    <string name="privacyBtn">Privacy Settings</string>
+    <string name="homepage">Home Page</string>
+    <string name="changephotoedit">Change Profile Photo :</string>
+    <string name="editpagetitle">Edit your details :</string>
 
 </resources>
