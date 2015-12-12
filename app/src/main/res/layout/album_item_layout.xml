@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/centerShim"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/albumName"
+        android:layout_toLeftOf="@id/centerShim"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/albumOwner"
+        android:text="Owner: "
+        android:layout_toLeftOf="@id/centerShim"
+        android:layout_below="@id/albumName"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/single_picture_size"
+        android:layout_below="@id/albumOwner"
+        android:id="@+id/albumDateModified"
+        android:text="Last Modified: "
+        android:layout_toLeftOf="@id/centerShim"/>
+
+    <com.parse.ParseImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/centerShim"
+        android:layout_toEndOf="@id/centerShim"
+        android:layout_alignParentTop="true"
+        android:id="@+id/albumCoverPhoto"
+        android:layout_alignBottom="@id/albumDateModified"/>
+</RelativeLayout>

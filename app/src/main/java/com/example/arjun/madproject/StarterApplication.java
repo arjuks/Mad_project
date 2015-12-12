@@ -7,6 +7,7 @@ import com.facebook.FacebookSdk;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseFacebookUtils;
+//import com.parse.ParseTwitterUtils;
 import com.parse.ParseInstallation;
 
 
@@ -21,8 +22,9 @@ public class StarterApplication extends Application {
     Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_key));
     ParseInstallation.getCurrentInstallation().saveInBackground();
 
-    ParseFacebookUtils.initialize(getApplicationContext());
-    FacebookSdk.sdkInitialize(getApplicationContext());
+    ParseFacebookUtils.initialize(this);
+//    ParseTwitterUtils.initialize(this);
+    FacebookSdk.sdkInitialize(this);
 
   }
 }

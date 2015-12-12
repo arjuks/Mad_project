@@ -30,10 +30,8 @@ public class MessageAdapter extends ArrayAdapter<ParseObject>{
     Context mContext;
     int mResource;
     List<ParseObject> mData;
-    List<ParseObject> plist = new ArrayList<>();
     IData msgactivity;
     ArrayList<ParseObject> list = new ArrayList<>();
-    int flag = -1;
     Bitmap bitmap;
 
     public MessageAdapter(Context context, int resource, List<ParseObject> objects) {
@@ -68,8 +66,7 @@ public class MessageAdapter extends ArrayAdapter<ParseObject>{
         ParseFile img = (ParseFile)name.get("imagefile");
         if(img == null) {
             Log.d("demo","no image");
-        }
-        else {
+        } else {
             img.getDataInBackground(new GetDataCallback() {
                 public void done(byte[] data, com.parse.ParseException e) {
                     if (e == null) {
@@ -84,21 +81,17 @@ public class MessageAdapter extends ArrayAdapter<ParseObject>{
             });
         }
 
-        if(!(name.get("sender").toString().equals(currentUser.getUsername().toString()+" "+currentUser.get("Lastname").toString())) &&
+        if(!(name.get("sender").toString().equals(currentUser.getUsername()+" "+currentUser.get("Lastname").toString())) &&
                 name.get("read").toString().equals("notseen")){
             convertView.setBackgroundColor(Color.GREEN);
-        }
-        else {
+        } else {
             convertView.setBackgroundColor(Color.WHITE);
         }
 
-        if(name.get("sender").toString().equals(currentUser.getUsername().toString()+" "+currentUser.get("Lastname").toString())
-                ) {
+        if(name.get("sender").toString().equals(currentUser.getUsername()+" "+currentUser.get("Lastname").toString())) {
             iv.setVisibility(View.INVISIBLE);
-        }
-        else {
+        } else {
             iv.setVisibility(View.VISIBLE);
-
         }
 
         iv.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +108,6 @@ public class MessageAdapter extends ArrayAdapter<ParseObject>{
     }
 
     static public interface IData{
-        public void setListView(ArrayList<ParseObject> items);
+        void setListView(ArrayList<ParseObject> items);
     }
 }

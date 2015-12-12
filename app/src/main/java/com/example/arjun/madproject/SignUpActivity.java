@@ -23,7 +23,7 @@ import java.io.IOException;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private static final int SELECT_PICTURE = 1;
+    public static final int SELECT_PICTURE = 1;
     Uri uri;
     Bitmap picture;
 
@@ -58,7 +58,6 @@ public class SignUpActivity extends AppCompatActivity {
         final EditText confirmp = (EditText) findViewById(R.id.confirmPassword);
         final EditText email = (EditText) findViewById(R.id.email);
         ImageView img = (ImageView) findViewById(R.id.profilePhotoEdit);
-        Button save = (Button) findViewById(R.id.saveBtn);
 
         canc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,20 +87,19 @@ public class SignUpActivity extends AppCompatActivity {
                     ParseUser.logOut();
 
                     final ParseUser user = new ParseUser();
+
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     byte[] d = stream.toByteArray();
                     final ParseFile file = new ParseFile("image.jpg", d);
-
                     picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    user.put("imagefile", file);
 
+                    user.setEmail(email.getText().toString());
                     user.setUsername(email.getText().toString());
                     user.put("Lastname", lastname.getText().toString());
 
                     user.setPassword(password.getText().toString());
                     user.put("Gender", gender.getText().toString());
-
-                    user.setEmail(email.getText().toString());
-                    user.put("imagefile", file);
 
                     file.saveInBackground(new SaveCallback() {
                         @Override
@@ -118,6 +116,7 @@ public class SignUpActivity extends AppCompatActivity {
                                             Toast.makeText(SignUpActivity.this, "Signed Up Successfully", Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                                             startActivity(intent);
+                                            finish();
                                         } else {
                                             Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                                             Log.d("demo", "error" + e);

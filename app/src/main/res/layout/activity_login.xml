@@ -46,4 +46,24 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+    <Button
+        android:id="@+id/facebookLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/loginBtn"
+        android:onClick="loginFacebook"
+        android:text="@string/facebook_login_label"
+        android:background="@color/com_facebook_button_background_color"
+        android:textColor="#ffffff"/>
+
+    <Button
+        android:id="@+id/twitterLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/facebookLogin"
+        android:onClick="loginTwitter"
+        android:text="@string/twitter_login_label"
+        android:background="@color/com_facebook_blue"
+        android:textColor="#ffffff"/>
+
 </RelativeLayout>

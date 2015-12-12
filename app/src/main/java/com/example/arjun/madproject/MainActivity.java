@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.facebook.FacebookSdk;
 import com.parse.FindCallback;
 import com.parse.ParseAnalytics;
 import com.parse.ParseObject;
@@ -52,18 +51,18 @@ public class MainActivity extends AppCompatActivity {
                 ParseUser currentUser = ParseUser.getCurrentUser();
 
                 for (int i = 0; i < userlist.size(); i++) {
-                    if( userlist.get(i).getEmail().toString().equals(currentUser.getEmail().toString())) {
-                        semail = userlist.get(i).getEmail().toString();
+                    if( userlist.get(i).getEmail().equals(currentUser.getEmail())) {
+                        semail = userlist.get(i).getEmail();
                         Log.d("demo","semail main"+semail);
                         userlist.remove(i);
                     }
                 }
 
-                lsize = userlist.size();
-                final CharSequence[] items = new CharSequence[lsize];
+
+                final CharSequence[] items = new CharSequence[userlist.size()];
 
                 for (int i = 0; i < userlist.size(); i++) {
-                    String fullname = userlist.get(i).getUsername().toString()+" "+ userlist.get(i).get("Lastname");
+                    String fullname = userlist.get(i).getUsername()+" "+ userlist.get(i).get("Lastname");
                     items[i] = fullname;
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -139,5 +138,9 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void goToAlbum(View view) {
+        startActivity(new Intent(MainActivity.this, AlbumActivity.class));
     }
 }
