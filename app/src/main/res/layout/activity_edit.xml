@@ -12,18 +12,10 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/firstNameEdit"
+        android:id="@+id/userNameEdit"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:hint="First Name" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/lastNameEdit"
-        android:hint="Last Name" />
+        android:hint="User Name" />
 
     <EditText
         android:layout_width="match_parent"

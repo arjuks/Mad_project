@@ -2,7 +2,8 @@
     <string name="app_name">MadProject</string>
     <string name="parse_app_id">JUsZihp54u72sZjSaKTjAnKVs7OW7AJXyqgzOD0i</string>
     <string name="parse_client_key">Lya1kgKy9GROgieeiy8iUGQH7wTbo8XSauPurdgq</string>
-
+    <string name="twitter_key">XhKyHkvglpVLNTuTTUpTXtI4f</string>
+    <string name="twitter_secret_key">EmTSX1mutqtOPMkeicom6QjiTSMjIabs8v8i5PKll4WhdLlnav</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">LoginActivity</string>
@@ -56,5 +57,14 @@
     <string name="albumTrueBtn">True</string>
     <string name="albumFalseBtn">False</string>
     <string name="messageprivacy">Receive Messages set as :</string>
+    <string name="title_activity_facebooklogin">Facebooklogin</string>
+    <string name="genderFb">Gender :</string>
+    <string name="PhotoFb">Profile Photo :</string>
+    <string name="submitFbBtn">Submit</string>
+    <string name="fblogin">Login Via Facebook</string>
+    <string name="selectphotosignup">Select Photo :</string>
+    <string name="usernamelabel">User Name :</string>
+    <string name="twitterlogin">Login Via Twitter</string>
+    <string name="emailFb">Email :</string>
 
 </resources>

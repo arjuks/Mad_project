@@ -8,6 +8,7 @@ import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseInstallation;
+import com.parse.ParseTwitterUtils;
 
 
 public class StarterApplication extends Application {
@@ -19,9 +20,10 @@ public class StarterApplication extends Application {
     Parse.enableLocalDatastore(this);
 
     Parse.initialize(this, "JUsZihp54u72sZjSaKTjAnKVs7OW7AJXyqgzOD0i", "Lya1kgKy9GROgieeiy8iUGQH7wTbo8XSauPurdgq");
+    ParseTwitterUtils.initialize("XhKyHkvglpVLNTuTTUpTXtI4f", "EmTSX1mutqtOPMkeicom6QjiTSMjIabs8v8i5PKll4WhdLlnav");
     ParseInstallation.getCurrentInstallation().saveInBackground();
 
-    ParseFacebookUtils.initialize(getApplicationContext());
+    ParseFacebookUtils.initialize(this);
     FacebookSdk.sdkInitialize(getApplicationContext());
 
   }

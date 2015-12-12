@@ -21,10 +21,14 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class MessageDisplayActivity extends AppCompatActivity {
 
     final static String RNAME = "rname";
     Bitmap bitmap;
+    SimpleDateFormat format = new SimpleDateFormat("HH:MM MM/dd/yy ");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +43,8 @@ public class MessageDisplayActivity extends AppCompatActivity {
         Button composedisplaymsg = (Button) findViewById(R.id.composeDisplayBtn);
 
         name.setText(getIntent().getExtras().get(MessageActivity.SNAME).toString());
-        time.setText(getIntent().getExtras().get(MessageActivity.TIME).toString());
+        String d = format.format(Date.parse(getIntent().getExtras().get(MessageActivity.TIME).toString()));
+        time.setText(d);
         msg.setText(getIntent().getExtras().get(MessageActivity.MESSAGE).toString());
         byte[] imgdata = getIntent().getByteArrayExtra(MessageActivity.IMG);
         Log.d("demo", "byte array 2" + imgdata);
@@ -48,8 +53,7 @@ public class MessageDisplayActivity extends AppCompatActivity {
             img.setImageBitmap(bmp);
         }
 
-        if(getIntent().getExtras().get(MessageActivity.SNAME).toString().equals(ParseUser.getCurrentUser().getUsername().toString()+" "+
-        ParseUser.getCurrentUser().get("Lastname").toString())) {
+        if(getIntent().getExtras().get(MessageActivity.SNAME).toString().equals(ParseUser.getCurrentUser().getUsername().toString())) {
             reply.setVisibility(View.INVISIBLE);
             composedisplaymsg.setVisibility(View.VISIBLE);
         }

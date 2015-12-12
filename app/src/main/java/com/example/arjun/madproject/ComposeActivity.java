@@ -26,7 +26,6 @@ import java.io.IOException;
 public class ComposeActivity extends AppCompatActivity {
 
     final static String CFNAME = "firstname";
-    final static String CLNAME = "lastname";
     String r_fname = null;
     private static final int SELECT_PICTURE = 2;
     Uri uri;
@@ -88,7 +87,7 @@ public class ComposeActivity extends AppCompatActivity {
                         ParseObject msg = new ParseObject("Message");
                         msg.put("msg", compose.getText().toString());
                         msg.put("recepient", r_fname);
-                        msg.put("sender", currentUser.getUsername() + " " + currentUser.get("Lastname"));
+                        msg.put("sender", currentUser.getUsername());
                         msg.put("read", "notseen");
                         msg.saveInBackground();
                         Toast.makeText(ComposeActivity.this, "Message Sent", Toast.LENGTH_SHORT).show();
@@ -103,7 +102,6 @@ public class ComposeActivity extends AppCompatActivity {
                     picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] d = stream.toByteArray();
                     final ParseFile file = new ParseFile("image.jpg", d);
-                    file.saveInBackground();
 
                     file.saveInBackground(new SaveCallback() {
                         @Override
@@ -116,7 +114,7 @@ public class ComposeActivity extends AppCompatActivity {
                                     ParseObject msg = new ParseObject("Message");
                                     msg.put("msg", compose.getText().toString());
                                     msg.put("recepient", r_fname);
-                                    msg.put("sender", currentUser.getUsername() + " " + currentUser.get("Lastname"));
+                                    msg.put("sender", currentUser.getUsername());
                                     msg.put("read", "notseen");
                                     msg.put("imagefile", file);
                                     msg.saveInBackground();

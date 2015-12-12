@@ -46,17 +46,25 @@ public class UserListActivity extends AppCompatActivity {
             public void done(List<ParseUser> objects, com.parse.ParseException e) {
                 if (e == null) {
                     Log.d("score", "Retrieved " + objects.size() + " objects");
-                    ArrayList<ParseUser> ulist = new ArrayList<ParseUser>();
+                    final ArrayList<ParseUser> ulist = new ArrayList<ParseUser>();
                     ulist.addAll(objects);
+                    Log.d("demo", "userlist-size before"+ ulist.size());
 
                     for(int i = 0; i < ulist.size(); i++) {
-                        if(ulist.get(i).get("profilelisting").toString().equals("false")) {
+                        if (ulist.get(i).get("profilelisting").equals("false")) {
                             ulist.remove(i);
+                            Log.d("demo","userlist"+i+" "+ ulist.get(i).getEmail().toString());
                         }
-                        Log.d("demo","ulist"+ulist.get(i).getEmail().toString());
                     }
 
-                    list.addAll(objects);
+                    for(int i = 0; i < ulist.size(); i++) {
+                        if(ulist.get(i).get("profilelisting").equals("false") &&
+                            ulist.get(i).getEmail().equals(ParseUser.getCurrentUser().getEmail())) {
+                            ulist.remove(i);
+                        }
+                    }
+                    Log.d("demo", "userlist-size after"+ ulist.size());
+
                     ListView lv = (ListView) findViewById(R.id.listView2);
                     adapter = new AppAdapter(UserListActivity.this, R.layout.itemlayout, ulist);
                     lv.setAdapter(adapter);
@@ -68,14 +76,12 @@ public class UserListActivity extends AppCompatActivity {
                             Log.d("demo", "list view click");
 
                             final Intent intent = new Intent(UserListActivity.this,ProfileDisplayActivity.class);
-                            intent.putExtra(FNAME,list.get(position).getUsername().toString());
-                            intent.putExtra(LNAME, list.get(position).get("Lastname").toString());
-                            Log.d("demo", "gender" + list.get(position).get("Gender").toString());
-                            intent.putExtra(GENDER,list.get(position).get("Gender").toString());
-                            intent.putExtra(EMAIL, list.get(position).getEmail().toString());
+                            intent.putExtra(FNAME, ulist.get(position).getUsername().toString());
+                            intent.putExtra(GENDER,ulist.get(position).get("Gender").toString());
+                            intent.putExtra(EMAIL, ulist.get(position).getEmail().toString());
                             //intent.putExtra(PHOTO, list.get(position).get("Photo").toString());
 
-                            final ParseFile img = (ParseFile)list.get(position).get("imagefile");
+                            final ParseFile img = (ParseFile)ulist.get(position).get("imagefile");
                             if(img == null) {
                                 Log.d("demo", "no image");
                                 startActivity(intent);

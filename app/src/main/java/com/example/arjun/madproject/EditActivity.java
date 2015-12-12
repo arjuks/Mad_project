@@ -65,8 +65,7 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
-        final EditText firstname = (EditText) findViewById(R.id.firstNameEdit);
-        final EditText lastname = (EditText) findViewById(R.id.lastNameEdit);
+        final EditText username = (EditText) findViewById(R.id.userNameEdit);
         final EditText gender = (EditText) findViewById(R.id.genderEdit);
         final EditText email = (EditText) findViewById(R.id.emailEdit);
         final ImageView photo = (ImageView) findViewById(R.id.profilePhotoEdit);
@@ -96,8 +95,7 @@ public class EditActivity extends AppCompatActivity {
                             if (cuser.getUsername().toString().equals(n2) && cuser.getEmail().toString().equals(e2)) {
 
                                 obj_id = cuser.getObjectId();
-                                firstname.setText(user.getUsername().toString());
-                                lastname.setText(user.get("Lastname").toString());
+                                username.setText(user.getUsername().toString());
                                 gender.setText(user.get("Gender").toString());
                                 email.setText(user.getEmail().toString());
 
@@ -182,8 +180,7 @@ public class EditActivity extends AppCompatActivity {
                                 public void done(com.parse.ParseException e) {
                                     if (null == e) {
                                         Log.d("demo", "inside savecallback");
-                                        user.setUsername(firstname.getText().toString());
-                                        user.put("Lastname", lastname.getText().toString());
+                                        user.setUsername(username.getText().toString());
                                         user.put("Gender", gender.getText().toString());
                                         user.setEmail(email.getText().toString());
                                         user.put("imagefile", file);

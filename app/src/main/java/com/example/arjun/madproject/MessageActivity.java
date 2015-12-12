@@ -70,8 +70,8 @@ public class MessageActivity extends AppCompatActivity implements MessageAdapter
                 final ParseUser currentUser = ParseUser.getCurrentUser();
 
                 for (int i = 0; i < msglist.size(); i++) {
-                    if ((msglist.get(i).get("sender").equals(currentUser.getUsername() + " " + currentUser.get("Lastname"))
-                            || msglist.get(i).get("recepient").equals(currentUser.getUsername() + " " + currentUser.get("Lastname")))
+                    if ((msglist.get(i).get("sender").equals(currentUser.getUsername())
+                            || msglist.get(i).get("recepient").equals(currentUser.getUsername()))
                             && (msglist.get(i).get("sender").equals(s_fname)
                             || msglist.get(i).get("recepient").equals(s_fname))) {
 
@@ -115,7 +115,7 @@ public class MessageActivity extends AppCompatActivity implements MessageAdapter
                     public void done(ParseObject obj, com.parse.ParseException e) {
                         if (e == null) {
                             if (finallist.get(position).get("recepient").toString()
-                                    .equals(currentUser.getUsername().toString() + " " + currentUser.get("Lastname").toString())) {
+                                    .equals(currentUser.getUsername().toString())) {
                                 String seen = "seen";
                                 Log.d("demo", "seen before" + seen);
                                 obj.put("read", seen);

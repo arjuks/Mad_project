@@ -24,11 +24,11 @@
         app:showAsAction="never">
     </item>
 
-    <!--<item android:id="@+id/pushnoti"-->
-        <!--android:title="@string/pushnoti"-->
-        <!--android:orderInCategory="100"-->
-        <!--app:showAsAction="never">-->
-    <!--</item>-->
+    <item android:id="@+id/pushnoti"
+        android:title="@string/pushnoti"
+        android:orderInCategory="100"
+        app:showAsAction="never">
+    </item>
 
     <item android:id="@+id/privacysetting"
         android:title="@string/privacysetting"

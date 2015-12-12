@@ -13,7 +13,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
@@ -52,8 +55,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         Button canc = (Button) findViewById(R.id.CancelBtn);
         Button signup = (Button) findViewById(R.id.signUpBtn);
-        final EditText firstname = (EditText) findViewById(R.id.firstNamesignUp);
-        final EditText lastname = (EditText) findViewById(R.id.lastNameDisplay);
+        final EditText username = (EditText) findViewById(R.id.userNamesignUp);
         final EditText gender = (EditText) findViewById(R.id.gender);
         final EditText password = (EditText) findViewById(R.id.passwordSignupField);
         final EditText confirmp = (EditText) findViewById(R.id.confirmPassword);
@@ -73,8 +75,7 @@ public class SignUpActivity extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (firstname.getText().toString().equals("") || lastname.getText().toString().equals("")
-                        || gender.getText().toString().equals("")
+                if (username.getText().toString().equals("") || gender.getText().toString().equals("")
                         || password.getText().toString().equals("") || confirmp.getText().toString().equals("")) {
 
                     Toast.makeText(SignUpActivity.this, "Please fill in the details above", Toast.LENGTH_SHORT).show();
@@ -102,8 +103,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 Log.d("demo", "inside savecallback");
 
                                 ParseUser user = new ParseUser();
-                                user.setUsername(firstname.getText().toString());
-                                user.put("Lastname", lastname.getText().toString());
+                                user.setUsername(username.getText().toString());
                                 user.setPassword(password.getText().toString());
                                 user.put("Gender", gender.getText().toString());
                                 user.setEmail(email.getText().toString());
@@ -118,6 +118,24 @@ public class SignUpActivity extends AppCompatActivity {
                                             // Hooray! Let them use the app now.
                                             Log.d("demo", "sign up successful");
                                             Toast.makeText(SignUpActivity.this, "Signed Up Successfully", Toast.LENGTH_SHORT).show();
+
+                                            ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+                                            String objId =  ParseUser.getCurrentUser().getObjectId().toString();
+                                            query.getInBackground(objId, new GetCallback<ParseObject>() {
+                                                @Override
+                                                public void done(ParseObject obj, com.parse.ParseException e) {
+                                                    if (e == null) {
+                                                        obj.put("profilelisting", "true");
+                                                        obj.put("pushnote","true");
+                                                        obj.put("messageprivacy","true");
+                                                        obj.saveInBackground();
+                                                       // Toast.makeText(LoginActivity.this, "Profile listing is set as true", Toast.LENGTH_SHORT).show();
+
+                                                    }
+                                                }
+                                            });
+
+
                                             Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                                             startActivity(intent);
                                         } else {

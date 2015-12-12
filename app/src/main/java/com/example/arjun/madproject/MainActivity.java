@@ -20,6 +20,7 @@ import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
@@ -57,25 +58,25 @@ public class MainActivity extends AppCompatActivity {
                 userlist.addAll(objects);
                 ParseUser currentUser = ParseUser.getCurrentUser();
 
-                for (int i = 0; i < userlist.size(); i++) {
+                for (int i = 0; i < userlist.size() - 1; i++) {
                     if( userlist.get(i).getEmail().toString().equals(currentUser.getEmail().toString())) {
                         semail = userlist.get(i).getEmail().toString();
-                        Log.d("demo","semail main"+semail);
                         userlist.remove(i);
                     }
                 }
 
-                for (int i = 0; i < userlist.size(); i++) {
-                    if(userlist.get(i).get("messageprivacy").toString().equals("false")) {
-                        userlist.remove(i);
+                for (int j = 0; j < userlist.size() - 1; j++) {
+                    if(userlist.get(j).get("messageprivacy").toString().equals("false")) {
+                        Log.e("demo","ulist before"+j+""+ userlist.get(j).getEmail());
+                        userlist.remove(j);
                     }
                 }
-                
+
                 lsize = userlist.size();
                 final CharSequence[] items = new CharSequence[lsize];
 
                 for (int i = 0; i < userlist.size(); i++) {
-                    String fullname = userlist.get(i).getUsername().toString()+" "+ userlist.get(i).get("Lastname");
+                    String fullname = userlist.get(i).getUsername().toString();
                     items[i] = fullname;
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -146,22 +147,6 @@ public class MainActivity extends AppCompatActivity {
 
             // Find devices associated with these users
 
-
-//            ParseQuery<ParseObject> query = ParseQuery.getQuery("_Installation");
-//            query.findInBackground(new FindCallback<ParseObject>() {
-//                public void done(final List<ParseObject> objects, com.parse.ParseException e) {
-//                    if (e == null) {
-//
-//                        Log.d("demo", "object id" + objects.get(0).getObjectId().toString());
-//
-//
-//                    } else {
-//                        Log.d("score", "Error: " + e.getMessage());
-//                    }
-//                }
-//            });
-
-
             return true;
         }
         if (id == R.id.editprofile) {
@@ -182,9 +167,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-//        if(id == R.id.pushnoti){
-//            Log.d("demo", "push clicked");
-//
+        if(id == R.id.pushnoti) {
+            Log.d("demo", "push clicked");
+
 //            ParseQuery<ParseInstallation> query = ParseInstallation.getQuery();
 //            Log.d("demo", "cuser" + ParseUser.getCurrentUser());
 //            String objId = ParseInstallation.getCurrentInstallation().getObjectId();
@@ -204,12 +189,32 @@ public class MainActivity extends AppCompatActivity {
 //                            push.sendInBackground();
 //                            Toast.makeText(MainActivity.this, "push noti sent", Toast.LENGTH_SHORT).show();
 //                        }
-//                    }
-//                    else {
+//                    } else {
 //                        Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
 //                    }
 //                }
 //            });
+
+            String objId2 = ParseInstallation.getCurrentInstallation().getObjectId();
+            ParseQuery<ParseInstallation> query2 = ParseInstallation.getQuery();
+            Log.d("demo", "cuser"+ParseUser.getCurrentUser());
+            query2.findInBackground(new FindCallback<ParseInstallation>() {
+                private List<ParseInstallation> objects;
+                private ParseException e;
+
+                public void done(List<ParseInstallation> objects, com.parse.ParseException e) {
+                    this.objects = objects;
+                    this.e = e;
+                    if (e == null) {
+
+                       Log.d("demo","objects"+objects.get(0));
+                        Toast.makeText(MainActivity.this, "saved", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+
+        }
 //
 ////
 ////                ParseQuery<ParseInstallation> query = ParseInstallation.getQuery();
@@ -240,10 +245,10 @@ public class MainActivity extends AppCompatActivity {
             if (id == R.id.logout) {
             Log.d("demo", "logout clicked");
 
-            String objId = ParseInstallation.getCurrentInstallation().getObjectId();
-            ParseQuery<ParseInstallation> query = ParseInstallation.getQuery();
+            String objId2 = ParseInstallation.getCurrentInstallation().getObjectId();
+            ParseQuery<ParseInstallation> query2 = ParseInstallation.getQuery();
             Log.d("demo", "cuser"+ParseUser.getCurrentUser());
-            query.getInBackground(objId, new GetCallback<ParseInstallation>() {
+            query2.getInBackground(objId2, new GetCallback<ParseInstallation>() {
                 @Override
                 public void done(ParseInstallation obj, com.parse.ParseException e) {
                     if (e == null) {

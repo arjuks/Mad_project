@@ -18,19 +18,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/firstname"
-        android:id="@+id/firstnameLabel"
+        android:text="@string/usernamelabel"
+        android:id="@+id/usernameLabel"
         />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/lastname"
-        android:id="@+id/lastnameLabel"
-        android:layout_below="@+id/firstnameLabel"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -39,8 +29,8 @@
         android:text="@string/photoLabel"
         android:id="@+id/photoLabel"
         android:layout_above="@+id/photoDisplay"
-        android:layout_toRightOf="@+id/firstnameLabel"
-        android:layout_toEndOf="@+id/firstnameLabel" />
+        android:layout_toRightOf="@+id/usernameLabel"
+        android:layout_toEndOf="@+id/usernameLabel" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -48,10 +38,10 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/genderLabel"
         android:id="@+id/gender"
-        android:layout_below="@+id/lastnameLabel"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="71dp" />
+        android:layout_marginTop="71dp"
+        android:layout_below="@+id/usernameLabel" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -68,7 +58,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
-        android:id="@+id/fnameVal"
+        android:id="@+id/unameVal"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/photoLabel"
         android:layout_alignEnd="@+id/photoLabel" />
@@ -78,20 +68,10 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
-        android:id="@+id/lnameVal"
-        android:layout_below="@+id/fnameVal"
-        android:layout_alignLeft="@+id/fnameVal"
-        android:layout_alignStart="@+id/fnameVal" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
         android:id="@+id/genderVal"
         android:layout_alignBottom="@+id/gender"
-        android:layout_alignLeft="@+id/lnameVal"
-        android:layout_alignStart="@+id/lnameVal" />
+        android:layout_alignLeft="@+id/unameVal"
+        android:layout_alignStart="@+id/unameVal" />
 
     <TextView
         android:layout_width="wrap_content"
