@@ -61,4 +61,5 @@
     <string name="add_photo_label">Add Photo</string>
     <string name="delete_album_label">Delete Album</string>
     <string name="update_label">Update</string>
+    <string name="share_album_label">Share</string>
 </resources>

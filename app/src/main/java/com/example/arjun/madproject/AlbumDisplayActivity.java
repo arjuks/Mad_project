@@ -1,5 +1,6 @@
 package com.example.arjun.madproject;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -10,19 +11,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -34,18 +30,17 @@ import com.parse.SaveCallback;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class AlbumDisplayActivity extends AppCompatActivity {
     final int ADD_PICTURE_TO_ALBUM = 201;
     List<ParseObject> pictures;
-
+    Button addPhotoButton, updateAlbumButton, deleteAlbum;
+    ProgressDialog progressDialog;
     GridView gridView;
-    ImageView newImageView;
     String albumId;
     CheckBox cb;
-    Button addPhotoButton, updateAlbumButton, deleteAlbum;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +128,11 @@ public class AlbumDisplayActivity extends AppCompatActivity {
     }
 
     public void updateAlbum(View view) {
+        progressDialog = new ProgressDialog(AlbumDisplayActivity.this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Adding Picture ...");
+        progressDialog.show();
 
         final ArrayList<String> pictureIds = new ArrayList<>();
         final ParseACL acl = new ParseACL(ParseUser.getCurrentUser());
@@ -152,7 +152,7 @@ public class AlbumDisplayActivity extends AppCompatActivity {
             @Override
             public void done(ParseException e) {
                 ParseObject album = getAlbum();
-                for(ParseObject pic : pictures) {
+                for (ParseObject pic : pictures) {
                     pictureIds.add(pic.getObjectId());
                 }
                 album.put("pictureIdList", pictureIds);
@@ -160,30 +160,40 @@ public class AlbumDisplayActivity extends AppCompatActivity {
                 album.saveInBackground();
                 Toast.makeText(AlbumDisplayActivity.this, "Album Update Successfully!", Toast.LENGTH_LONG).show();
                 Log.d("demo", "pictures done saving");
+                progressDialog.dismiss();
                 finish();
             }
         });
     }
 
     public void deleteAlbum(View view) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Album");
+        progressDialog = new ProgressDialog(AlbumDisplayActivity.this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Adding Album ...");
+        progressDialog.show();
         Log.d("demo", "album id: " + albumId);
         ParseObject.deleteAllInBackground(pictures);
-        query.getInBackground(albumId, new GetCallback<ParseObject>() {
+        ParseObject album = getAlbum();
+        album.deleteInBackground(new DeleteCallback() {
             @Override
-            public void done(ParseObject object, ParseException e) {
-                object.deleteInBackground(new DeleteCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        Toast.makeText(AlbumDisplayActivity.this, "Album Destroyed Successfully!", Toast.LENGTH_LONG).show();
-                        finish();
-                    }
-                });
+            public void done(ParseException e) {
+                if(e == null) {
+                    Toast.makeText(AlbumDisplayActivity.this, "Album Destroyed Successfully!", Toast.LENGTH_LONG).show();
+                    setResult(RESULT_OK);
+                    progressDialog.dismiss();
+                    finish();
+                }
             }
         });
     }
 
     public ParseObject savePhotoToParse(Bitmap picture) {
+        progressDialog = new ProgressDialog(AlbumDisplayActivity.this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Adding Picture ...");
+        progressDialog.show();
         try {
             ParseObject singlePictureObj = pictures.get(0);
             String albumName = singlePictureObj.get("albumName").toString();
@@ -203,7 +213,7 @@ public class AlbumDisplayActivity extends AppCompatActivity {
             parsePicture.put("albumName", albumName);
             parsePicture.put("albumId", albumId);
             parsePicture.setACL(acl);
-
+            progressDialog.dismiss();
             return parsePicture;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -219,5 +229,9 @@ public class AlbumDisplayActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void shareAlbum(View view) {
+//        startActivityForResult();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.arjun.madproject;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -32,6 +33,7 @@ public class NewAlbumActivity extends AppCompatActivity {
     GridView gridView;
     Uri uri;
     Bitmap somePicture;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,16 +84,21 @@ public class NewAlbumActivity extends AppCompatActivity {
         } else if (pictures.size() == 0) {
             Toast.makeText(NewAlbumActivity.this, "Please Add Some Pictures", Toast.LENGTH_LONG).show();
         } else {
-            ParseACL acl = new ParseACL();
-            acl.setWriteAccess(ParseUser.getCurrentUser(), true);
-            if(privacyCheckBox.isChecked()) {
-                acl.setPublicReadAccess(false);
-                acl.setReadAccess(ParseUser.getCurrentUser(), true);
-            } else {
-                acl.setPublicReadAccess(true);
-            }
-
             try {
+                progressDialog = new ProgressDialog(NewAlbumActivity.this);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setCancelable(false);
+                progressDialog.setMessage("Adding Album ...");
+                progressDialog.show();
+                ParseACL acl = new ParseACL();
+                acl.setWriteAccess(ParseUser.getCurrentUser(), true);
+                if(privacyCheckBox.isChecked()) {
+                    acl.setPublicReadAccess(false);
+                    acl.setReadAccess(ParseUser.getCurrentUser(), true);
+                } else {
+                    acl.setPublicReadAccess(true);
+                }
+
                 saveToParse(albumName, acl);
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -146,6 +153,7 @@ public class NewAlbumActivity extends AppCompatActivity {
                                 Toast.makeText(NewAlbumActivity.this, "Album saved successfully!",
                                     Toast.LENGTH_LONG).show();
                                 setResult(RESULT_OK);
+                                progressDialog.dismiss();
                                 finish();
                             } else {
                                 Toast.makeText(NewAlbumActivity.this, "Whoops! Something wen wrong" +

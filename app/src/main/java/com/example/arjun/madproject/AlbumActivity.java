@@ -20,6 +20,7 @@ import java.util.List;
 
 public class AlbumActivity extends AppCompatActivity {
     public static final String ALBUM_ID = "album_id";
+    public final int DISPLAY_ALBUM = 1;
     List<ParseObject> albums;
     ListView listView;
 
@@ -37,7 +38,7 @@ public class AlbumActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(AlbumActivity.this, AlbumDisplayActivity.class);
                 intent.putExtra(ALBUM_ID, albums.get(position).getObjectId());
-                startActivity(intent);
+                startActivityForResult(intent, DISPLAY_ALBUM);
             }
         });
 
@@ -97,7 +98,7 @@ public class AlbumActivity extends AppCompatActivity {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                Log.d("demo", "in doen of album activity on create");
+                Log.d("demo", "in done of album activity on create");
                 if(e ==  null) {
                     Log.d("demo", "e == null");
                     albums = list;
