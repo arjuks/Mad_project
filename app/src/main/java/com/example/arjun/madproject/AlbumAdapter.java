@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.squareup.picasso.Picasso;
@@ -52,7 +51,7 @@ public class AlbumAdapter extends ArrayAdapter<ParseObject> {
         TextView albumOwner = (TextView) convertView.findViewById(R.id.albumOwner);
         TextView albumDateModified = (TextView) convertView.findViewById(R.id.albumDateModified);
         TextView albumName = (TextView) convertView.findViewById(R.id.albumName);
-        final ParseImageView coverImage = (ParseImageView) convertView.findViewById(R.id.albumCoverPhoto);
+        final ImageView coverImage = (ImageView) convertView.findViewById(R.id.albumCoverPhoto);
 
         albumOwner.setText(album.get("username").toString());
         Log.d("demo", "album: " + album.toString());
@@ -72,8 +71,10 @@ public class AlbumAdapter extends ArrayAdapter<ParseObject> {
                     ParseFile img = parseObject.getParseFile("file");
                     Log.d("demo", "parse file: " + img);
 
-                    coverImage.setParseFile(img);
-                    coverImage.loadInBackground();
+                    Picasso.with(mContext).load(img.getUrl()).into(coverImage);
+
+//                    coverImage.setParseFile(img);
+//                    coverImage.loadInBackground();
                 } else {
                     e.printStackTrace();
                 }

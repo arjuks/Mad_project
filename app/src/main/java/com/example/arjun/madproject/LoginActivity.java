@@ -79,24 +79,35 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void done(ParseUser user, ParseException err) {
                 Log.d("demo", "in login with read permissions");
-                if (user == null) {
-                    Log.d("demo", "Uh oh. The user cancelled the Facebook login.");
-                } else if (user.isNew()) {
-                    Log.d("demo", "User signed up and logged in through Facebook!");
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
+                if(err == null) {
+                    if (user == null) {
+                        Log.d("demo", "Uh oh. The user cancelled the Facebook login.");
+                    } else if (user.isNew()) {
+                        Log.d("demo", "user is new");
+                        String email = user.getEmail();
+                        Log.d("demo", "user email: " + email);
+                        String username = user.getUsername();
+                        Log.d("demo", "username: " + username);
+                        String password = user.getSessionToken();
+
+                        Log.d("demo", "User signed up and logged in through Facebook!");
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    } else {
+                        Log.d("demo", "user is not new");
+                        Toast.makeText(LoginActivity.this, "Logged in!", Toast.LENGTH_LONG).show();
+                        Log.d("demo", "User logged in through Facebook!");
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    }
                 } else {
-                    Toast.makeText(LoginActivity.this, "Logged in!", Toast.LENGTH_LONG).show();
-                    Log.d("demo", "User logged in through Facebook!");
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    Log.d("demo", "SERIOUS ERROR");
+                    err.printStackTrace();
                 }
+
             }
         });
     }
 
     public void loginTwitter(View v) {
-
     }
 
     public boolean isLoggedIn() {

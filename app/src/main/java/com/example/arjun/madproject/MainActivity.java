@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         ParseQuery<ParseUser> query = ParseQuery.getQuery("_User");
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> objects, com.parse.ParseException e) {
+                Log.d("demo", "objects: " + objects);
                 userlist.addAll(objects);
                 ParseUser currentUser = ParseUser.getCurrentUser();
 
@@ -57,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
                         userlist.remove(i);
                     }
                 }
-
 
                 final CharSequence[] items = new CharSequence[userlist.size()];
 

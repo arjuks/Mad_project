@@ -15,6 +15,14 @@
         android:visibility="invisible"
         android:layout_centerHorizontal="true"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/empty_album_label"
+        android:text="@string/empty_album_label"/>
+
     <GridView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -59,7 +67,7 @@
         android:text="@string/delete_album_label"
         android:layout_alignEnd="@id/centerShim"
         android:onClick="deleteAlbum"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:layout_alignRight="@id/centerShim"
         android:layout_alignTop="@id/privacyCheckBox"/>
 
@@ -70,7 +78,7 @@
         android:text="@string/add_photo_label"
         android:onClick="addPictureToAlbum"
         android:layout_toLeftOf="@+id/update_album"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:layout_alignParentBottom="true"/>
 
     <Button
@@ -79,7 +87,7 @@
         android:text="@string/update_label"
         android:id="@+id/update_album"
         android:onClick="updateAlbum"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"/>
 
@@ -93,6 +101,7 @@
         android:layout_toRightOf="@+id/update_album"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:visibility="invisible"
         android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

@@ -119,6 +119,10 @@
             android:name=".AlbumDisplayActivity"
             android:label="@string/title_activity_album_display" >
         </activity>
+        <activity
+            android:name=".ShareActivity"
+            android:label="@string/title_activity_share" >
+        </activity>
     </application>
 
 </manifest>

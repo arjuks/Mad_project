@@ -62,4 +62,7 @@
     <string name="delete_album_label">Delete Album</string>
     <string name="update_label">Update</string>
     <string name="share_album_label">Share</string>
+    <string name="empty_album_label">This Album is empty</string>
+    <string name="title_activity_share">Share</string>
+    <string name="share_album_title">Select Users to Share Album With</string>
 </resources>
