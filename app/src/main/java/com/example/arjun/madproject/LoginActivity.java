@@ -159,19 +159,17 @@ public class LoginActivity extends Activity {
                     public void done(ParseUser user, com.parse.ParseException err) {
                         if (user == null) {
                             Log.d("MyApp", "Uh oh. The user cancelled the Twitter login.");
-                            Toast.makeText(LoginActivity.this, err.getMessage(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(LoginActivity.this, err.getMessage(), Toast.LENGTH_SHORT).show();
                         } else if (user.isNew()) {
                             Log.d("MyApp", "User signed up and logged in through Twitter!");
+                            getUserDetailsFromTwitter();
 
-                            String name = ParseTwitterUtils.getTwitter().getScreenName().toString();
-
-                            Intent intent = new Intent(LoginActivity.this, Twitterlogin.class);
-                            intent.putExtra(NAME , name);
-                            startActivity(intent);
                         } else {
                             Log.d("MyApp", "User logged in through Twitter!");
+                            Toast.makeText(LoginActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
+                            finish();
                         }
                     }
                 });
@@ -183,6 +181,7 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -190,12 +189,13 @@ public class LoginActivity extends Activity {
 
     }
 
-//    private void getUserDetailsFromParse() {
-//        ParseUser parseUser = ParseUser.getCurrentUser();
-//        firstname.setText(parseUser.getUsername());
-//        //email.setText(parseUser.getEmail());
-//        Toast.makeText(LoginActivity.this, "Welcome back : " +firstname.getText().toString(), Toast.LENGTH_LONG).show();
-//    }
+    private void getUserDetailsFromTwitter() {
+        String name = ParseTwitterUtils.getTwitter().getScreenName().toString();
+        Intent intent = new Intent(LoginActivity.this, Twitterlogin.class);
+        intent.putExtra(NAME , name);
+        startActivity(intent);
+        finish();
+    }
 
 
     private void getUserDetailsFromFB() {
@@ -232,6 +232,7 @@ public class LoginActivity extends Activity {
             public void done(ParseException e) {
                 Intent intent = new Intent(LoginActivity.this, Facebooklogin.class);
                 startActivity(intent);
+                finish();
             }
         });
 

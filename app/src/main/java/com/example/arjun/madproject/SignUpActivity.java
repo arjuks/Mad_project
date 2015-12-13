@@ -69,6 +69,7 @@ public class SignUpActivity extends AppCompatActivity {
                 finish();
                 Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -94,7 +95,6 @@ public class SignUpActivity extends AppCompatActivity {
                     picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] d = stream.toByteArray();
                     final ParseFile file = new ParseFile("image.jpg", d);
-                    file.saveInBackground();
 
                     file.saveInBackground(new SaveCallback() {
                         @Override
@@ -138,6 +138,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                                             Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                                             startActivity(intent);
+                                            finish();
                                         } else {
                                             Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                                             Log.d("demo", "error" + e);

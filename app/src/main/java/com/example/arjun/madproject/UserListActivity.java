@@ -21,6 +21,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseInstallation;
 import com.parse.ParseQuery;
+import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 
 import java.io.ByteArrayOutputStream;
@@ -97,17 +98,18 @@ public class UserListActivity extends AppCompatActivity {
                             else {
                                 img.getDataInBackground(new GetDataCallback() {
                                     public void done(byte[] data, com.parse.ParseException e) {
-                                        if (e == null) {
-                                                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                                                ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-                                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
-                                                byte[] byteArray = bStream.toByteArray();
-                                                Log.d("demo","byte array ul"+byteArray);
-                                                intent.putExtra(PHOTO, byteArray);
-                                                startActivity(intent);
-                                        } else {
-                                            Log.d("demo", "image error" + e.getMessage());
-                                        }
+                                    if (e == null) {
+                                        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                                        ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+                                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
+                                        byte[] byteArray = bStream.toByteArray();
+                                        Log.d("demo","byte array ul"+byteArray);
+                                        intent.putExtra(PHOTO, byteArray);
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        Log.d("demo", "image error" + e.getMessage());
+                                    }
                                     }
                                 });
                             }
@@ -136,6 +138,7 @@ public class UserListActivity extends AppCompatActivity {
             Log.d("demo", "homepage clicked");
             Intent intent = new Intent(UserListActivity.this, MainActivity.class);
             startActivity(intent);
+            finish();
             return true;
         }
 
@@ -154,10 +157,12 @@ public class UserListActivity extends AppCompatActivity {
                     }
                 }
             });
+            ParseTwitterUtils.unlinkInBackground(ParseUser.getCurrentUser());
             ParseUser.logOut();
             finish();
             Intent intent = new Intent(UserListActivity.this, LoginActivity.class);
             startActivity(intent);
+
             return true;
         }
         return super.onOptionsItemSelected(item);

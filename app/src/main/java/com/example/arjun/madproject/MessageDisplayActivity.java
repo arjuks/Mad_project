@@ -20,6 +20,7 @@ import com.parse.ParseFile;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 
 import java.text.SimpleDateFormat;
@@ -69,6 +70,7 @@ public class MessageDisplayActivity extends AppCompatActivity {
                 Intent intent = new Intent(MessageDisplayActivity.this, ComposeActivity.class);
                 intent.putExtra(RNAME, getIntent().getExtras().get(MessageActivity.RNAME).toString());
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -78,6 +80,7 @@ public class MessageDisplayActivity extends AppCompatActivity {
                 Intent intent = new Intent(MessageDisplayActivity.this, ComposeActivity.class);
                 intent.putExtra(RNAME,getIntent().getExtras().get(MessageActivity.RNAME).toString());
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -98,6 +101,7 @@ public class MessageDisplayActivity extends AppCompatActivity {
             Log.d("demo", "homepage clicked");
             Intent intent = new Intent(MessageDisplayActivity.this, MainActivity.class);
             startActivity(intent);
+            finish();
             return true;
         }
 
@@ -116,10 +120,12 @@ public class MessageDisplayActivity extends AppCompatActivity {
                     }
                 }
             });
+            ParseTwitterUtils.unlinkInBackground(ParseUser.getCurrentUser());
             ParseUser.logOut();
             finish();
             Intent intent = new Intent(MessageDisplayActivity.this, LoginActivity.class);
             startActivity(intent);
+
             return true;
         }
         return super.onOptionsItemSelected(item);

@@ -101,6 +101,7 @@ public class Facebooklogin extends Activity {
                                             Toast.makeText(Facebooklogin.this, "Signed Up Successfully", Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(Facebooklogin.this, MainActivity.class);
                                             startActivity(intent);
+                                            finish();
                                         }
                                     }
                                 });

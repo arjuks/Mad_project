@@ -25,12 +25,16 @@ import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
+import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import bolts.Task;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -94,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtra(FULLNAME, fullname);
                             intent.putExtra(SEMAIL, semail);
                             startActivity(intent);
+                            finish();
                         }
                     });
                 simpleA = builder.create();
@@ -114,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("demo", "edit clicked");
                 Intent intent = new Intent(MainActivity.this, EditActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -123,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("demo", "view list clicked");
                 Intent intent = new Intent(MainActivity.this, UserListActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -132,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("demo", "privacy clicked");
                 Intent intent = new Intent(MainActivity.this, PrivacyActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -157,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
             String objId2 = ParseInstallation.getCurrentInstallation().getObjectId();
             ParseQuery<ParseInstallation> query2 = ParseInstallation.getQuery();
-            Log.d("demo", "cuser"+ParseUser.getCurrentUser());
+            Log.d("demo", "cuser" + ParseUser.getCurrentUser());
             query2.getInBackground(objId2, new GetCallback<ParseInstallation>() {
                 @Override
                 public void done(ParseInstallation obj, com.parse.ParseException e) {
@@ -167,10 +175,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             });
+
+            ParseTwitterUtils.unlinkInBackground(ParseUser.getCurrentUser());
             ParseUser.logOut();
+
             finish();
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

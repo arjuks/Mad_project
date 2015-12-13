@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.parse.GetCallback;
 import com.parse.ParseInstallation;
 import com.parse.ParseQuery;
+import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 
 public class ProfileDisplayActivity extends AppCompatActivity {
@@ -69,6 +70,7 @@ public class ProfileDisplayActivity extends AppCompatActivity {
             Log.d("demo", "homepage clicked");
             Intent intent = new Intent(ProfileDisplayActivity.this, MainActivity.class);
             startActivity(intent);
+            finish();
             return true;
         }
 
@@ -87,10 +89,12 @@ public class ProfileDisplayActivity extends AppCompatActivity {
                     }
                 }
             });
+            ParseTwitterUtils.unlinkInBackground(ParseUser.getCurrentUser());
             ParseUser.logOut();
             finish();
             Intent intent = new Intent(ProfileDisplayActivity.this, LoginActivity.class);
             startActivity(intent);
+
             return true;
         }
         return super.onOptionsItemSelected(item);

@@ -24,8 +24,10 @@ import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -99,13 +101,6 @@ public class EditActivity extends AppCompatActivity {
                                 gender.setText(user.get("Gender").toString());
                                 email.setText(user.getEmail().toString());
 
-//                                uri = user.get("Photo");
-//                                String[] photo_split = uri.toString().split("%3A");
-//                                String imageUriBasePath = "content://media/external/images/media/" + photo_split[1];
-//                                uri = Uri.parse(imageUriBasePath);
-//                                image = (Uri) uri;
-//                                photo.setImageURI(image);
-
                                 final ParseFile img = (ParseFile) user.get("imagefile");
                                 if (img == null) {
                                     Log.d("demo", "no image");
@@ -113,15 +108,8 @@ public class EditActivity extends AppCompatActivity {
                                     img.getDataInBackground(new GetDataCallback() {
                                         public void done(byte[] data, com.parse.ParseException e) {
                                             if (e == null) {
-//                                                bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-//                                                ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-//                                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
-//                                                byte[] byteArray = bStream.toByteArray();
                                                 bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
                                                 photo.setImageBitmap(bmp);
-                                                //img.setImageBitmap(bmp);
-
-
                                             } else {
                                                 // something went wrong
                                                 Log.d("demo", "imag error" + e.getMessage());
@@ -173,7 +161,6 @@ public class EditActivity extends AppCompatActivity {
                             picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                             byte[] d = stream.toByteArray();
                             final ParseFile file = new ParseFile("image.jpg", d);
-                            file.saveInBackground();
 
                             file.saveInBackground(new SaveCallback() {
                                 @Override
@@ -189,6 +176,7 @@ public class EditActivity extends AppCompatActivity {
                                         Toast.makeText(EditActivity.this, "Saved Successfully", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(EditActivity.this, MainActivity.class);
                                         startActivity(intent);
+                                        finish();
                                     }
                                 }
                             });
@@ -197,6 +185,52 @@ public class EditActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_message, menu);
+        return true;
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.homepage) {
+            Log.d("demo", "homepage clicked");
+            Intent intent = new Intent(EditActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            return true;
+        }
+
+        if (id == R.id.logout) {
+            Log.d("demo", "logout clicked");
+
+            String objId2 = ParseInstallation.getCurrentInstallation().getObjectId();
+            ParseQuery<ParseInstallation> query2 = ParseInstallation.getQuery();
+            Log.d("demo", "cuser"+ParseUser.getCurrentUser());
+            query2.getInBackground(objId2, new GetCallback<ParseInstallation>() {
+                @Override
+                public void done(ParseInstallation obj, com.parse.ParseException e) {
+                    if (e == null) {
+                        obj.put("user", "loggedOut");
+                        obj.saveInBackground();
+                    }
+                }
+            });
+            ParseTwitterUtils.unlinkInBackground(ParseUser.getCurrentUser());
+            ParseUser.logOut();
+            finish();
+            Intent intent = new Intent(EditActivity.this, LoginActivity.class);
+            startActivity(intent);
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 

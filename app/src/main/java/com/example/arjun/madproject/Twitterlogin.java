@@ -108,6 +108,7 @@ public class Twitterlogin extends Activity {
                                         Toast.makeText(Twitterlogin.this, "Signed Up Successfully", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(Twitterlogin.this, MainActivity.class);
                                         startActivity(intent);
+                                        finish();
                                     }
                                 }
                             });
