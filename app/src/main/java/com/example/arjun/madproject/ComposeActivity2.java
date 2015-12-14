@@ -89,7 +89,7 @@ public class ComposeActivity2 extends AppCompatActivity {
                         ParseObject msg = new ParseObject("Message");
                         msg.put("msg", compose.getText().toString());
                         msg.put("recepient", s_fname);
-                        msg.put("sender", currentUser.getUsername());
+                        msg.put("sender", currentUser.get("name").toString());
                         msg.put("read", "notseen");
                         msg.saveInBackground();
                         Toast.makeText(ComposeActivity2.this, "Message Sent", Toast.LENGTH_SHORT).show();
@@ -117,7 +117,7 @@ public class ComposeActivity2 extends AppCompatActivity {
                                     ParseObject msg = new ParseObject("Message");
                                     msg.put("msg", compose.getText().toString());
                                     msg.put("recepient", s_fname);
-                                    msg.put("sender", currentUser.getUsername());
+                                    msg.put("sender", currentUser.get("name").toString());
                                     msg.put("read", "notseen");
                                     msg.put("imagefile", file);
                                     msg.saveInBackground();

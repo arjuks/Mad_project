@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseFile;
@@ -24,7 +25,9 @@ import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class MessageDisplayActivity extends AppCompatActivity {
 
@@ -37,14 +40,15 @@ public class MessageDisplayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_display);
 
-        TextView name = (TextView) findViewById(R.id.senderNameMsgDisplay);
+        final TextView name = (TextView) findViewById(R.id.senderNameMsgDisplay);
         TextView time = (TextView) findViewById(R.id.timeMsgDisplayVal);
         TextView msg = (TextView) findViewById(R.id.MSgDisplayVal);
-        Button reply = (Button) findViewById(R.id.ReplyBtn);
+        final Button reply = (Button) findViewById(R.id.ReplyBtn);
         final ImageView img = (ImageView) findViewById(R.id.imgDisplay);
-        Button composedisplaymsg = (Button) findViewById(R.id.composeDisplayBtn);
+        final Button composedisplaymsg = (Button) findViewById(R.id.composeDisplayBtn);
 
         name.setText(getIntent().getExtras().get(MessageActivity.SNAME).toString());
+        final String rname = getIntent().getExtras().get(MessageActivity.RNAME).toString();
         String d = format.format(Date.parse(getIntent().getExtras().get(MessageActivity.TIME).toString()));
         time.setText(d);
         msg.setText(getIntent().getExtras().get(MessageActivity.MESSAGE).toString());
@@ -55,7 +59,7 @@ public class MessageDisplayActivity extends AppCompatActivity {
             img.setImageBitmap(bmp);
         }
 
-        if(getIntent().getExtras().get(MessageActivity.SNAME).toString().equals(ParseUser.getCurrentUser().getUsername().toString())) {
+        if(getIntent().getExtras().get(MessageActivity.SNAME).toString().equals(ParseUser.getCurrentUser().get("name").toString())) {
             reply.setVisibility(View.INVISIBLE);
             composedisplaymsg.setVisibility(View.VISIBLE);
         }
@@ -63,6 +67,24 @@ public class MessageDisplayActivity extends AppCompatActivity {
             reply.setVisibility(View.VISIBLE);
             composedisplaymsg.setVisibility(View.INVISIBLE);
         }
+
+        ParseQuery<ParseUser> query2 = ParseQuery.getQuery("_User");
+        query2.findInBackground(new FindCallback<ParseUser>() {
+            public void done(List<ParseUser> objects, com.parse.ParseException e) {
+                ArrayList<ParseUser> userlist = new ArrayList<>();
+                userlist.addAll(objects);
+
+                for (int j = 0; j < userlist.size(); j++) {
+                    if(userlist.get(j).get("name").toString().equals(rname)) {
+                        ParseUser matchuser = userlist.get(j);
+                        if (matchuser.get("messageprivacy").toString().equals("false")) {
+                            composedisplaymsg.setVisibility(View.INVISIBLE);
+                            reply.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                }
+            }
+        });
 
         composedisplaymsg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,8 +113,6 @@ public class MessageDisplayActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_message, menu);
         return true;
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

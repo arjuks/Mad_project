@@ -66,26 +66,22 @@ public class MainActivity extends AppCompatActivity {
                 ParseUser currentUser = ParseUser.getCurrentUser();
 
                 for (int i = 0; i < userlist.size(); i++) {
-                    if( userlist.get(i).getEmail().toString().equals(currentUser.getEmail().toString())) {
+                    Log.d("demo","user obj id"+ userlist.get(i).getObjectId());
+                    if( userlist.get(i).getObjectId().toString().equals(currentUser.getObjectId().toString())) {
                         semail = userlist.get(i).getEmail().toString();
                         userlist.remove(i);
                     }
                 }
 
-                for (int j = 0; j < userlist.size(); j++) {
-                    if (userlist.get(j).get("messageprivacy").toString().equals("false")) {
-                        Log.d("demo", "match false found msg");
-                        userlist.remove(j);
-                    }
-                }
+//
 
 
                 lsize = userlist.size();
                 final CharSequence[] items = new CharSequence[lsize];
 
                 for (int i = 0; i < userlist.size(); i++) {
-                    String fullname = userlist.get(i).getUsername().toString();
-                    items[i] = fullname;
+                    String names = userlist.get(i).get("name").toString();
+                    items[i] = names;
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Pick a Contact")

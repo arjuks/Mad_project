@@ -9,6 +9,7 @@ import com.parse.ParseACL;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseInstallation;
 import com.parse.ParseTwitterUtils;
+import com.parse.twitter.Twitter;
 
 
 public class StarterApplication extends Application {

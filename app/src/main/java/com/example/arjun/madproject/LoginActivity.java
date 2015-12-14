@@ -1,6 +1,7 @@
 package com.example.arjun.madproject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -35,6 +36,8 @@ import java.util.List;
 
 public class LoginActivity extends Activity {
 
+    ProgressDialog progressDialog;
+
     public static final List<String> mPermissions = new ArrayList<String>(){{
         add("public_profile");
         add("email");
@@ -47,10 +50,13 @@ public class LoginActivity extends Activity {
     final static String SOCIALNET = "socialnet";
 
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
+        Log.d("demo", "fb data" + data.getData());
+//        progressDialog.dismiss();
     }
 
     @Override
@@ -128,11 +134,12 @@ public class LoginActivity extends Activity {
         Button submitButton = (Button) findViewById(R.id.facebooklogin);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View v) {
                 ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, mPermissions, new LogInCallback() {
+
                     @Override
                     public void done(ParseUser parseUser, ParseException e) {
+                       // progressDialog.show();
                         if (parseUser == null) {
                             Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
                         } else if (parseUser.isNew()) {
@@ -184,11 +191,7 @@ public class LoginActivity extends Activity {
                 finish();
             }
         });
-
-
-
     }
-
     private void getUserDetailsFromTwitter() {
         String name = ParseTwitterUtils.getTwitter().getScreenName().toString();
         Intent intent = new Intent(LoginActivity.this, Twitterlogin.class);
@@ -224,13 +227,14 @@ public class LoginActivity extends Activity {
 
     private void saveNewUser() {
         ParseUser parseUser = ParseUser.getCurrentUser();
-        parseUser.setUsername(userNameText);
+        parseUser.setUsername(emailId);
         parseUser.setEmail(emailId);
 
         parseUser.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 Intent intent = new Intent(LoginActivity.this, Facebooklogin.class);
+                intent.putExtra(NAME , userNameText);
                 startActivity(intent);
                 finish();
             }

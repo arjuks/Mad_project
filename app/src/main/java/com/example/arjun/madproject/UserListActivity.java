@@ -53,7 +53,7 @@ public class UserListActivity extends AppCompatActivity {
 
                     int i = 0;
                     for(i = 0; i < ulist.size(); i++) {
-                        Log.d("demo", "userlist-values"+" "+i+" "+ ulist.get(i).getUsername().toString());
+                        Log.d("demo", "userlist-values"+" "+i+" "+ ulist.get(i).get("name").toString());
                         if (ulist.get(i).get("profilelisting").equals("false")) {
                             Log.d("demo","match found- false"+" "+i);
                             ulist.remove(i);
@@ -85,7 +85,7 @@ public class UserListActivity extends AppCompatActivity {
                             Log.d("demo", "list view click");
 
                             final Intent intent = new Intent(UserListActivity.this,ProfileDisplayActivity.class);
-                            intent.putExtra(FNAME, ulist.get(position).getUsername().toString());
+                            intent.putExtra(FNAME, ulist.get(position).get("name").toString());
                             intent.putExtra(GENDER,ulist.get(position).get("Gender").toString());
                             intent.putExtra(EMAIL, ulist.get(position).getEmail().toString());
                             //intent.putExtra(PHOTO, list.get(position).get("Photo").toString());

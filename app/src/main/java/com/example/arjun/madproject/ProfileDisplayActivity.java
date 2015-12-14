@@ -57,7 +57,7 @@ public class ProfileDisplayActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_message, menu);
+        getMenuInflater().inflate(R.menu.menu_profile_display, menu);
         return true;
     }
 
@@ -69,6 +69,13 @@ public class ProfileDisplayActivity extends AppCompatActivity {
         if(id == R.id.homepage) {
             Log.d("demo", "homepage clicked");
             Intent intent = new Intent(ProfileDisplayActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            return true;
+        }
+
+        if(id == R.id.userlist) {
+            Intent intent = new Intent(ProfileDisplayActivity.this, UserListActivity.class);
             startActivity(intent);
             finish();
             return true;

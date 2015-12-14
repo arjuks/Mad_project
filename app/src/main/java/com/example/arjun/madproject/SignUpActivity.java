@@ -55,7 +55,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         Button canc = (Button) findViewById(R.id.CancelBtn);
         Button signup = (Button) findViewById(R.id.signUpBtn);
-        final EditText username = (EditText) findViewById(R.id.userNamesignUp);
+        final EditText name = (EditText) findViewById(R.id.namesignUp);
         final EditText gender = (EditText) findViewById(R.id.gender);
         final EditText password = (EditText) findViewById(R.id.passwordSignupField);
         final EditText confirmp = (EditText) findViewById(R.id.confirmPassword);
@@ -76,8 +76,9 @@ public class SignUpActivity extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (username.getText().toString().equals("") || gender.getText().toString().equals("")
-                        || password.getText().toString().equals("") || confirmp.getText().toString().equals("")) {
+                if (name.getText().toString().equals("") || gender.getText().toString().equals("")
+                        || password.getText().toString().equals("") || confirmp.getText().toString().equals("")
+                        || email.getText().toString().equals("")) {
 
                     Toast.makeText(SignUpActivity.this, "Please fill in the details above", Toast.LENGTH_SHORT).show();
                 }
@@ -103,9 +104,10 @@ public class SignUpActivity extends AppCompatActivity {
                                 Log.d("demo", "inside savecallback");
 
                                 ParseUser user = new ParseUser();
-                                user.setUsername(username.getText().toString());
+                                user.setUsername(email.getText().toString());
                                 user.setPassword(password.getText().toString());
                                 user.put("Gender", gender.getText().toString());
+                                user.put("name", name.getText().toString());
                                 user.setEmail(email.getText().toString());
                                 user.put("imagefile", file);
 // other fields can be set just like with ParseObject

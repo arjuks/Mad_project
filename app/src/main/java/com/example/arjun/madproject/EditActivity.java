@@ -68,6 +68,8 @@ public class EditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit);
 
         final EditText username = (EditText) findViewById(R.id.userNameEdit);
+        final EditText password = (EditText) findViewById(R.id.passwordEdit);
+        final EditText confpassword = (EditText) findViewById(R.id.confpasswordedit);
         final EditText gender = (EditText) findViewById(R.id.genderEdit);
         final EditText email = (EditText) findViewById(R.id.emailEdit);
         final ImageView photo = (ImageView) findViewById(R.id.profilePhotoEdit);
@@ -88,16 +90,16 @@ public class EditActivity extends AppCompatActivity {
                             String n2 = null;
                             String e2 = null;
                             try {
-                                n2 = user.fetchIfNeeded().getUsername().toString();
+                                n2 = user.fetchIfNeeded().get("name").toString();
                                 e2 = user.fetchIfNeeded().getEmail().toString();
                             } catch (ParseException e1) {
                                 e1.printStackTrace();
                             }
                             ParseUser cuser = ParseUser.getCurrentUser();
-                            if (cuser.getUsername().toString().equals(n2) && cuser.getEmail().toString().equals(e2)) {
+                            if (cuser.get("name").toString().equals(n2) && cuser.getEmail().toString().equals(e2)) {
 
                                 obj_id = cuser.getObjectId();
-                                username.setText(user.getUsername().toString());
+                                username.setText(user.get("name").toString());
                                 gender.setText(user.get("Gender").toString());
                                 email.setText(user.getEmail().toString());
 
@@ -144,45 +146,93 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                ParseQuery<ParseUser> query = ParseQuery.getQuery("_User");
-                query.getInBackground(obj_id, new GetCallback<ParseUser>() {
-                    @Override
-                    public void done(final ParseUser user, com.parse.ParseException e) {
-                        if (e == null) {
-                            // Now let's update it with some new data. In this case, only cheatMode and score
-                            // will get sent to the Parse Cloud. playerName hasn't changed.
-                            if (bitmap != null) {
-                                picture = bitmap;
-                            } else {
-                                picture = bmp;
-                            }
-
-                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                            picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                            byte[] d = stream.toByteArray();
-                            final ParseFile file = new ParseFile("image.jpg", d);
-
-                            file.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(com.parse.ParseException e) {
-                                    if (null == e) {
-                                        Log.d("demo", "inside savecallback");
-                                        user.setUsername(username.getText().toString());
-                                        user.put("Gender", gender.getText().toString());
-                                        user.setEmail(email.getText().toString());
-                                        user.put("imagefile", file);
-                                        user.saveInBackground();
-
-                                        Toast.makeText(EditActivity.this, "Saved Successfully", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(EditActivity.this, MainActivity.class);
-                                        startActivity(intent);
-                                        finish();
-                                    }
-                                }
-                            });
-                        }
+                if (!password.getText().toString().equals("")){
+                    if (!password.getText().toString().equals(confpassword.getText().toString())) {
+                        Toast.makeText(EditActivity.this, "Password and confirm Password do not match", Toast.LENGTH_SHORT).show();
                     }
-                });
+                    else {
+                        ParseQuery<ParseUser> query = ParseQuery.getQuery("_User");
+                        query.getInBackground(obj_id, new GetCallback<ParseUser>() {
+                            @Override
+                            public void done(final ParseUser user, com.parse.ParseException e) {
+                                if (e == null) {
+                                    // Now let's update it with some new data. In this case, only cheatMode and score
+                                    // will get sent to the Parse Cloud. playerName hasn't changed.
+                                    if (bitmap != null) {
+                                        picture = bitmap;
+                                    } else {
+                                        picture = bmp;
+                                    }
+                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                    picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                                    byte[] d = stream.toByteArray();
+                                    final ParseFile file = new ParseFile("image.jpg", d);
+
+                                    file.saveInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(com.parse.ParseException e) {
+                                            if (null == e) {
+                                                Log.d("demo", "inside savecallback");
+                                                user.setUsername(email.getText().toString());
+                                                user.setPassword(password.getText().toString());
+                                                user.put("Gender", gender.getText().toString());
+                                                user.setEmail(email.getText().toString());
+                                                user.put("imagefile", file);
+                                                user.saveInBackground();
+
+                                                Toast.makeText(EditActivity.this, "Saved Successfully", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(EditActivity.this, MainActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+                else {
+                    ParseQuery<ParseUser> query = ParseQuery.getQuery("_User");
+                    query.getInBackground(obj_id, new GetCallback<ParseUser>() {
+                        @Override
+                        public void done(final ParseUser user, com.parse.ParseException e) {
+                            if (e == null) {
+                                // Now let's update it with some new data. In this case, only cheatMode and score
+                                // will get sent to the Parse Cloud. playerName hasn't changed.
+                                if (bitmap != null) {
+                                    picture = bitmap;
+                                } else {
+                                    picture = bmp;
+                                }
+
+                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                                byte[] d = stream.toByteArray();
+                                final ParseFile file = new ParseFile("image.jpg", d);
+
+                                file.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(com.parse.ParseException e) {
+                                        if (null == e) {
+                                            Log.d("demo", "inside savecallback");
+                                            user.setUsername(email.getText().toString());
+                                            user.put("Gender", gender.getText().toString());
+                                            user.setEmail(email.getText().toString());
+                                            user.put("imagefile", file);
+                                            user.saveInBackground();
+
+                                            Toast.makeText(EditActivity.this, "Saved Successfully", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(EditActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
             }
         });
     }
@@ -193,7 +243,6 @@ public class EditActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_message, menu);
         return true;
     }
-
 
 
     @Override

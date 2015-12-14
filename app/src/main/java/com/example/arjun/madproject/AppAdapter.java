@@ -46,7 +46,7 @@ public class AppAdapter extends ArrayAdapter<ParseUser>{
         ParseUser name = mData.get(position);
 
         TextView firstname = (TextView) convertView.findViewById(R.id.UserName);
-        firstname.setText(name.getUsername().toString());
+        firstname.setText(name.get("name").toString());
 
 
         return convertView;

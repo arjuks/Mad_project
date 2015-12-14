@@ -61,6 +61,7 @@ public class Facebooklogin extends Activity {
         final EditText genderfb = (EditText) findViewById(R.id.genderFbVal);
         ImageView photofb = (ImageView) findViewById(R.id.FbphotoimageView);
         Button submit = (Button) findViewById(R.id.submitfbBtn);
+        final String name = getIntent().getExtras().get(LoginActivity.NAME).toString();
 
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +94,7 @@ public class Facebooklogin extends Activity {
                                     public void done(ParseObject obj, com.parse.ParseException e) {
                                         if (e == null) {
                                             obj.put("Gender", genderfb.getText().toString());
+                                            obj.put("name", name);
                                             obj.put("profilelisting", "true");
                                             obj.put("pushnote","true");
                                             obj.put("messageprivacy","true");
