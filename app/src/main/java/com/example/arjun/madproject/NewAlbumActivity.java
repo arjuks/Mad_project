@@ -15,12 +15,17 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.parse.SendCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -64,8 +69,6 @@ public class NewAlbumActivity extends AppCompatActivity {
             }
         }
     }
-
-
 
     public void addPictureToAlbum(View view) {
         Intent intent = new Intent();
@@ -124,7 +127,6 @@ public class NewAlbumActivity extends AppCompatActivity {
 
             picture.put("file", file);
             picture.put("albumName", albumName);
-            picture.setACL(acl);
             parsePictures.add(picture);
         }
 
