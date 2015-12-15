@@ -84,12 +84,12 @@ public class MessageActivity extends AppCompatActivity implements MessageAdapter
                             }
                         }
 
-                        Collections.sort(finallist, new Comparator<ParseObject>() {
-                            @Override
-                            public int compare(ParseObject emp1, ParseObject emp2) {
-                                return emp1.getCreatedAt().compareTo(emp2.getCreatedAt()); // ascending..for descending..switch places of 1 and 2
-                            }
-                        });
+//                        Collections.sort(finallist, new Comparator<ParseObject>() {
+//                            @Override
+//                            public int compare(ParseObject emp1, ParseObject emp2) {
+//                                return emp1.getCreatedAt().compareTo(emp2.getCreatedAt()); // ascending..for descending..switch places of 1 and 2
+//                            }
+//                        });
 
                         ListView lv = (ListView) findViewById(R.id.messagelistView);
                         adapter = new MessageAdapter(MessageActivity.this, R.layout.messageitemlayout, finallist);

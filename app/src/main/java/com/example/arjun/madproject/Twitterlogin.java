@@ -100,7 +100,7 @@ public class Twitterlogin extends Activity {
                                         obj.put("Gender", gendertwit.getText().toString());
                                         obj.put("profilelisting", "true");
                                         obj.put("email",emailVal.getText().toString());
-                                        obj.put("username",emailVal.getText().toString());
+                                        //obj.put("username",emailVal.getText().toString());
                                         obj.put("name",name);
                                         obj.put("pushnote","true");
                                         obj.put("messageprivacy","true");

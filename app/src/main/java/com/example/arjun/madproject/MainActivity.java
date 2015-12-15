@@ -73,9 +73,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-//
-
-
                 lsize = userlist.size();
                 final CharSequence[] items = new CharSequence[lsize];
 
@@ -172,7 +169,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            ParseTwitterUtils.unlinkInBackground(ParseUser.getCurrentUser());
+            //ParseTwitterUtils.unlinkInBackground(ParseUser.getCurrentUser());
+            ParseTwitterUtils.unlinkInBackground(ParseUser.getCurrentUser(), new SaveCallback() {
+                @Override
+                public void done(ParseException ex) {
+                    if (ex == null) {
+                        Log.d("demo", "The user is no longer associated with their Twitter account.");
+                    }
+                }
+            });
             ParseUser.logOut();
 
             finish();
