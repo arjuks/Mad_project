@@ -1,0 +1,107 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                tools:context="com.example.arjun.madproject.AlbumDisplayActivity">
+
+    <View
+        android:id="@+id/centerShim"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/empty_album_label"
+        android:text="@string/empty_album_label"/>
+
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnWidth="@dimen/single_picture_size"
+        android:padding="0dp"
+        android:id="@+id/displayAlbumGrid"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="2dp"
+        android:horizontalSpacing="2dp"
+        android:scrollingCache="true"
+        android:smoothScrollbar="true"
+        android:alwaysDrawnWithCache="true"
+        android:stretchMode="columnWidth"
+        android:layout_above="@+id/privacyCheckBox"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/private_cb_label"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:id="@+id/privacyCheckBox"
+        android:visibility="invisible"
+        android:layout_above="@+id/add_photo_btn"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/private_cb_label"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:id="@+id/privacyTextBox"
+        android:visibility="invisible"
+        android:layout_above="@+id/add_photo_btn"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/delete_album"
+        android:text="@string/delete_album_label"
+        android:layout_alignEnd="@id/centerShim"
+        android:onClick="deleteAlbum"
+        android:visibility="invisible"
+        android:layout_alignRight="@id/centerShim"
+        android:layout_alignTop="@id/privacyCheckBox"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_photo_btn"
+        android:text="@string/add_photo_label"
+        android:onClick="addPictureToAlbum"
+        android:layout_toLeftOf="@+id/update_album"
+        android:visibility="invisible"
+        android:layout_alignParentBottom="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/update_label"
+        android:id="@+id/update_album"
+        android:onClick="updateAlbum"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/share_album_label"
+        android:id="@+id/shareAlbum"
+        android:onClick="shareAlbum"
+        android:layout_toEndOf="@+id/update_album"
+        android:layout_toRightOf="@+id/update_album"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="invisible"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

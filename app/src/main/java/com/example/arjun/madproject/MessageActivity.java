@@ -1,7 +1,5 @@
 package com.example.arjun.madproject;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,9 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -57,11 +53,11 @@ public class MessageActivity extends AppCompatActivity implements MessageAdapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
-        if(!getIntent().getExtras().get(MainActivity.FULLNAME).toString().equals("")){
-            s_fname = getIntent().getExtras().get(MainActivity.FULLNAME).toString();
+        if(getIntent().getExtras().get(MainActivity.FULLNAME).toString().isEmpty()){
+            s_fname = getIntent().getExtras().get(ComposeActivity.CFNAME).toString();
         }
         else {
-            s_fname = getIntent().getExtras().get(ComposeActivity.CFNAME).toString();
+            s_fname = getIntent().getExtras().get(MainActivity.FULLNAME).toString();
         }
 
 

@@ -90,7 +90,7 @@ public class MessageAdapter extends ArrayAdapter<ParseObject>{
 //        }
 
         if(!(name.get("sender").toString().equals(currentUser.get("name").toString())) &&
-                name.get("read").toString().equals("notseen")){
+            name.get("read").toString().equals("notseen")){
             convertView.setBackgroundColor(Color.GREEN);
         }
         else {
@@ -98,7 +98,7 @@ public class MessageAdapter extends ArrayAdapter<ParseObject>{
         }
 
         if(name.get("sender").toString().equals(currentUser.get("name").toString())
-                ) {
+            ) {
             iv.setVisibility(View.INVISIBLE);
         }
         else {

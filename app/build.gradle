@@ -26,4 +26,5 @@ dependencies {
     compile 'com.parse:parse-android:1.10.3'
     compile 'com.facebook.android:facebook-android-sdk:4.6.0'
     compile 'com.parse:parsetwitterutils-android:1.10.+'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

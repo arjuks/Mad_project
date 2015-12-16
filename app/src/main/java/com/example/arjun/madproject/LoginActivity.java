@@ -69,8 +69,8 @@ public class LoginActivity extends Activity {
         PackageInfo info = null;
         try {
             info = getPackageManager().getPackageInfo(
-                    "com.example.arjun.madproject",
-                    PackageManager.GET_SIGNATURES);
+                "com.example.arjun.madproject",
+                PackageManager.GET_SIGNATURES);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -141,7 +141,7 @@ public class LoginActivity extends Activity {
 
                     @Override
                     public void done(ParseUser parseUser, ParseException e) {
-                       // progressDialog.show();
+                        // progressDialog.show();
                         if (parseUser == null) {
                             Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
                         } else if (parseUser.isNew()) {
@@ -224,45 +224,45 @@ public class LoginActivity extends Activity {
         });
     }
 
-            private void getUserDetailsFromFB() {
-                GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
-                        try {
-                            userNameText = jsonObject.getString("name");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            emailId = jsonObject.getString("email");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+    private void getUserDetailsFromFB() {
+        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
+                try {
+                    userNameText = jsonObject.getString("name");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    emailId = jsonObject.getString("email");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                        saveNewUser();
-                    }
-                });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "name,email");
-                request.setParameters(parameters);
-                request.executeAsync();
+                saveNewUser();
             }
+        });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "name,email");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
 
-            private void saveNewUser() {
-                ParseUser parseUser = ParseUser.getCurrentUser();
-                parseUser.setUsername(emailId);
-                parseUser.setEmail(emailId);
+    private void saveNewUser() {
+        ParseUser parseUser = ParseUser.getCurrentUser();
+        parseUser.setUsername(emailId);
+        parseUser.setEmail(emailId);
 
-                parseUser.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        Intent intent = new Intent(LoginActivity.this, Facebooklogin.class);
-                        intent.putExtra(NAME, userNameText);
-                        startActivity(intent);
-
-                    }
-                });
-
+        parseUser.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                Intent intent = new Intent(LoginActivity.this, Facebooklogin.class);
+                intent.putExtra(NAME, userNameText);
+                startActivity(intent);
 
             }
-        }
+        });
+
+
+    }
+}

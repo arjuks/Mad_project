@@ -118,6 +118,23 @@
             android:name=".Twitterlogin"
             android:label="@string/title_activity_twitterlogin" >
         </activity>
+        <activity
+            android:name=".AlbumActivity"
+            android:label="@string/title_activity_album" >
+        </activity>
+        <activity
+            android:name=".NewAlbumActivity"
+            android:label="@string/title_activity_new_album" >
+        </activity>
+        <activity
+            android:name=".AlbumDisplayActivity"
+            android:label="@string/title_activity_album_display" >
+        </activity>
+        <activity
+            android:name=".ShareActivity"
+            android:label="@string/title_activity_share" >
+        </activity>
+        <!--<meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/com_parse_ui_app_logo"/>-->
     </application>
 
 </manifest>

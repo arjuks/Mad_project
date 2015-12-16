@@ -18,12 +18,18 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:text="Albums"
+        android:id="@+id/albumBtn"
+        android:onClick="goToAlbum"
+        android:layout_below="@id/inboxBtn"/>
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:text="@string/editprofileBtn"
         android:id="@+id/editprofileBtn"
-        android:layout_above="@+id/viewuserlistBtn"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="77dp" />
+        android:layout_alignParentStart="true"/>
 
     <Button
         android:layout_width="fill_parent"
@@ -32,8 +38,7 @@
         android:id="@+id/viewuserlistBtn"
         android:layout_above="@+id/privacyBtn"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="75dp" />
+        android:layout_alignParentStart="true"/>
 
     <Button
         android:layout_width="fill_parent"
@@ -41,6 +46,5 @@
         android:text="@string/privacyBtn"
         android:id="@+id/privacyBtn"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="52dp" />
+        android:layout_centerHorizontal="true"/>
 </RelativeLayout>
