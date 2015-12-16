@@ -3,38 +3,22 @@ package com.example.arjun.madproject;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import com.facebook.FacebookSdk;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
-import com.parse.Parse;
 import com.parse.ParseAnalytics;
-import com.parse.ParseException;
 import com.parse.ParseInstallation;
-import com.parse.ParseObject;
-import com.parse.ParsePush;
 import com.parse.ParseQuery;
-import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-
-import bolts.Task;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -77,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 final CharSequence[] items = new CharSequence[lsize];
 
                 for (int i = 0; i < userlist.size(); i++) {
-                    String names = userlist.get(i).get("name").toString();
+                    String names = userlist.get(i).get("FullName").toString();
                     items[i] = names;
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -137,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -174,4 +157,11 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+    public void goToAlbum(View view) {
+        startActivity(new Intent(MainActivity.this, AlbumActivity.class));
+    }
+
+
 }

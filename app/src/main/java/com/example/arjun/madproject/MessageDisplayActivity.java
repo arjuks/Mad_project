@@ -59,7 +59,7 @@ public class MessageDisplayActivity extends AppCompatActivity {
             img.setImageBitmap(bmp);
         }
 
-        if(getIntent().getExtras().get(MessageActivity.SNAME).toString().equals(ParseUser.getCurrentUser().get("name").toString())) {
+        if(getIntent().getExtras().get(MessageActivity.SNAME).toString().equals(ParseUser.getCurrentUser().get("FullName").toString())) {
             reply.setVisibility(View.INVISIBLE);
             composedisplaymsg.setVisibility(View.VISIBLE);
         }
@@ -75,7 +75,7 @@ public class MessageDisplayActivity extends AppCompatActivity {
                 userlist.addAll(objects);
 
                 for (int j = 0; j < userlist.size(); j++) {
-                    if(userlist.get(j).get("name").toString().equals(rname)) {
+                    if(userlist.get(j).get("FullName").toString().equals(rname)) {
                         ParseUser matchuser = userlist.get(j);
                         if (matchuser.get("messageprivacy").toString().equals("false")) {
                             composedisplaymsg.setVisibility(View.INVISIBLE);

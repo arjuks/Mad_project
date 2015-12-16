@@ -69,8 +69,8 @@ public class MessageActivity extends AppCompatActivity implements MessageAdapter
                         final ParseUser currentUser = ParseUser.getCurrentUser();
 
                         for (int i = 0; i < msglist.size(); i++) {
-                            if ((msglist.get(i).get("sender").equals(currentUser.get("name"))
-                                    || msglist.get(i).get("recepient").equals(currentUser.get("name")))
+                            if ((msglist.get(i).get("sender").equals(currentUser.get("FullName"))
+                                    || msglist.get(i).get("recepient").equals(currentUser.get("FullName")))
                                     && (msglist.get(i).get("sender").equals(s_fname)
                                     || msglist.get(i).get("recepient").equals(s_fname))) {
 
@@ -114,7 +114,7 @@ public class MessageActivity extends AppCompatActivity implements MessageAdapter
                             public void done(ParseObject obj, com.parse.ParseException e) {
                                 if (e == null) {
                                     if (finallist.get(position).get("recepient").toString()
-                                            .equals(currentUser.get("name").toString())) {
+                                            .equals(currentUser.get("FullName").toString())) {
                                         String seen = "seen";
                                         Log.d("demo", "seen before" + seen);
                                         obj.put("read", seen);
@@ -160,7 +160,7 @@ public class MessageActivity extends AppCompatActivity implements MessageAdapter
                 userlist.addAll(objects);
 
                 for (int j = 0; j < userlist.size(); j++) {
-                    if(userlist.get(j).get("name").toString().equals(s_fname)) {
+                    if(userlist.get(j).get("FullName").toString().equals(s_fname)) {
                         ParseUser matchuser = userlist.get(j);
                         if (matchuser.get("messageprivacy").toString().equals("false")) {
                             composebtn.setVisibility(View.INVISIBLE);

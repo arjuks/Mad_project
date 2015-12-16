@@ -90,16 +90,16 @@ public class EditActivity extends AppCompatActivity {
                             String n2 = null;
                             String e2 = null;
                             try {
-                                n2 = user.fetchIfNeeded().get("name").toString();
+                                n2 = user.fetchIfNeeded().get("FullName").toString();
                                 e2 = user.fetchIfNeeded().getEmail().toString();
                             } catch (ParseException e1) {
                                 e1.printStackTrace();
                             }
                             ParseUser cuser = ParseUser.getCurrentUser();
-                            if (cuser.get("name").toString().equals(n2) && cuser.getEmail().toString().equals(e2)) {
+                            if (cuser.get("FullName").toString().equals(n2) && cuser.getEmail().toString().equals(e2)) {
 
                                 obj_id = cuser.getObjectId();
-                                username.setText(user.get("name").toString());
+                                username.setText(user.get("FullName").toString());
                                 gender.setText(user.get("Gender").toString());
                                 email.setText(user.getEmail().toString());
 
@@ -192,6 +192,7 @@ public class EditActivity extends AppCompatActivity {
                     }
                 }
                 else {
+
                     ParseQuery<ParseUser> query = ParseQuery.getQuery("_User");
                     query.getInBackground(obj_id, new GetCallback<ParseUser>() {
                         @Override

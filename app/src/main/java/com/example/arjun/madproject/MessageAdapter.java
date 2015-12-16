@@ -89,7 +89,7 @@ public class MessageAdapter extends ArrayAdapter<ParseObject>{
 //            });
 //        }
 
-        if(!(name.get("sender").toString().equals(currentUser.get("name").toString())) &&
+        if(!(name.get("sender").toString().equals(currentUser.get("FullName").toString())) &&
             name.get("read").toString().equals("notseen")){
             convertView.setBackgroundColor(Color.GREEN);
         }
@@ -97,7 +97,7 @@ public class MessageAdapter extends ArrayAdapter<ParseObject>{
             convertView.setBackgroundColor(Color.WHITE);
         }
 
-        if(name.get("sender").toString().equals(currentUser.get("name").toString())
+        if(name.get("sender").toString().equals(currentUser.get("FullName").toString())
             ) {
             iv.setVisibility(View.INVISIBLE);
         }

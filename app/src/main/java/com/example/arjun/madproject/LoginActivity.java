@@ -64,135 +64,138 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        if(isLoggedIn()) {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        } else {
+            setContentView(R.layout.activity_login);
 
-        PackageInfo info = null;
-        try {
-            info = getPackageManager().getPackageInfo(
-                "com.example.arjun.madproject",
-                PackageManager.GET_SIGNATURES);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        for (Signature signature : info.signatures) {
-            MessageDigest md = null;
+            PackageInfo info = null;
             try {
-                md = MessageDigest.getInstance("SHA");
-            } catch (NoSuchAlgorithmException e) {
+                info = getPackageManager().getPackageInfo(
+                    "com.example.arjun.madproject",
+                    PackageManager.GET_SIGNATURES);
+            } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
-            md.update(signature.toByteArray());
-            Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-        }
-
-        Button newAcc = (Button) findViewById(R.id.newAccBtn);
-        Button login = (Button) findViewById(R.id.loginBtn);
-        username = (EditText) findViewById(R.id.username);
-        password = (EditText) findViewById(R.id.passwordField);
-
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(username.getText().toString().equals("") || password.getText().toString().equals("")) {
-                    Toast.makeText(LoginActivity.this, "PLease fill in the above details", Toast.LENGTH_SHORT).show();
+            for (Signature signature : info.signatures) {
+                MessageDigest md = null;
+                try {
+                    md = MessageDigest.getInstance("SHA");
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
                 }
-                else {
-                    ParseUser.logInInBackground(username.getText().toString().trim(), password.getText().toString().trim(), new LogInCallback() {
-                        public void done(ParseUser user, com.parse.ParseException e) {
-                            if (user != null) {
-                                // Hooray! The user is logged in.
-                                Toast.makeText(LoginActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
 
+            Button newAcc = (Button) findViewById(R.id.newAccBtn);
+            Button login = (Button) findViewById(R.id.loginBtn);
+            username = (EditText) findViewById(R.id.username);
+            password = (EditText) findViewById(R.id.passwordField);
+
+            login.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (username.getText().toString().equals("") || password.getText().toString().equals("")) {
+                        Toast.makeText(LoginActivity.this, "PLease fill in the above details", Toast.LENGTH_SHORT).show();
+                    } else {
+                        ParseUser.logInInBackground(username.getText().toString().trim(), password.getText().toString().trim(), new LogInCallback() {
+                            public void done(ParseUser user, com.parse.ParseException e) {
+                                if (user != null) {
+                                    // Hooray! The user is logged in.
+                                    Toast.makeText(LoginActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
+
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    // Signup failed. Look at the ParseException to see what happened.
+                                    Log.d("demo", "error" + e.getMessage());
+                                    Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+                        //                    String objId2 = ParseInstallation.getCurrentInstallation().getObjectId();
+                        //                    ParseQuery<ParseInstallation> query2 = ParseInstallation.getQuery();
+                        //                    Log.d("demo", "cuser"+ParseUser.getCurrentUser());
+                        //                    query2.getInBackground(objId2, new GetCallback<ParseInstallation>() {
+                        //                        @Override
+                        //                        public void done(ParseInstallation obj, com.parse.ParseException e) {
+                        //                            if (e == null) {
+                        //                                obj.put("user", ParseUser.getCurrentUser().getEmail().toString());
+                        //                                obj.saveInBackground();
+                        //                                Toast.makeText(LoginActivity.this, "saved", Toast.LENGTH_SHORT).show();
+                        //                            }
+                        //                        }
+                        //                    });
+
+
+                    }
+                }
+            });
+
+            Button submitButton = (Button) findViewById(R.id.facebooklogin);
+
+            submitButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, mPermissions, new LogInCallback() {
+
+                        @Override
+                        public void done(ParseUser parseUser, ParseException e) {
+                            // progressDialog.show();
+                            if (parseUser == null) {
+                                Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
+                            } else if (parseUser.isNew()) {
+                                Log.d("MyApp", "User signed up and logged in through Facebook!");
+                                getUserDetailsFromFB();
+                            } else {
+                                Log.d("MyApp", "User logged in through Facebook!");
+                                //getUserDetailsFromParse();
+                                Toast.makeText(LoginActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
-                            } else {
-                                // Signup failed. Look at the ParseException to see what happened.
-                                Log.d("demo", "error" + e.getMessage());
-                                Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
-
-//                    String objId2 = ParseInstallation.getCurrentInstallation().getObjectId();
-//                    ParseQuery<ParseInstallation> query2 = ParseInstallation.getQuery();
-//                    Log.d("demo", "cuser"+ParseUser.getCurrentUser());
-//                    query2.getInBackground(objId2, new GetCallback<ParseInstallation>() {
-//                        @Override
-//                        public void done(ParseInstallation obj, com.parse.ParseException e) {
-//                            if (e == null) {
-//                                obj.put("user", ParseUser.getCurrentUser().getEmail().toString());
-//                                obj.saveInBackground();
-//                                Toast.makeText(LoginActivity.this, "saved", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    });
-
-
-
                 }
-            }
-        });
+            });
 
-        Button submitButton = (Button) findViewById(R.id.facebooklogin);
+            Button twitter = (Button) findViewById(R.id.twitterlogin);
+            twitter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ParseTwitterUtils.logIn(LoginActivity.this, new LogInCallback() {
+                        @Override
+                        public void done(ParseUser user, com.parse.ParseException err) {
+                            if (user == null) {
+                                Log.d("MyApp", "Uh oh. The user cancelled the Twitter login.");
+                                //Toast.makeText(LoginActivity.this, err.getMessage(), Toast.LENGTH_SHORT).show();
+                            } else if (user.isNew()) {
+                                Log.d("MyApp", "User signed up and logged in through Twitter!");
+                                getUserDetailsFromTwitter();
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, mPermissions, new LogInCallback() {
+                            } else {
+                                Log.d("MyApp", "User logged in through Twitter!");
+                                Toast.makeText(LoginActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
 
-                    @Override
-                    public void done(ParseUser parseUser, ParseException e) {
-                        // progressDialog.show();
-                        if (parseUser == null) {
-                            Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
-                        } else if (parseUser.isNew()) {
-                            Log.d("MyApp", "User signed up and logged in through Facebook!");
-                            getUserDetailsFromFB();
-                        } else {
-                            Log.d("MyApp", "User logged in through Facebook!");
-                            //getUserDetailsFromParse();
-                            Toast.makeText(LoginActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
+                            }
                         }
+                    });
+                }
+            });
+
+            newAcc.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                    startActivity(intent);
+
                     }
-                });
-            }
-        });
-
-        Button twitter = (Button) findViewById(R.id.twitterlogin);
-        twitter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ParseTwitterUtils.logIn(LoginActivity.this, new LogInCallback() {
-                    @Override
-                    public void done(ParseUser user, com.parse.ParseException err) {
-                        if (user == null) {
-                            Log.d("MyApp", "Uh oh. The user cancelled the Twitter login.");
-                            //Toast.makeText(LoginActivity.this, err.getMessage(), Toast.LENGTH_SHORT).show();
-                        } else if (user.isNew()) {
-                            Log.d("MyApp", "User signed up and logged in through Twitter!");
-                            getUserDetailsFromTwitter();
-
-                        } else {
-                            Log.d("MyApp", "User logged in through Twitter!");
-                            Toast.makeText(LoginActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-
-                        }
-                    }
-                });
-            }
-        });
-
-        newAcc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivity(intent);
-
-            }
-        });
+            });
+        }
     }
     private void getUserDetailsFromTwitter() {
         final String name = ParseTwitterUtils.getTwitter().getScreenName().toString();
@@ -205,7 +208,7 @@ public class LoginActivity extends Activity {
 
                 for (int i = 0; i < objects.size()-1; i++) {
                     // Log.d("demo", "user obj id" + userlist.get(i).getObjectId());
-                    if (objects.get(i).get("name").toString().equals(name)) {
+                    if (objects.get(i).get("FullName").toString().equals(name)) {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         //intent.putExtra(NAME, name);
                         startActivity(intent);
@@ -262,7 +265,12 @@ public class LoginActivity extends Activity {
 
             }
         });
+    }
 
-
+    public boolean isLoggedIn() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null)
+            return true;
+        return false;
     }
 }
