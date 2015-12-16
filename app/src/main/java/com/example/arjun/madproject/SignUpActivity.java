@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.parse.ParseFile;
@@ -51,9 +52,8 @@ public class SignUpActivity extends AppCompatActivity {
 
         Button canc = (Button) findViewById(R.id.CancelBtn);
         Button signup = (Button) findViewById(R.id.signUpBtn);
-        final EditText firstname = (EditText) findViewById(R.id.firstNamesignUp);
-        final EditText lastname = (EditText) findViewById(R.id.lastNameDisplay);
-        final EditText gender = (EditText) findViewById(R.id.gender);
+        final EditText fullName = (EditText) findViewById(R.id.fullNameDisplay);
+        final RadioGroup genderRG = (RadioGroup) findViewById(R.id.gender);
         final EditText password = (EditText) findViewById(R.id.passwordSignupField);
         final EditText confirmp = (EditText) findViewById(R.id.confirmPassword);
         final EditText email = (EditText) findViewById(R.id.email);
@@ -71,10 +71,10 @@ public class SignUpActivity extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (firstname.getText().toString().equals("") || lastname.getText().toString().equals("")
-                        || gender.getText().toString().equals("")
-                        || password.getText().toString().equals("") || confirmp.getText().toString().equals("")) {
-
+                int checkedRadioButtonId = genderRG.getCheckedRadioButtonId();
+                Log.d("demo", "checked radio button in set on click id: " + checkedRadioButtonId);
+                if (fullName.getText().toString().equals("") || checkedRadioButtonId == -1 ||
+                    password.getText().toString().equals("") || confirmp.getText().toString().equals("")) {
                     Toast.makeText(SignUpActivity.this, "Please fill in the details above", Toast.LENGTH_SHORT).show();
                 }
                 else if (!password.getText().toString().equals(confirmp.getText().toString())){
@@ -84,6 +84,12 @@ public class SignUpActivity extends AppCompatActivity {
                     Toast.makeText(SignUpActivity.this, "Please upload a photo", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    String gender;
+                    if(checkedRadioButtonId == R.id.male_rb) {
+                        gender = "Male";
+                    } else {
+                        gender = "Female";
+                    }
                     ParseUser.logOut();
 
                     final ParseUser user = new ParseUser();
@@ -96,10 +102,10 @@ public class SignUpActivity extends AppCompatActivity {
 
                     user.setEmail(email.getText().toString());
                     user.setUsername(email.getText().toString());
-                    user.put("Lastname", lastname.getText().toString());
+                    user.put("FullName", fullName.getText().toString());
 
                     user.setPassword(password.getText().toString());
-                    user.put("Gender", gender.getText().toString());
+                    user.put("Gender", gender);
 
                     file.saveInBackground(new SaveCallback() {
                         @Override

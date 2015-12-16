@@ -6,28 +6,39 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.example.arjun.madproject.SignUpActivity">
 
+    <View
+        android:id="@+id/centerShim"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"/>
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:id="@+id/firstNamesignUp"
+        android:id="@+id/fullNameDisplay"
         android:hint="First Name"/>
 
-    <EditText
-        android:layout_width="match_parent"
+    <RadioGroup
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:id="@+id/lastNameDisplay"
-        android:layout_below="@id/firstNamesignUp"
-        android:hint="Last Name" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
         android:id="@+id/gender"
-        android:hint="Gender"
-        android:layout_below="@id/lastNameDisplay"/>
+        android:orientation="horizontal"
+        android:layout_below="@id/fullNameDisplay">
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/male_rb"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:text="Male"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/female_rb"
+            android:text="Female"/>
+    </RadioGroup>
+
 
     <EditText
         android:layout_width="match_parent"

@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "MadProject": {
+      "applicationId": "VQkjcPKUPzUNBjZOFP3OP9MolVCHPDzWODGzbYDS"
+    },
+    "_default": {
+      "link": "MadProject"
+    }
+  }
+}

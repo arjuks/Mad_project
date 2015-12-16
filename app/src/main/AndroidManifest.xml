@@ -119,6 +119,11 @@
             android:name=".AlbumDisplayActivity"
             android:label="@string/title_activity_album_display" >
         </activity>
+        <activity
+            android:name=".ShareActivity"
+            android:label="@string/title_activity_share" >
+        </activity>
+        <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/com_parse_ui_app_logo"/>
     </application>
 
 </manifest>
