@@ -19,7 +19,9 @@ import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseInstallation;
 import com.parse.ParseQuery;
+import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 
 import java.io.ByteArrayOutputStream;
@@ -45,11 +47,35 @@ public class UserListActivity extends AppCompatActivity {
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> objects, com.parse.ParseException e) {
                 if (e == null) {
-                    Log.d("score", "Retrieved " + objects.size() + " objects");
+                    final ArrayList<ParseUser> ulist = new ArrayList<ParseUser>();
+                    ulist.addAll(objects);
+                    Log.d("demo", "userlist-size before"+ ulist.size());
 
-                    list.addAll(objects);
+                    int i = 0;
+                    for(i = 0; i < ulist.size(); i++) {
+                        Log.d("demo", "userlist-values"+" "+i+" "+ ulist.get(i).get("name").toString());
+                        if (ulist.get(i).get("profilelisting").equals("false")) {
+                            Log.d("demo","match found- false"+" "+i);
+                            ulist.remove(i);
+                            Log.d("demo", "false removed" + " " + i);
+                        }
+                        else {
+                            Log.d("demo","match not found");
+                            continue;
+                        }
+                    }
+                    Log.d("demo","final value of i"+" "+i);
+
+//                    for(int i = 0; i < ulist.size(); i++) {
+//                        if(ulist.get(i).get("profilelisting").equals("false") &&
+//                            ulist.get(i).getEmail().equals(ParseUser.getCurrentUser().getEmail())) {
+//                            ulist.remove(i);
+//                        }
+//                    }
+//                    Log.d("demo", "userlist-size after"+ ulist.size());
+
                     ListView lv = (ListView) findViewById(R.id.listView2);
-                    adapter = new AppAdapter(UserListActivity.this, R.layout.itemlayout, list);
+                    adapter = new AppAdapter(UserListActivity.this, R.layout.itemlayout, ulist);
                     lv.setAdapter(adapter);
                     adapter.setNotifyOnChange(true);
 
@@ -59,14 +85,12 @@ public class UserListActivity extends AppCompatActivity {
                             Log.d("demo", "list view click");
 
                             final Intent intent = new Intent(UserListActivity.this,ProfileDisplayActivity.class);
-                            intent.putExtra(FNAME,list.get(position).getUsername().toString());
-                            intent.putExtra(LNAME, list.get(position).get("Lastname").toString());
-                            Log.d("demo", "gender" + list.get(position).get("Gender").toString());
-                            intent.putExtra(GENDER,list.get(position).get("Gender").toString());
-                            intent.putExtra(EMAIL, list.get(position).getEmail().toString());
+                            intent.putExtra(FNAME, ulist.get(position).get("name").toString());
+                            intent.putExtra(GENDER,ulist.get(position).get("Gender").toString());
+                            intent.putExtra(EMAIL, ulist.get(position).getEmail().toString());
                             //intent.putExtra(PHOTO, list.get(position).get("Photo").toString());
 
-                            final ParseFile img = (ParseFile)list.get(position).get("imagefile");
+                            final ParseFile img = (ParseFile)ulist.get(position).get("imagefile");
                             if(img == null) {
                                 Log.d("demo", "no image");
                                 startActivity(intent);
@@ -74,17 +98,17 @@ public class UserListActivity extends AppCompatActivity {
                             else {
                                 img.getDataInBackground(new GetDataCallback() {
                                     public void done(byte[] data, com.parse.ParseException e) {
-                                        if (e == null) {
-                                                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                                                ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-                                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
-                                                byte[] byteArray = bStream.toByteArray();
-                                                Log.d("demo","byte array ul"+byteArray);
-                                                intent.putExtra(PHOTO, byteArray);
-                                                startActivity(intent);
-                                        } else {
-                                            Log.d("demo", "image error" + e.getMessage());
-                                        }
+                                    if (e == null) {
+                                        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                                        ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+                                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
+                                        byte[] byteArray = bStream.toByteArray();
+                                        Log.d("demo","byte array ul"+byteArray);
+                                        intent.putExtra(PHOTO, byteArray);
+                                        startActivity(intent);
+                                    } else {
+                                        Log.d("demo", "image error" + e.getMessage());
+                                    }
                                     }
                                 });
                             }
@@ -96,4 +120,49 @@ public class UserListActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_message, menu);
+        return true;
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.homepage) {
+            Log.d("demo", "homepage clicked");
+            Intent intent = new Intent(UserListActivity.this, MainActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.logout) {
+            Log.d("demo", "logout clicked");
+
+            String objId2 = ParseInstallation.getCurrentInstallation().getObjectId();
+            ParseQuery<ParseInstallation> query2 = ParseInstallation.getQuery();
+            Log.d("demo", "cuser" + ParseUser.getCurrentUser());
+            query2.getInBackground(objId2, new GetCallback<ParseInstallation>() {
+                @Override
+                public void done(ParseInstallation obj, com.parse.ParseException e) {
+                    if (e == null) {
+                        obj.put("user", "loggedOut");
+                        obj.saveInBackground();
+                    }
+                }
+            });
+            ParseUser.logOut();
+            Intent intent = new Intent(UserListActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

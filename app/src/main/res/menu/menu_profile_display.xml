@@ -1,7 +1,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.arjun.madproject.ProfileDisplayActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+   >
+    <item android:id="@+id/homepage"
+    app:showAsAction="never"
+    android:title="@string/homepage">
+    </item>
+
+    <!--<item android:id="@+id/editprofile"-->
+    <!--app:showAsAction="never"-->
+    <!--android:title="@string/editprofile">-->
+    <!--</item>-->
+
+    <item android:id="@+id/userlist"
+    android:title="@string/userlist"
+    android:orderInCategory="100"
+    app:showAsAction="never">
+    </item>
+
+    <item android:id="@+id/logout"
+        android:title="@string/logout"
+        android:orderInCategory="100"
+        app:showAsAction="never">
+    </item>
 </menu>

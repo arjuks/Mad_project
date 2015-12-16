@@ -18,7 +18,9 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,9 +32,12 @@ public class MessageAdapter extends ArrayAdapter<ParseObject>{
     Context mContext;
     int mResource;
     List<ParseObject> mData;
+    List<ParseObject> plist = new ArrayList<>();
     IData msgactivity;
     ArrayList<ParseObject> list = new ArrayList<>();
+    int flag = -1;
     Bitmap bitmap;
+    SimpleDateFormat format = new SimpleDateFormat("HH:MM MM/dd/yy ");
 
     public MessageAdapter(Context context, int resource, List<ParseObject> objects) {
         super(context, resource, objects);
@@ -59,39 +64,46 @@ public class MessageAdapter extends ArrayAdapter<ParseObject>{
         TextView msgcontent = (TextView) convertView.findViewById(R.id.msgContent);
         msgcontent.setText(name.get("msg").toString());
         TextView time = (TextView) convertView.findViewById(R.id.timeSent);
-        time.setText(name.getCreatedAt().toString());
+        String d = format.format(Date.parse(name.getCreatedAt().toString()));
+        time.setText(d);
+
         ImageView iv = (ImageView) convertView.findViewById(R.id.deleteImg);
-        final ImageView photo = (ImageView) convertView.findViewById(R.id.msgImg);
+        //final ImageView photo = (ImageView) convertView.findViewById(R.id.msgImg);
 
-        ParseFile img = (ParseFile)name.get("imagefile");
-        if(img == null) {
-            Log.d("demo","no image");
-        } else {
-            img.getDataInBackground(new GetDataCallback() {
-                public void done(byte[] data, com.parse.ParseException e) {
-                    if (e == null) {
-                        // data has the bytes for the resume
-                        Log.d("demo", "barray" + data);
-                        bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                        photo.setImageBitmap(bitmap);
-                    } else {
-                        Log.d("demo", "imag error" + e.getMessage());
-                    }
-                }
-            });
-        }
+//        ParseFile img = (ParseFile)name.get("imagefile");
+//        if(img == null) {
+//            Log.d("demo","no image");
+//        }
+//        else {
+//            img.getDataInBackground(new GetDataCallback() {
+//                public void done(byte[] data, com.parse.ParseException e) {
+//                    if (e == null) {
+//                        // data has the bytes for the resume
+//                        Log.d("demo", "barray" + data);
+//                        bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+//                        photo.setImageBitmap(bitmap);
+//                    } else {
+//                        Log.d("demo", "imag error" + e.getMessage());
+//                    }
+//                }
+//            });
+//        }
 
-        if(!(name.get("sender").toString().equals(currentUser.getUsername()+" "+currentUser.get("Lastname").toString())) &&
-                name.get("read").toString().equals("notseen")){
+        if(!(name.get("sender").toString().equals(currentUser.get("name").toString())) &&
+            name.get("read").toString().equals("notseen")){
             convertView.setBackgroundColor(Color.GREEN);
-        } else {
+        }
+        else {
             convertView.setBackgroundColor(Color.WHITE);
         }
 
-        if(name.get("sender").toString().equals(currentUser.getUsername()+" "+currentUser.get("Lastname").toString())) {
+        if(name.get("sender").toString().equals(currentUser.get("name").toString())
+            ) {
             iv.setVisibility(View.INVISIBLE);
-        } else {
+        }
+        else {
             iv.setVisibility(View.VISIBLE);
+
         }
 
         iv.setOnClickListener(new View.OnClickListener() {
@@ -108,6 +120,6 @@ public class MessageAdapter extends ArrayAdapter<ParseObject>{
     }
 
     static public interface IData{
-        void setListView(ArrayList<ParseObject> items);
+        public void setListView(ArrayList<ParseObject> items);
     }
 }

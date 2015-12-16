@@ -36,8 +36,7 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -108,6 +107,18 @@
         </receiver>
 
         <activity
+            android:name=".PrivacyActivity"
+            android:label="@string/title_activity_privacy" >
+        </activity>
+        <activity
+            android:name=".Facebooklogin"
+            android:label="@string/title_activity_facebooklogin" >
+        </activity>
+        <activity
+            android:name=".Twitterlogin"
+            android:label="@string/title_activity_twitterlogin" >
+        </activity>
+        <activity
             android:name=".AlbumActivity"
             android:label="@string/title_activity_album" >
         </activity>
@@ -123,7 +134,7 @@
             android:name=".ShareActivity"
             android:label="@string/title_activity_share" >
         </activity>
-        <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/com_parse_ui_app_logo"/>
+        <!--<meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/com_parse_ui_app_logo"/>-->
     </application>
 
 </manifest>

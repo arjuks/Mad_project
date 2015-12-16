@@ -14,8 +14,7 @@
         android:id="@+id/senderLabelDisplay"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="42dp" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,8 +23,8 @@
         android:text="Large Text"
         android:id="@+id/senderNameMsgDisplay"
         android:layout_above="@+id/timePost"
-        android:layout_toRightOf="@+id/timePost"
-        android:layout_toEndOf="@+id/timePost" />
+        android:layout_alignLeft="@+id/timeMsgDisplayVal"
+        android:layout_alignStart="@+id/timeMsgDisplayVal" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,10 +32,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/timePost"
         android:id="@+id/timePost"
-        android:layout_marginTop="44dp"
-        android:layout_below="@+id/senderLabelDisplay"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/senderLabelDisplay" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -44,9 +40,11 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/timeMsgDisplayVal"
-        android:layout_alignTop="@+id/timePost"
-        android:layout_alignLeft="@+id/senderNameMsgDisplay"
-        android:layout_alignStart="@+id/senderNameMsgDisplay" />
+        android:layout_above="@+id/MsgContDisplay"
+        android:layout_toRightOf="@+id/timePost"
+        android:layout_toEndOf="@+id/timePost"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -56,8 +54,7 @@
         android:id="@+id/MsgContDisplay"
         android:layout_below="@+id/timePost"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="50dp" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -90,12 +87,12 @@
 
     <ImageView
         android:layout_width="400dp"
-        android:layout_height="100dp"
+        android:layout_height="200dp"
         android:id="@+id/imgDisplay"
-        android:layout_above="@+id/ReplyBtn"
+        android:src="@drawable/avatar_blank"
+        android:layout_above="@+id/composeDisplayBtn"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/imageLabel" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -103,7 +100,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/imageLabel"
         android:id="@+id/imageLabel"
-        android:layout_centerVertical="true"
+        android:layout_above="@+id/imgDisplay"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 </RelativeLayout>

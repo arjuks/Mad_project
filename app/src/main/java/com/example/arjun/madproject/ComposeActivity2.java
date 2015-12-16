@@ -7,14 +7,20 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
 import com.parse.ParseFile;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
@@ -24,8 +30,6 @@ import java.io.IOException;
 
 public class ComposeActivity2 extends AppCompatActivity {
 
-    final static String CFNAME = "firstname";
-    final static String CLNAME = "lastname";
     String s_fname = null;
     private static final int SELECT_PICTURE = 3;
     Uri uri;
@@ -85,11 +89,10 @@ public class ComposeActivity2 extends AppCompatActivity {
                         ParseObject msg = new ParseObject("Message");
                         msg.put("msg", compose.getText().toString());
                         msg.put("recepient", s_fname);
-                        msg.put("sender", currentUser.getUsername() + " " + currentUser.get("Lastname"));
+                        msg.put("sender", currentUser.get("name").toString());
                         msg.put("read", "notseen");
                         msg.saveInBackground();
                         Toast.makeText(ComposeActivity2.this, "Message Sent", Toast.LENGTH_SHORT).show();
-                        finish();
                         Intent intent = new Intent(ComposeActivity2.this, MainActivity.class);
                         startActivity(intent);
                     }
@@ -100,7 +103,6 @@ public class ComposeActivity2 extends AppCompatActivity {
                     picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] d = stream.toByteArray();
                     final ParseFile file = new ParseFile("image.jpg", d);
-                    file.saveInBackground();
 
                     file.saveInBackground(new SaveCallback() {
                         @Override
@@ -113,12 +115,11 @@ public class ComposeActivity2 extends AppCompatActivity {
                                     ParseObject msg = new ParseObject("Message");
                                     msg.put("msg", compose.getText().toString());
                                     msg.put("recepient", s_fname);
-                                    msg.put("sender", currentUser.getUsername() + " " + currentUser.get("Lastname"));
+                                    msg.put("sender", currentUser.get("name").toString());
                                     msg.put("read", "notseen");
                                     msg.put("imagefile", file);
                                     msg.saveInBackground();
                                     Toast.makeText(ComposeActivity2.this, "Message Sent", Toast.LENGTH_SHORT).show();
-                                    finish();
                                     Intent intent = new Intent(ComposeActivity2.this, MainActivity.class);
                                     startActivity(intent);
                                 }
@@ -128,5 +129,49 @@ public class ComposeActivity2 extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_message, menu);
+        return true;
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.homepage) {
+            Log.d("demo", "homepage clicked");
+            Intent intent = new Intent(ComposeActivity2.this, MainActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.logout) {
+            Log.d("demo", "logout clicked");
+
+            String objId2 = ParseInstallation.getCurrentInstallation().getObjectId();
+            ParseQuery<ParseInstallation> query2 = ParseInstallation.getQuery();
+            Log.d("demo", "cuser" + ParseUser.getCurrentUser());
+            query2.getInBackground(objId2, new GetCallback<ParseInstallation>() {
+                @Override
+                public void done(ParseInstallation obj, com.parse.ParseException e) {
+                    if (e == null) {
+                        obj.put("user", "loggedOut");
+                        obj.saveInBackground();
+                    }
+                }
+            });
+
+            ParseUser.logOut();
+            Intent intent = new Intent(ComposeActivity2.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

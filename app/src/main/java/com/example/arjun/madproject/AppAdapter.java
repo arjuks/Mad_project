@@ -44,11 +44,8 @@ public class AppAdapter extends ArrayAdapter<ParseUser>{
         }
         ParseUser name = mData.get(position);
 
-        TextView firstname = (TextView) convertView.findViewById(R.id.FirstName);
-        firstname.setText(name.getUsername().toString());
-        TextView lastname = (TextView) convertView.findViewById(R.id.lastNameDisplay);
-        lastname.setText(name.get("Lastname").toString());
-        //Picasso.with(mContext).load(name.getUrl()).into((ImageView) convertView.findViewById(R.id.imageView));
+        TextView firstname = (TextView) convertView.findViewById(R.id.UserName);
+        firstname.setText(name.get("name").toString());
 
 
         return convertView;

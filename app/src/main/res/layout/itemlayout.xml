@@ -7,25 +7,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/FirstName"
-        android:hint="First Name"
+        android:id="@+id/UserName"
+        android:hint="User Name"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="69dp"
-        android:layout_marginStart="69dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/lastNameDisplay"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/FirstName"
-        android:layout_toEndOf="@+id/FirstName"
-        android:layout_marginLeft="42dp"
-        android:layout_marginStart="42dp"
-        android:hint="Last Name" />
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

@@ -14,7 +14,10 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
@@ -62,9 +65,9 @@ public class SignUpActivity extends AppCompatActivity {
         canc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
                 Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -120,6 +123,24 @@ public class SignUpActivity extends AppCompatActivity {
                                             // Hooray! Let them use the app now.
                                             Log.d("demo", "sign up successful");
                                             Toast.makeText(SignUpActivity.this, "Signed Up Successfully", Toast.LENGTH_SHORT).show();
+
+                                            ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+                                            String objId =  ParseUser.getCurrentUser().getObjectId().toString();
+                                            query.getInBackground(objId, new GetCallback<ParseObject>() {
+                                                @Override
+                                                public void done(ParseObject obj, com.parse.ParseException e) {
+                                                    if (e == null) {
+                                                        obj.put("profilelisting", "true");
+                                                        obj.put("pushnote","true");
+                                                        obj.put("messageprivacy","true");
+                                                        obj.saveInBackground();
+                                                       // Toast.makeText(LoginActivity.this, "Profile listing is set as true", Toast.LENGTH_SHORT).show();
+
+                                                    }
+                                                }
+                                            });
+
+
                                             Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                                             startActivity(intent);
                                             finish();

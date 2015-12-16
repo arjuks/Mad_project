@@ -3,6 +3,7 @@ package com.example.arjun.madproject;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,14 +15,26 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseAnalytics;
+import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
+import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import bolts.Task;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
     AlertDialog simpleA = null;
     static String semail = null;
 
-    final static String SNAME = "sname";
     final static String FULLNAME = "fullname";
     final static String RNAME = "rname";
     final static String SEMAIL = "semail";
@@ -43,27 +55,30 @@ public class MainActivity extends AppCompatActivity {
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
 
         Button inbox = (Button) findViewById(R.id.inboxBtn);
+        Button editprofile = (Button) findViewById(R.id.editprofileBtn);
+        Button viewlist = (Button) findViewById(R.id.viewuserlistBtn);
+        Button privacy = (Button) findViewById(R.id.privacyBtn);
 
         ParseQuery<ParseUser> query = ParseQuery.getQuery("_User");
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> objects, com.parse.ParseException e) {
-                Log.d("demo", "objects: " + objects);
                 userlist.addAll(objects);
                 ParseUser currentUser = ParseUser.getCurrentUser();
 
                 for (int i = 0; i < userlist.size(); i++) {
-                    if( userlist.get(i).getEmail().equals(currentUser.getEmail())) {
-                        semail = userlist.get(i).getEmail();
-                        Log.d("demo","semail main"+semail);
+                    Log.d("demo","user obj id"+ userlist.get(i).getObjectId());
+                    if( userlist.get(i).getObjectId().toString().equals(currentUser.getObjectId().toString())) {
+                        semail = userlist.get(i).getEmail().toString();
                         userlist.remove(i);
                     }
                 }
 
-                final CharSequence[] items = new CharSequence[userlist.size()];
+                lsize = userlist.size();
+                final CharSequence[] items = new CharSequence[lsize];
 
                 for (int i = 0; i < userlist.size(); i++) {
-                    String fullname = userlist.get(i).getUsername()+" "+ userlist.get(i).get("Lastname");
-                    items[i] = fullname;
+                    String names = userlist.get(i).get("name").toString();
+                    items[i] = names;
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Pick a Contact")
@@ -71,18 +86,12 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Log.d("demo", "selected" + " " + items[which]);
-//                            String rname = items[which].toString();
-//                            String sname = ParseUser.getCurrentUser().getUsername()+" "+ParseUser.getCurrentUser().get("Lastname");
-//                            Log.d("demo","sname"+sname);
-//                            Intent intent = new Intent(MainActivity.this, MessageActivity.class);
-//                            intent.putExtra(RNAME, rname);
-//                            intent.putExtra(SNAME, sname);
-//                            intent.putExtra(SEMAIL, semail);
                             String fullname = items[which].toString();
                             Intent intent = new Intent(MainActivity.this, MessageActivity.class);
                             intent.putExtra(FULLNAME, fullname);
                             intent.putExtra(SEMAIL, semail);
                             startActivity(intent);
+
                         }
                     });
                 simpleA = builder.create();
@@ -96,6 +105,36 @@ public class MainActivity extends AppCompatActivity {
                 simpleA.show();
             }
         });
+
+        editprofile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("demo", "edit clicked");
+                Intent intent = new Intent(MainActivity.this, EditActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        viewlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("demo", "view list clicked");
+                Intent intent = new Intent(MainActivity.this, UserListActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        privacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("demo", "privacy clicked");
+                Intent intent = new Intent(MainActivity.this, PrivacyActivity.class);
+                startActivity(intent);
+
+            }
+        });
     }
 
 
@@ -107,40 +146,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.inboxMsg) {
-            Log.d("demo", "inbox clicked");
-            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-            startActivity(intent);
-            return true;
-        }
-        if (id == R.id.editprofile) {
-            Log.d("demo", "edit clicked");
-            Intent intent = new Intent(MainActivity.this, EditActivity.class);
-            startActivity(intent);
-        }
-        if(id == R.id.userlist){
-            Log.d("demo", "compose clicked");
-            Intent intent = new Intent(MainActivity.this, UserListActivity.class);
-            startActivity(intent);
-        }
 
         if (id == R.id.logout) {
             Log.d("demo", "logout clicked");
+
+            String objId2 = ParseInstallation.getCurrentInstallation().getObjectId();
+            ParseQuery<ParseInstallation> query2 = ParseInstallation.getQuery();
+            Log.d("demo", "cuser" + ParseUser.getCurrentUser());
+            query2.getInBackground(objId2, new GetCallback<ParseInstallation>() {
+                @Override
+                public void done(ParseInstallation obj, com.parse.ParseException e) {
+                    if (e == null) {
+                        obj.put("user", "loggedOut");
+                        obj.saveInBackground();
+                    }
+                }
+            });
+
             ParseUser.logOut();
-            finish();
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void goToAlbum(View view) {
-        startActivity(new Intent(MainActivity.this, AlbumActivity.class));
     }
 }
