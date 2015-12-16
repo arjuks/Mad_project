@@ -30,6 +30,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -74,61 +75,32 @@ public class EditActivity extends AppCompatActivity {
         final EditText email = (EditText) findViewById(R.id.emailEdit);
         final ImageView photo = (ImageView) findViewById(R.id.profilePhotoEdit);
         Button save = (Button) findViewById(R.id.saveBtn);
+        ParseUser cuser = ParseUser.getCurrentUser();
 
+        obj_id = cuser.getObjectId();
+        username.setText(cuser.get("FullName").toString());
+        gender.setText(cuser.get("Gender").toString());
+        email.setText(cuser.getEmail().toString());
 
-        ParseQuery<ParseUser> query = ParseQuery.getQuery("_User");
-        query.findInBackground(new FindCallback<ParseUser>() {
-            public void done(List<ParseUser> objects, com.parse.ParseException e) {
-                if (e == null) {
-                    Log.d("score", "Retrieved " + objects.size() + " objects");
+        final ParseFile img = cuser.getParseFile("imagefile");
+        if (img == null) {
+            Log.d("demo", "no image");
+        } else {
+            Log.d("demo", "there is an image");
+            Picasso.with(EditActivity.this).load(img.getUrl()).into(photo);
 
-                    list.addAll(objects);
+            img.getDataInBackground(new GetDataCallback() {
+                public void done(byte[] data, com.parse.ParseException e) {
+                    if (e == null) {
+//                        bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
 
-                    if (list.size() != 0) {
-                        for (int i = 0; i < list.size(); i++) {
-                            ParseUser user = list.get(i);
-                            String n2 = null;
-                            String e2 = null;
-                            try {
-                                n2 = user.fetchIfNeeded().get("FullName").toString();
-                                e2 = user.fetchIfNeeded().getEmail().toString();
-                            } catch (ParseException e1) {
-                                e1.printStackTrace();
-                            }
-                            ParseUser cuser = ParseUser.getCurrentUser();
-                            if (cuser.get("FullName").toString().equals(n2) && cuser.getEmail().toString().equals(e2)) {
-
-                                obj_id = cuser.getObjectId();
-                                username.setText(user.get("FullName").toString());
-                                gender.setText(user.get("Gender").toString());
-                                email.setText(user.getEmail().toString());
-
-                                final ParseFile img = (ParseFile) user.get("imagefile");
-                                if (img == null) {
-                                    Log.d("demo", "no image");
-                                } else {
-                                    img.getDataInBackground(new GetDataCallback() {
-                                        public void done(byte[] data, com.parse.ParseException e) {
-                                            if (e == null) {
-                                                bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                                                photo.setImageBitmap(bmp);
-                                            } else {
-                                                // something went wrong
-                                                Log.d("demo", "imag error" + e.getMessage());
-                                            }
-                                        }
-                                    });
-                                }
-
-                            }
-                        }
+//                        photo.setImageBitmap(bmp);
+                    } else {
+                        Log.d("demo", "imag error" + e.getMessage());
                     }
-
-                } else {
-                    Log.d("score", "Error: " + e.getMessage());
                 }
-            }
-        });
+            });
+        }
 
         photo.setOnClickListener(new View.OnClickListener() {
             @Override

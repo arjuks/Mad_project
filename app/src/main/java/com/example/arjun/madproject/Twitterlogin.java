@@ -18,9 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.GetCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -67,58 +69,55 @@ public class Twitterlogin extends Activity {
 
 
         submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(gendertwit.getText().toString().equals("")) {
-                    Toast.makeText(Twitterlogin.this, "Please fill in the gender", Toast.LENGTH_SHORT).show();
-                }
-                if(bitmap == null) {
-                    Toast.makeText(Twitterlogin.this, "Please select a photo", Toast.LENGTH_SHORT).show();
-                }
-                if(emailVal.getText().toString().equals("")) {
-                    Toast.makeText(Twitterlogin.this, "Please put your email id", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Log.d("demo", "inside else");
+              @Override
+              public void onClick(View v) {
+                  if (gendertwit.getText().toString().equals("")) {
+                      Toast.makeText(Twitterlogin.this, "Please fill in the gender", Toast.LENGTH_SHORT).show();
+                  }
+                  if (bitmap == null) {
+                      Toast.makeText(Twitterlogin.this, "Please select a photo", Toast.LENGTH_SHORT).show();
+                  }
+                  if (emailVal.getText().toString().equals("")) {
+                      Toast.makeText(Twitterlogin.this, "Please put your email id", Toast.LENGTH_SHORT).show();
+                  } else {
+                      Log.d("demo", "inside else");
+                      picture = bitmap;
+                      ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                      picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                      byte[] d = stream.toByteArray();
+                      final ParseFile file = new ParseFile("image.jpg", d);
 
-                    picture = bitmap;
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                    byte[] d = stream.toByteArray();
-                    final ParseFile file = new ParseFile("image.jpg", d);
+                      file.saveInBackground(new SaveCallback() {
+                          @Override
+                          public void done(com.parse.ParseException e) {
+                              if (null == e) {
+                                  Log.d("demo", "inside savecallback");
 
-                    file.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(com.parse.ParseException e) {
-                        if (null == e) {
-                            Log.d("demo", "inside savecallback");
-                            ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
-                            query.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseObject>() {
-                                @Override
-                                public void done(ParseObject obj, com.parse.ParseException e) {
-                                    if (e == null) {
-                                        obj.put("Gender", gendertwit.getText().toString());
-                                        obj.put("email",emailVal.getText().toString());
-                                        //obj.put("username",emailVal.getText().toString());
-                                        obj.put("name",name);
-                                        obj.put("profilelisting", "true");
-                                        obj.put("pushnote","true");
-                                        obj.put("messageprivacy","true");
-                                        obj.put("imagefile", file);
-                                        obj.saveInBackground();
-                                        Toast.makeText(Twitterlogin.this, "Signed Up Successfully", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(Twitterlogin.this, MainActivity.class);
-                                        startActivity(intent);
+                                  ParseUser currentUser = ParseUser.getCurrentUser();
+                                  currentUser.put("Gender", gendertwit.getText().toString());
+                                  currentUser.put("email", emailVal.getText().toString());
+                                  //obj.put("username",emailVal.getText().toString());
+                                  currentUser.put("name", name);
+                                  currentUser.put("profilelisting", "true");
+                                  currentUser.put("pushnote", "true");
+                                  currentUser.put("messageprivacy", "true");
+                                  currentUser.put("imagefile", file);
+                                  currentUser.saveInBackground(new SaveCallback() {
+                                      @Override
+                                      public void done(ParseException e) {
+                                          Toast.makeText(Twitterlogin.this, "Signed Up Successfully", Toast.LENGTH_SHORT).show();
+                                          Intent intent = new Intent(Twitterlogin.this, MainActivity.class);
+                                          startActivity(intent);
+                                          finish();
+                                      }
+                                  });
 
-                                    }
-                                }
-                            });
-                        }
-                        }
-                    });
-                }
-            }
-        });
+                              }
+                          }
+                      });
+                  }
+              }
+          });
         phototwit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 // in onCreate or any event where your want the user to

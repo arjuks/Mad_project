@@ -108,6 +108,7 @@ public class LoginActivity extends Activity {
 
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     startActivity(intent);
+                                    finish();
                                 } else {
                                     // Signup failed. Look at the ParseException to see what happened.
                                     Log.d("demo", "error" + e.getMessage());
@@ -115,22 +116,6 @@ public class LoginActivity extends Activity {
                                 }
                             }
                         });
-
-                        //                    String objId2 = ParseInstallation.getCurrentInstallation().getObjectId();
-                        //                    ParseQuery<ParseInstallation> query2 = ParseInstallation.getQuery();
-                        //                    Log.d("demo", "cuser"+ParseUser.getCurrentUser());
-                        //                    query2.getInBackground(objId2, new GetCallback<ParseInstallation>() {
-                        //                        @Override
-                        //                        public void done(ParseInstallation obj, com.parse.ParseException e) {
-                        //                            if (e == null) {
-                        //                                obj.put("user", ParseUser.getCurrentUser().getEmail().toString());
-                        //                                obj.saveInBackground();
-                        //                                Toast.makeText(LoginActivity.this, "saved", Toast.LENGTH_SHORT).show();
-                        //                            }
-                        //                        }
-                        //                    });
-
-
                     }
                 }
             });
@@ -201,6 +186,8 @@ public class LoginActivity extends Activity {
         final String name = ParseTwitterUtils.getTwitter().getScreenName().toString();
 
         ParseQuery<ParseUser> query = ParseQuery.getQuery("_User");
+        ParseUser user = ParseUser.getCurrentUser();
+        Log.d("demo", "current user name: " + user.get("FullName"));
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> objects, com.parse.ParseException e) {
                 //userlist.addAll(objects);

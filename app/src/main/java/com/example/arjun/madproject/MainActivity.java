@@ -50,9 +50,10 @@ public class MainActivity extends AppCompatActivity {
                 ParseUser currentUser = ParseUser.getCurrentUser();
 
                 for (int i = 0; i < userlist.size(); i++) {
-                    Log.d("demo","user obj id"+ userlist.get(i).getObjectId());
+                    Log.d("demo","user obj id: "+ userlist.get(i).getObjectId());
+                    Log.d("demo","current user obj id: "+ currentUser.getObjectId());
                     if( userlist.get(i).getObjectId().toString().equals(currentUser.getObjectId().toString())) {
-                        semail = userlist.get(i).getEmail().toString();
+                        semail = currentUser.getEmail().toString();
                         userlist.remove(i);
                     }
                 }

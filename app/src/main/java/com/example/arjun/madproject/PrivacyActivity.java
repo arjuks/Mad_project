@@ -32,48 +32,43 @@ public class PrivacyActivity extends AppCompatActivity {
         final TextView profiletextview = (TextView) findViewById(R.id.profiletextView);
         final TextView pushtextview = (TextView) findViewById(R.id.pushNotetextView);
         final TextView messagetextview = (TextView) findViewById(R.id.messagetextView);
-
-
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
-        query.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject obj, com.parse.ParseException e) {
-                if (e == null) {
-
-                    if (obj.get("profilelisting").toString().equals("true")) {
-                        boolval = "true";
-                        profiletextview.setText("TRUE");
-                        profiletextview.setBackgroundColor(Color.GREEN);
-                    } else {
-                        boolval = "false";
-                        profiletextview.setText("FALSE");
-                        profiletextview.setBackgroundColor(Color.RED);
-                    }
-
-                    if (obj.get("pushnote").toString().equals("true")) {
-                        boolvalpush = "true";
-                        pushtextview.setText("TRUE");
-                        pushtextview.setBackgroundColor(Color.GREEN);
-                    } else {
-                        boolvalpush = "false";
-                        pushtextview.setText("FALSE");
-                        pushtextview.setBackgroundColor(Color.RED);
-                    }
-
-                    if (obj.get("messageprivacy").toString().equals("true")) {
-                        boolvalmsg = "true";
-                        messagetextview.setText("TRUE");
-                        messagetextview.setBackgroundColor(Color.GREEN);
-                    } else {
-                        boolvalmsg = "false";
-                        messagetextview.setText("FALSE");
-                        messagetextview.setBackgroundColor(Color.RED);
-                    }
-                }
-            }
-        });
-
         RadioGroup rg = (RadioGroup) findViewById(R.id.radioGroupPrivacy);
+        RadioGroup rgpush = (RadioGroup) findViewById(R.id.radioGroupPushnote);
+        RadioGroup rgalbum = (RadioGroup) findViewById(R.id.radioGroupMessages);
+
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser.get("profilelisting").toString().equals("true")) {
+            boolval = "true";
+            profiletextview.setText("TRUE");
+            profiletextview.setBackgroundColor(Color.GREEN);
+        } else {
+            boolval = "false";
+            profiletextview.setText("FALSE");
+            profiletextview.setBackgroundColor(Color.RED);
+        }
+
+        if (currentUser.get("pushnote").toString().equals("true")) {
+            boolvalpush = "true";
+            pushtextview.setText("TRUE");
+            pushtextview.setBackgroundColor(Color.GREEN);
+        } else {
+            boolvalpush = "false";
+            pushtextview.setText("FALSE");
+            pushtextview.setBackgroundColor(Color.RED);
+        }
+
+        if (currentUser.get("messageprivacy").toString().equals("true")) {
+            boolvalmsg = "true";
+            messagetextview.setText("TRUE");
+            messagetextview.setBackgroundColor(Color.GREEN);
+        } else {
+            boolvalmsg = "false";
+            messagetextview.setText("FALSE");
+            messagetextview.setBackgroundColor(Color.RED);
+        }
+
+
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -117,8 +112,6 @@ public class PrivacyActivity extends AppCompatActivity {
             }
         });
 
-
-        RadioGroup rgpush = (RadioGroup) findViewById(R.id.radioGroupPushnote);
         rgpush.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -162,7 +155,6 @@ public class PrivacyActivity extends AppCompatActivity {
             }
         });
 
-        RadioGroup rgalbum = (RadioGroup) findViewById(R.id.radioGroupMessages);
         rgalbum.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -214,8 +206,6 @@ public class PrivacyActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_message, menu);
         return true;
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

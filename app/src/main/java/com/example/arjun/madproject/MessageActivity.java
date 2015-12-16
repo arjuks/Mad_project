@@ -59,96 +59,87 @@ public class MessageActivity extends AppCompatActivity implements MessageAdapter
         else {
             s_fname = getIntent().getExtras().get(MainActivity.FULLNAME).toString();
         }
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
+            query.orderByAscending("createdAt");
+            query.findInBackground(new FindCallback<ParseObject>() {
+                public void done(final List<ParseObject> objects, com.parse.ParseException e) {
+                    msglist.addAll(objects);
+                    final ParseUser currentUser = ParseUser.getCurrentUser();
 
+                    for (int i = 0; i < msglist.size(); i++) {
+                        if ((msglist.get(i).get("sender").equals(currentUser.get("FullName"))
+                                || msglist.get(i).get("recepient").equals(currentUser.get("FullName")))
+                                && (msglist.get(i).get("sender").equals(s_fname)
+                                || msglist.get(i).get("recepient").equals(s_fname))) {
 
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
-                query.orderByAscending("createdAt");
-                query.findInBackground(new FindCallback<ParseObject>() {
-                    public void done(final List<ParseObject> objects, com.parse.ParseException e) {
-                        msglist.addAll(objects);
-                        final ParseUser currentUser = ParseUser.getCurrentUser();
+                            ParseObject msg = msglist.get(i);
+                            finallist.add(msg);
+                            Log.d("demo", "list msgs" + msg.getObjectId());
+                        }
+                    }
 
-                        for (int i = 0; i < msglist.size(); i++) {
-                            if ((msglist.get(i).get("sender").equals(currentUser.get("FullName"))
-                                    || msglist.get(i).get("recepient").equals(currentUser.get("FullName")))
-                                    && (msglist.get(i).get("sender").equals(s_fname)
-                                    || msglist.get(i).get("recepient").equals(s_fname))) {
+                    ListView lv = (ListView) findViewById(R.id.messagelistView);
+                    adapter = new MessageAdapter(MessageActivity.this, R.layout.messageitemlayout, finallist);
+                    lv.setAdapter(adapter);
+                    adapter.setNotifyOnChange(true);
+                }
+            });
 
-                                ParseObject msg = msglist.get(i);
-                                finallist.add(msg);
-                                Log.d("demo", "list msgs" + msg.getObjectId());
+            ListView lv = (ListView) findViewById(R.id.messagelistView);
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                    final ParseUser currentUser = ParseUser.getCurrentUser();
+
+                    final Intent intent = new Intent(MessageActivity.this, MessageDisplayActivity.class);
+                    intent.putExtra(SNAME, finallist.get(position).get("sender").toString());
+                    intent.putExtra(RNAME, getIntent().getExtras().get(MainActivity.FULLNAME).toString());
+                    intent.putExtra(TIME, finallist.get(position).getCreatedAt().toString());
+                    intent.putExtra(MESSAGE, finallist.get(position).get("msg").toString());
+                    intent.putExtra(OBJID, finallist.get(position).getObjectId().toString());
+
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
+                    Log.d("demo", "inmsg inbox");
+                    query.getInBackground(finallist.get(position).getObjectId(), new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(ParseObject obj, com.parse.ParseException e) {
+                            if (e == null) {
+                                if (finallist.get(position).get("recepient").toString()
+                                        .equals(currentUser.get("FullName").toString())) {
+                                    String seen = "seen";
+                                    Log.d("demo", "seen before" + seen);
+                                    obj.put("read", seen);
+                                    obj.saveInBackground();
+                                }
                             }
                         }
+                    });
 
-//                        Collections.sort(finallist, new Comparator<ParseObject>() {
-//                            @Override
-//                            public int compare(ParseObject emp1, ParseObject emp2) {
-//                                return emp1.getCreatedAt().compareTo(emp2.getCreatedAt()); // ascending..for descending..switch places of 1 and 2
-//                            }
-//                        });
+                    ParseFile img = (ParseFile) finallist.get(position).get("imagefile");
+                    if (img == null) {
+                        Log.d("demo", "no image");
+                        startActivity(intent);
 
-                        ListView lv = (ListView) findViewById(R.id.messagelistView);
-                        adapter = new MessageAdapter(MessageActivity.this, R.layout.messageitemlayout, finallist);
-                        lv.setAdapter(adapter);
-                        adapter.setNotifyOnChange(true);
-                    }
-                });
-
-                ListView lv = (ListView) findViewById(R.id.messagelistView);
-                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                        final ParseUser currentUser = ParseUser.getCurrentUser();
-
-                        final Intent intent = new Intent(MessageActivity.this, MessageDisplayActivity.class);
-                        intent.putExtra(SNAME, finallist.get(position).get("sender").toString());
-                        intent.putExtra(RNAME, getIntent().getExtras().get(MainActivity.FULLNAME).toString());
-                        intent.putExtra(TIME, finallist.get(position).getCreatedAt().toString());
-                        intent.putExtra(MESSAGE, finallist.get(position).get("msg").toString());
-                        intent.putExtra(OBJID, finallist.get(position).getObjectId().toString());
-
-                        ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
-                        Log.d("demo", "inmsg inbox");
-                        query.getInBackground(finallist.get(position).getObjectId().toString(), new GetCallback<ParseObject>() {
-                            @Override
-                            public void done(ParseObject obj, com.parse.ParseException e) {
+                    } else {
+                        img.getDataInBackground(new GetDataCallback() {
+                            public void done(byte[] data, com.parse.ParseException e) {
                                 if (e == null) {
-                                    if (finallist.get(position).get("recepient").toString()
-                                            .equals(currentUser.get("FullName").toString())) {
-                                        String seen = "seen";
-                                        Log.d("demo", "seen before" + seen);
-                                        obj.put("read", seen);
-                                        obj.saveInBackground();
-                                    }
+                                    bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                                    ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+                                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
+                                    byte[] byteArray = bStream.toByteArray();
+                                    intent.putExtra(IMG, byteArray);
+                                    Log.d("demo", "byte array" + byteArray);
+                                    startActivity(intent);
+
+                                } else {
+                                    // something went wrong
+                                    Log.d("demo", "imag error" + e.getMessage());
                                 }
                             }
                         });
-
-                        ParseFile img = (ParseFile) finallist.get(position).get("imagefile");
-                        if (img == null) {
-                            Log.d("demo", "no image");
-                            startActivity(intent);
-
-                        } else {
-                            img.getDataInBackground(new GetDataCallback() {
-                                public void done(byte[] data, com.parse.ParseException e) {
-                                    if (e == null) {
-                                        bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                                        ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-                                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
-                                        byte[] byteArray = bStream.toByteArray();
-                                        intent.putExtra(IMG, byteArray);
-                                        Log.d("demo", "byte array" + byteArray);
-                                        startActivity(intent);
-
-                                    } else {
-                                        // something went wrong
-                                        Log.d("demo", "imag error" + e.getMessage());
-                                    }
-                                }
-                            });
-                        }
                     }
+                }
                 });
 
         final Button composebtn = (Button) findViewById(R.id.composeBtn);

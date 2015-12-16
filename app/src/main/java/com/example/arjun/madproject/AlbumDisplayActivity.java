@@ -70,7 +70,7 @@ public class AlbumDisplayActivity extends AppCompatActivity {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                if(e == null && list.size() > 0) {
+                if (e == null && list.size() > 0) {
                     emptyAlbumLabel.setVisibility(View.INVISIBLE);
                     Log.d("demo", "received " + list.size() + " pictures");
                     pictures = list;
@@ -79,7 +79,7 @@ public class AlbumDisplayActivity extends AppCompatActivity {
                 album = getAlbum();
                 ParseACL acl = album.getACL();
                 String albumName = album.get("name").toString();
-//                setTitle(albumName);
+                setTitle(albumName);
                 if (acl.getWriteAccess(ParseUser.getCurrentUser())) {
                     cb.setChecked(!acl.getPublicReadAccess());
                     cb.setVisibility(View.VISIBLE);
@@ -99,42 +99,55 @@ public class AlbumDisplayActivity extends AppCompatActivity {
         gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(AlbumDisplayActivity.this);
-                alertDialog.setMessage("Delete Picture?");
-                alertDialog.setNegativeButton("Close", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.d("demo", "close dialog");
-                        dialog.dismiss();
-                    }
-                });
-                alertDialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, int which) {
-                        progressDialog = new ProgressDialog(AlbumDisplayActivity.this);
-                        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        progressDialog.setCancelable(false);
-                        progressDialog.setMessage("Deleting Picture ...");
-                        progressDialog.show();
-                        pictures.get(position).deleteInBackground(new DeleteCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                if (e == null) {
-                                    pictures.remove(position);
-                                    Log.d("demo", "done callback e == null");
-                                    setupData();
-                                    progressDialog.dismiss();
-                                    emptyAlbumLabel.setVisibility(View.VISIBLE);
-                                } else {
-                                    e.printStackTrace();
+                if(album.getACL().getWriteAccess(ParseUser.getCurrentUser())) {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(AlbumDisplayActivity.this);
+                    alertDialog.setMessage("Delete Picture?");
+                    alertDialog.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Log.d("demo", "close dialog");
+                            dialog.dismiss();
+                        }
+                    });
+                    alertDialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(final DialogInterface dialog, int which) {
+                            progressDialog = new ProgressDialog(AlbumDisplayActivity.this);
+                            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                            progressDialog.setCancelable(false);
+                            progressDialog.setMessage("Deleting Picture ...");
+                            progressDialog.show();
+                            pictures.get(position).deleteInBackground(new DeleteCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e == null) {
+                                        pictures.remove(position);
+                                        Log.d("demo", "done callback e == null");
+                                        setupData();
+                                        progressDialog.dismiss();
+                                        emptyAlbumLabel.setVisibility(View.VISIBLE);
+                                    } else {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            }
-                        });
-                    }
-                });
+                            });
+                        }
+                    });
 
-                alertDialog.show();
-                return false;
+                    alertDialog.show();
+                }
+                return true;
+            }
+        });
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ParseFile picture = pictures.get(position).getParseFile("file");
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.parse(picture.getUrl()), "image/*");
+                startActivity(intent);
             }
         });
 
@@ -248,7 +261,6 @@ public class AlbumDisplayActivity extends AppCompatActivity {
             } else {
                 acl.setPublicReadAccess(true);
             }
-            pic.setACL(acl);
         }
 
         Log.d("demo", "size of pictures about to save" + pictures.size());
@@ -313,7 +325,6 @@ public class AlbumDisplayActivity extends AppCompatActivity {
             parsePicture.put("file", file);
             parsePicture.put("albumName", albumName);
             parsePicture.put("albumId", albumId);
-            parsePicture.setACL(acl);
             progressDialog.dismiss();
             return parsePicture;
         } catch (ParseException e) {

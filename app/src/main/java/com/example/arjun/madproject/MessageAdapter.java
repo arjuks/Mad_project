@@ -91,17 +91,16 @@ public class MessageAdapter extends ArrayAdapter<ParseObject>{
 
         if(!(name.get("sender").toString().equals(currentUser.get("FullName").toString())) &&
             name.get("read").toString().equals("notseen")){
+            Log.d("demo", "making green");
             convertView.setBackgroundColor(Color.GREEN);
-        }
-        else {
+        } else {
+            Log.d("demo", "making white");
             convertView.setBackgroundColor(Color.WHITE);
         }
 
-        if(name.get("sender").toString().equals(currentUser.get("FullName").toString())
-            ) {
+        if(name.get("sender").toString().equals(currentUser.get("FullName").toString())) {
             iv.setVisibility(View.INVISIBLE);
-        }
-        else {
+        } else {
             iv.setVisibility(View.VISIBLE);
 
         }

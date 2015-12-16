@@ -79,14 +79,11 @@ public class SignUpActivity extends AppCompatActivity {
                 if (fullName.getText().toString().equals("") || checkedRadioButtonId == -1 ||
                     password.getText().toString().equals("") || confirmp.getText().toString().equals("")) {
                     Toast.makeText(SignUpActivity.this, "Please fill in the details above", Toast.LENGTH_SHORT).show();
-                }
-                else if (!password.getText().toString().equals(confirmp.getText().toString())){
+                } else if (!password.getText().toString().equals(confirmp.getText().toString())){
                     Toast.makeText(SignUpActivity.this, "Password and confirm Password do not match", Toast.LENGTH_SHORT).show();
-                }
-                else if(picture == null) {
+                } else if(picture == null) {
                     Toast.makeText(SignUpActivity.this, "Please upload a photo", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     String gender;
                     if(checkedRadioButtonId == R.id.male_rb) {
                         gender = "Male";
@@ -134,7 +131,7 @@ public class SignUpActivity extends AppCompatActivity {
                                                         obj.put("pushnote","true");
                                                         obj.put("messageprivacy","true");
                                                         obj.saveInBackground();
-                                                       // Toast.makeText(LoginActivity.this, "Profile listing is set as true", Toast.LENGTH_SHORT).show();
+                                                        // Toast.makeText(LoginActivity.this, "Profile listing is set as true", Toast.LENGTH_SHORT).show();
 
                                                     }
                                                 }
@@ -166,7 +163,7 @@ public class SignUpActivity extends AppCompatActivity {
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent,
-                        "Select Picture"), SELECT_PICTURE);
+                    "Select Picture"), SELECT_PICTURE);
             }
         });
     }
