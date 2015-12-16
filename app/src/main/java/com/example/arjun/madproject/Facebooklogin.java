@@ -95,9 +95,9 @@ public class Facebooklogin extends Activity {
                                         if (e == null) {
                                             obj.put("Gender", genderfb.getText().toString());
                                             obj.put("name", name);
-//                                            obj.put("profilelisting", "true");
-//                                            obj.put("pushnote","true");
-//                                            obj.put("messageprivacy","true");
+                                            obj.put("profilelisting", "true");
+                                            obj.put("pushnote","true");
+                                            obj.put("messageprivacy","true");
                                             obj.put("imagefile", file);
                                             obj.saveInBackground();
                                             Toast.makeText(Facebooklogin.this, "Signed Up Successfully", Toast.LENGTH_SHORT).show();

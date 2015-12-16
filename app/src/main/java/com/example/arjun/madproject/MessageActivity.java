@@ -132,7 +132,7 @@ public class MessageActivity extends AppCompatActivity implements MessageAdapter
                         if (img == null) {
                             Log.d("demo", "no image");
                             startActivity(intent);
-                            finish();
+
                         } else {
                             img.getDataInBackground(new GetDataCallback() {
                                 public void done(byte[] data, com.parse.ParseException e) {
@@ -144,7 +144,7 @@ public class MessageActivity extends AppCompatActivity implements MessageAdapter
                                         intent.putExtra(IMG, byteArray);
                                         Log.d("demo", "byte array" + byteArray);
                                         startActivity(intent);
-                                        finish();
+
                                     } else {
                                         // something went wrong
                                         Log.d("demo", "imag error" + e.getMessage());
@@ -184,7 +184,7 @@ public class MessageActivity extends AppCompatActivity implements MessageAdapter
                         Intent intent = new Intent(MessageActivity.this, ComposeActivity2.class);
                         intent.putExtra(FULLNAME, getIntent().getExtras().get(MainActivity.FULLNAME).toString());
                         startActivity(intent);
-                        finish();
+
                     }
                 });
             }
@@ -204,7 +204,7 @@ public class MessageActivity extends AppCompatActivity implements MessageAdapter
                     Log.d("demo", "homepage clicked");
                     Intent intent = new Intent(MessageActivity.this, MainActivity.class);
                     startActivity(intent);
-                    finish();
+
                     return true;
                 }
 
@@ -223,9 +223,8 @@ public class MessageActivity extends AppCompatActivity implements MessageAdapter
                             }
                         }
                     });
-                    ParseTwitterUtils.unlinkInBackground(ParseUser.getCurrentUser());
+
                     ParseUser.logOut();
-                    finish();
                     Intent intent = new Intent(MessageActivity.this, LoginActivity.class);
                     startActivity(intent);
                     finish();

@@ -224,7 +224,6 @@ public class PrivacyActivity extends AppCompatActivity {
             Log.d("demo", "homepage clicked");
             Intent intent = new Intent(PrivacyActivity.this, MainActivity.class);
             startActivity(intent);
-            finish();
             return true;
         }
 
@@ -233,7 +232,7 @@ public class PrivacyActivity extends AppCompatActivity {
 
             String objId2 = ParseInstallation.getCurrentInstallation().getObjectId();
             ParseQuery<ParseInstallation> query2 = ParseInstallation.getQuery();
-            Log.d("demo", "cuser"+ParseUser.getCurrentUser());
+            Log.d("demo", "cuser" + ParseUser.getCurrentUser());
             query2.getInBackground(objId2, new GetCallback<ParseInstallation>() {
                 @Override
                 public void done(ParseInstallation obj, com.parse.ParseException e) {
@@ -243,11 +242,11 @@ public class PrivacyActivity extends AppCompatActivity {
                     }
                 }
             });
-            ParseTwitterUtils.unlinkInBackground(ParseUser.getCurrentUser());
+
             ParseUser.logOut();
-            finish();
             Intent intent = new Intent(PrivacyActivity.this, LoginActivity.class);
             startActivity(intent);
+            finish();
 
             return true;
         }

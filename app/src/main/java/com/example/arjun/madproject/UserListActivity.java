@@ -106,7 +106,6 @@ public class UserListActivity extends AppCompatActivity {
                                         Log.d("demo","byte array ul"+byteArray);
                                         intent.putExtra(PHOTO, byteArray);
                                         startActivity(intent);
-                                        finish();
                                     } else {
                                         Log.d("demo", "image error" + e.getMessage());
                                     }
@@ -138,7 +137,6 @@ public class UserListActivity extends AppCompatActivity {
             Log.d("demo", "homepage clicked");
             Intent intent = new Intent(UserListActivity.this, MainActivity.class);
             startActivity(intent);
-            finish();
             return true;
         }
 
@@ -147,7 +145,7 @@ public class UserListActivity extends AppCompatActivity {
 
             String objId2 = ParseInstallation.getCurrentInstallation().getObjectId();
             ParseQuery<ParseInstallation> query2 = ParseInstallation.getQuery();
-            Log.d("demo", "cuser"+ParseUser.getCurrentUser());
+            Log.d("demo", "cuser" + ParseUser.getCurrentUser());
             query2.getInBackground(objId2, new GetCallback<ParseInstallation>() {
                 @Override
                 public void done(ParseInstallation obj, com.parse.ParseException e) {
@@ -157,11 +155,10 @@ public class UserListActivity extends AppCompatActivity {
                     }
                 }
             });
-            ParseTwitterUtils.unlinkInBackground(ParseUser.getCurrentUser());
             ParseUser.logOut();
-            finish();
             Intent intent = new Intent(UserListActivity.this, LoginActivity.class);
             startActivity(intent);
+            finish();
 
             return true;
         }

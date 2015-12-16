@@ -98,10 +98,10 @@ public class Twitterlogin extends Activity {
                                 public void done(ParseObject obj, com.parse.ParseException e) {
                                     if (e == null) {
                                         obj.put("Gender", gendertwit.getText().toString());
-                                        obj.put("profilelisting", "true");
                                         obj.put("email",emailVal.getText().toString());
                                         //obj.put("username",emailVal.getText().toString());
                                         obj.put("name",name);
+                                        obj.put("profilelisting", "true");
                                         obj.put("pushnote","true");
                                         obj.put("messageprivacy","true");
                                         obj.put("imagefile", file);
@@ -109,7 +109,7 @@ public class Twitterlogin extends Activity {
                                         Toast.makeText(Twitterlogin.this, "Signed Up Successfully", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(Twitterlogin.this, MainActivity.class);
                                         startActivity(intent);
-                                        finish();
+
                                     }
                                 }
                             });

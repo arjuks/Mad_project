@@ -17,9 +17,11 @@ import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.parse.FindCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseQuery;
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -36,7 +38,7 @@ import java.util.List;
 
 public class LoginActivity extends Activity {
 
-    ProgressDialog progressDialog;
+    int flag = -1;
 
     public static final List<String> mPermissions = new ArrayList<String>(){{
         add("public_profile");
@@ -176,7 +178,7 @@ public class LoginActivity extends Activity {
                             Toast.makeText(LoginActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
-                            finish();
+
                         }
                     }
                 });
@@ -188,58 +190,79 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
-                finish();
+
             }
         });
     }
     private void getUserDetailsFromTwitter() {
-        String name = ParseTwitterUtils.getTwitter().getScreenName().toString();
-        Intent intent = new Intent(LoginActivity.this, Twitterlogin.class);
-        intent.putExtra(NAME , name);
-        startActivity(intent);
-        finish();
-    }
+        final String name = ParseTwitterUtils.getTwitter().getScreenName().toString();
 
+        ParseQuery<ParseUser> query = ParseQuery.getQuery("_User");
+        query.findInBackground(new FindCallback<ParseUser>() {
+            public void done(List<ParseUser> objects, com.parse.ParseException e) {
+                //userlist.addAll(objects);
+                //ParseUser currentUser = ParseUser.getCurrentUser();
 
-    private void getUserDetailsFromFB() {
-        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-            @Override
-            public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
-                try {
-                    userNameText = jsonObject.getString("name");
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                for (int i = 0; i < objects.size()-1; i++) {
+                    // Log.d("demo", "user obj id" + userlist.get(i).getObjectId());
+                    if (objects.get(i).get("name").toString().equals(name)) {
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        //intent.putExtra(NAME, name);
+                        startActivity(intent);
+                        flag = 0;
+                    } else {
+                        flag = 1;
+                    }
                 }
-                try {
-                    emailId = jsonObject.getString("email");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                if (flag == 1) {
+                    Intent intent = new Intent(LoginActivity.this, Twitterlogin.class);
+                    intent.putExtra(NAME, name);
+                    startActivity(intent);
 
-                saveNewUser();
+                }
             }
         });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "name,email");
-        request.setParameters(parameters);
-        request.executeAsync();
     }
 
-    private void saveNewUser() {
-        ParseUser parseUser = ParseUser.getCurrentUser();
-        parseUser.setUsername(emailId);
-        parseUser.setEmail(emailId);
+            private void getUserDetailsFromFB() {
+                GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
+                        try {
+                            userNameText = jsonObject.getString("name");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            emailId = jsonObject.getString("email");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
-        parseUser.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                Intent intent = new Intent(LoginActivity.this, Facebooklogin.class);
-                intent.putExtra(NAME , userNameText);
-                startActivity(intent);
-                finish();
+                        saveNewUser();
+                    }
+                });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "name,email");
+                request.setParameters(parameters);
+                request.executeAsync();
             }
-        });
+
+            private void saveNewUser() {
+                ParseUser parseUser = ParseUser.getCurrentUser();
+                parseUser.setUsername(emailId);
+                parseUser.setEmail(emailId);
+
+                parseUser.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        Intent intent = new Intent(LoginActivity.this, Facebooklogin.class);
+                        intent.putExtra(NAME, userNameText);
+                        startActivity(intent);
+
+                    }
+                });
 
 
-    }
-}
+            }
+        }

@@ -93,10 +93,8 @@ public class ComposeActivity2 extends AppCompatActivity {
                         msg.put("read", "notseen");
                         msg.saveInBackground();
                         Toast.makeText(ComposeActivity2.this, "Message Sent", Toast.LENGTH_SHORT).show();
-                        finish();
                         Intent intent = new Intent(ComposeActivity2.this, MainActivity.class);
                         startActivity(intent);
-                        finish();
                     }
                 }
                 else {
@@ -122,10 +120,8 @@ public class ComposeActivity2 extends AppCompatActivity {
                                     msg.put("imagefile", file);
                                     msg.saveInBackground();
                                     Toast.makeText(ComposeActivity2.this, "Message Sent", Toast.LENGTH_SHORT).show();
-                                    finish();
                                     Intent intent = new Intent(ComposeActivity2.this, MainActivity.class);
                                     startActivity(intent);
-                                    finish();
                                 }
                             }
                         }
@@ -151,7 +147,6 @@ public class ComposeActivity2 extends AppCompatActivity {
             Log.d("demo", "homepage clicked");
             Intent intent = new Intent(ComposeActivity2.this, MainActivity.class);
             startActivity(intent);
-            finish();
             return true;
         }
 
@@ -160,7 +155,7 @@ public class ComposeActivity2 extends AppCompatActivity {
 
             String objId2 = ParseInstallation.getCurrentInstallation().getObjectId();
             ParseQuery<ParseInstallation> query2 = ParseInstallation.getQuery();
-            Log.d("demo", "cuser"+ParseUser.getCurrentUser());
+            Log.d("demo", "cuser" + ParseUser.getCurrentUser());
             query2.getInBackground(objId2, new GetCallback<ParseInstallation>() {
                 @Override
                 public void done(ParseInstallation obj, com.parse.ParseException e) {
@@ -170,11 +165,11 @@ public class ComposeActivity2 extends AppCompatActivity {
                     }
                 }
             });
-            ParseTwitterUtils.unlinkInBackground(ParseUser.getCurrentUser());
+
             ParseUser.logOut();
-            finish();
             Intent intent = new Intent(ComposeActivity2.this, LoginActivity.class);
             startActivity(intent);
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

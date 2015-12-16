@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtra(FULLNAME, fullname);
                             intent.putExtra(SEMAIL, semail);
                             startActivity(intent);
-                            finish();
+
                         }
                     });
                 simpleA = builder.create();
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("demo", "edit clicked");
                 Intent intent = new Intent(MainActivity.this, EditActivity.class);
                 startActivity(intent);
-                finish();
+
             }
         });
 
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("demo", "view list clicked");
                 Intent intent = new Intent(MainActivity.this, UserListActivity.class);
                 startActivity(intent);
-                finish();
+
             }
         });
 
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("demo", "privacy clicked");
                 Intent intent = new Intent(MainActivity.this, PrivacyActivity.class);
                 startActivity(intent);
-                finish();
+
             }
         });
     }
@@ -146,12 +146,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-
 
         if (id == R.id.logout) {
             Log.d("demo", "logout clicked");
@@ -169,18 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            //ParseTwitterUtils.unlinkInBackground(ParseUser.getCurrentUser());
-            ParseTwitterUtils.unlinkInBackground(ParseUser.getCurrentUser(), new SaveCallback() {
-                @Override
-                public void done(ParseException ex) {
-                    if (ex == null) {
-                        Log.d("demo", "The user is no longer associated with their Twitter account.");
-                    }
-                }
-            });
             ParseUser.logOut();
-
-            finish();
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();

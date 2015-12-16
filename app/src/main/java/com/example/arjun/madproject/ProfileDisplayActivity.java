@@ -70,14 +70,14 @@ public class ProfileDisplayActivity extends AppCompatActivity {
             Log.d("demo", "homepage clicked");
             Intent intent = new Intent(ProfileDisplayActivity.this, MainActivity.class);
             startActivity(intent);
-            finish();
+
             return true;
         }
 
         if(id == R.id.userlist) {
             Intent intent = new Intent(ProfileDisplayActivity.this, UserListActivity.class);
             startActivity(intent);
-            finish();
+
             return true;
         }
 
@@ -86,7 +86,7 @@ public class ProfileDisplayActivity extends AppCompatActivity {
 
             String objId2 = ParseInstallation.getCurrentInstallation().getObjectId();
             ParseQuery<ParseInstallation> query2 = ParseInstallation.getQuery();
-            Log.d("demo", "cuser"+ ParseUser.getCurrentUser());
+            Log.d("demo", "cuser" + ParseUser.getCurrentUser());
             query2.getInBackground(objId2, new GetCallback<ParseInstallation>() {
                 @Override
                 public void done(ParseInstallation obj, com.parse.ParseException e) {
@@ -96,11 +96,11 @@ public class ProfileDisplayActivity extends AppCompatActivity {
                     }
                 }
             });
-            ParseTwitterUtils.unlinkInBackground(ParseUser.getCurrentUser());
+
             ParseUser.logOut();
-            finish();
             Intent intent = new Intent(ProfileDisplayActivity.this, LoginActivity.class);
             startActivity(intent);
+            finish();
 
             return true;
         }
