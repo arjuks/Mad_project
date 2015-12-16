@@ -14,7 +14,31 @@ Parse.Cloud.afterSave("Album", function(request) {
   Parse.Push.send({
     where: pushQuery, // Set our Installation query
     data: {
-      alert: "Broadcast to everyone"
+      alert: "Album Updated!"
+    }
+  }, {
+    success: function() {
+      console.log('push went successfully');
+      // Push was successful
+    },
+    error: function(error) {
+      console.log('push had an error ');
+      console.log(error);
+      // Handle error
+    }
+  });
+})
+
+Parse.Cloud.afterSave("_User", function(request) {
+  var pushQuery = new Parse.Query(Parse.Installation);
+  // var userQuery = new Parse.Query(Parse.User);
+  // userQuery.equalTo()
+
+  // pushQuery.matchesQuery('user', userQuery);
+  Parse.Push.send({
+    where: pushQuery, // Set our Installation query
+    data: {
+      alert: "New User Saved!"
     }
   }, {
     success: function() {

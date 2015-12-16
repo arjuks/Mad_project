@@ -94,10 +94,13 @@ public class SignUpActivity extends AppCompatActivity {
 
                     final ParseUser user = new ParseUser();
 
+
+
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    byte[] d = stream.toByteArray();
-                    final ParseFile file = new ParseFile("image.jpg", d);
                     picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] bitmapData = stream.toByteArray();
+                    final ParseFile file = new ParseFile("image.jpg", bitmapData);
+
                     user.put("imagefile", file);
 
                     user.setEmail(email.getText().toString());
